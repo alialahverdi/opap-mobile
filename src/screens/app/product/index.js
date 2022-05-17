@@ -1,10 +1,10 @@
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // create a component
-const Home = ({ navigation }) => {
+const Product = ({ navigation }) => {
     return (
         <View style={styles.container}>
-            <Text>Home Screen</Text>
+            <Text>Product Screen</Text>
         </View>
     );
 };
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
 });
 
 //make this component available to the app
-export default Home;
+export default Product;

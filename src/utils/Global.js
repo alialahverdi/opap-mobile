@@ -8,6 +8,6 @@ global.useEffect = React.useEffect;
 global.ReactNative = require("react-native");
 global.View = ReactNative.View;
 global.Text = ReactNative.Text;
-global.Image = ReactNative.Image;
 global.StyleSheet = ReactNative.StyleSheet;
+global.TouchableOpacity = ReactNative.TouchableOpacity;
 

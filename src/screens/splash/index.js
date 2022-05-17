@@ -1,5 +1,8 @@
+import { CommonActions } from '@react-navigation/native';
+
 // Create a component
 const Splash = ({ navigation }) => {
+
     return (
         <View style={styles.container}>
             <Text>Splash Screen</Text>
