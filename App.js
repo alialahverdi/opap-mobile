@@ -20,9 +20,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode='none'>
+        <Stack.Screen name="AuthStack" component={AuthStack} />
         <Stack.Screen name="AppStack" component={AppStack} />
         <Stack.Screen name="Splash" component={SplashScreen} />
-        <Stack.Screen name="AuthStack" component={AuthStack} />
       </Stack.Navigator>
     </NavigationContainer>
   )
