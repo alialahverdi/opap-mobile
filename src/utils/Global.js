@@ -14,6 +14,8 @@ global.TouchableOpacity = ReactNative.TouchableOpacity;
 global.StatusBar = ReactNative.StatusBar;
 global.TextInput = ReactNative.TextInput;
 global.Platform = ReactNative.Platform;
+global.Alert = ReactNative.Alert;
+global.ToastAndroid = ReactNative.ToastAndroid;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';

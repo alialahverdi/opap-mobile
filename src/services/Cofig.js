@@ -5,13 +5,15 @@ const client = axios.create({
     baseURL: BASE_URL
 });
 
+client.interceptors.request.use()
+
 const call = async (
     method,
     url,
     data = {},
     headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        "Accept": "application/json",
+        "Content-Type": "application/json",
     }
 ) => {
     const request = { headers, method, url }
