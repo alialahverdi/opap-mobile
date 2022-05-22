@@ -13,6 +13,7 @@ import SplashScreen from './src/screens/splash';
 import AppStack from './src/navigation/AppStack';
 import AuthStack from './src/navigation/AuthStack';
 
+
 // Create stack fro all screens
 const Stack = createStackNavigator();
 
@@ -20,9 +21,9 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode='none'>
+        <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="AuthStack" component={AuthStack} />
         <Stack.Screen name="AppStack" component={AppStack} />
-        <Stack.Screen name="Splash" component={SplashScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

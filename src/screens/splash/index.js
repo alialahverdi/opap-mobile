@@ -1,11 +1,41 @@
-import { CommonActions } from '@react-navigation/native';
+import { StackActions } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // Create a component
 const Splash = ({ navigation }) => {
 
+    // ------- States ------- //
+
+    const [spinner, setSpinner] = useState(true);
+
+    // ------- Logic or Functions ------- //
+
+    const getUserInfo = async () => {
+        const value = await AsyncStorage.getItem('userInfo');
+        const userInfo = JSON.parse(value);
+        checkLogin(userInfo);
+    }
+
+    const checkLogin = (userInfo) => {
+        setTimeout(() => {
+            if (userInfo != null) {
+                navigation.dispatch(StackActions.replace('AppStack'));
+            } else {
+                navigation.dispatch(StackActions.replace('AuthStack'));
+            }
+            setSpinner(false);
+        }, 1000)
+    }
+
+    useEffect(() => {
+        getUserInfo();
+    }, [])
+
     return (
         <View style={styles.container}>
-            <Text>Splash Screen</Text>
+            <Text style={{ marginBottom: 20 }}>Splash Screen</Text>
+            {spinner && <ActivityIndicator size="small" color="#6f74dd" />}
         </View>
     );
 };

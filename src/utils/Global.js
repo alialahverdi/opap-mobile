@@ -16,6 +16,7 @@ global.TextInput = ReactNative.TextInput;
 global.Platform = ReactNative.Platform;
 global.Alert = ReactNative.Alert;
 global.ToastAndroid = ReactNative.ToastAndroid;
+global.ActivityIndicator = ReactNative.ActivityIndicator;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';

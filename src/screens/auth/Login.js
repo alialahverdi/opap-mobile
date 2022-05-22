@@ -1,14 +1,25 @@
 import DeviceInfo from 'react-native-device-info';
 import Clipboard from '@react-native-clipboard/clipboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions } from '@react-navigation/native';
 
-const Login = () => {
+import api from '../../services/axiosInstance';
 
-    // States
-    const [username, setUsername] = useState(null);
-    const [password, setPassword] = useState(null);
-    const [uniqueId, setUniqueId] = useState(null);
+// Create a component
+const Login = ({ navigation }) => {
 
-    // Logic or Functions
+    // ------- States ------- //
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [uniqueId, setUniqueId] = useState("");
+    const [loginSpinner, setLoginSpinner] = useState(false);
+
+    // ------- Logic or Functions ------- //
+
+    useEffect(() => {
+        getUniqueId();
+    }, [])
+
     const getUniqueId = () => {
         const uniqueId = DeviceInfo.getUniqueId();
         setUniqueId(uniqueId);
@@ -26,9 +37,34 @@ const Login = () => {
         return Alert.alert(msg);
     }
 
-    useEffect(() => {
-        getUniqueId();
-    }, [])
+    const login = async () => {
+        setLoginSpinner(true);
+        const params = {
+            username,
+            password,
+            deviceid: uniqueId,
+            version: "1.0.0"
+        }
+        api.post('/check', params)
+            .then(res => {
+                storeInStorage(res);
+            })
+            .catch(() => { })
+            .finally(() => {
+                setLoginSpinner(false);
+            })
+    }
+
+    const storeInStorage = async (userInfo) => {
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+        navigateToApp();
+    }
+
+    const navigateToApp = () => {
+        setUsername("");
+        setPassword("");
+        navigation.dispatch(StackActions.replace('AppStack'));
+    }
 
     return (
         <SafeAreaView>
@@ -60,13 +96,22 @@ const Login = () => {
                     <Ionicons name="copy" size={18} color="#fff" />
                 </TouchableOpacity>
             </View>
-            <TouchableOpacity activeOpacity={.6} style={styles.button}>
-                <Text style={{ color: "#fff" }}>ورود به حساب کاربری</Text>
+            <TouchableOpacity
+                activeOpacity={.6}
+                style={styles.button}
+                onPress={login}
+            >
+                {
+                    loginSpinner
+                        ? <ActivityIndicator size="small" color="#fff" />
+                        : <Text style={{ color: "#fff" }}>ورود به حساب کاربری</Text>
+                }
             </TouchableOpacity>
         </SafeAreaView>
     );
 };
 
+// Define your styles
 const styles = StyleSheet.create({
     textInput: {
         height: 40,
@@ -107,4 +152,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//Make this component available to the app
 export default Login;
