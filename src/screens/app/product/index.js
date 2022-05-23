@@ -1,13 +1,29 @@
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Button } from 'react-native'
+import api from '../../../services/AxiosInstance'
+import axios from 'axios'
 
 // create a component
 const Product = ({ navigation }) => {
+
+    // ------- Logic or Functions ------- //
+    // useEffect(() => {
+    //     getProductSync();
+    // }, [])
+
+    const getProductSync = async () => {
+        api.get('/product/get')
+            .then(res => console.log('res', res))
+            .catch(() => { })
+    }
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Text>Product Screen</Text>
-        </View>
-    );
-};
+            {/* <ActivityIndicator size="small" color="#6f74dd" /> */}
+            <Button title='Button' onPress={getProductSync} />
+        </SafeAreaView>
+    )
+}
 
 // define your styles
 const styles = StyleSheet.create({
@@ -17,7 +33,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // backgroundColor: '#2c3e50',
     },
-});
+})
 
 //make this component available to the app
-export default Product;
+export default Product

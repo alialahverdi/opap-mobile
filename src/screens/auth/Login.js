@@ -3,7 +3,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackActions } from '@react-navigation/native';
 
-import api from '../../services/axiosInstance';
+import api from '../../services/AxiosInstance';
 
 // Create a component
 const Login = ({ navigation }) => {
@@ -15,7 +15,6 @@ const Login = ({ navigation }) => {
     const [loginSpinner, setLoginSpinner] = useState(false);
 
     // ------- Logic or Functions ------- //
-
     useEffect(() => {
         getUniqueId();
     }, [])

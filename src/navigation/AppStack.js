@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 function AppStack() {
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Product"
             tabBarOptions={{
                 // activeTintColor: "red"
             }}

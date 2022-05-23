@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BASE_URL } from './BaseUrl';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const axiosInstance = axios.create({
     baseURL: BASE_URL,
@@ -9,7 +10,17 @@ const axiosInstance = axios.create({
     }
 });
 
-axiosInstance.interceptors.request.use(config => {
+const getUserInfo = async () => {
+    const value = await AsyncStorage.getItem('userInfo');
+    const userInfo = JSON.parse(value);
+    return userInfo;
+}
+
+axiosInstance.interceptors.request.use(async config => {
+    const userInfo = await getUserInfo();
+    if (userInfo != null && userInfo.token != null) {
+        config.headers['Authorization'] = userInfo.token;
+    }
     return config;
 });
 
