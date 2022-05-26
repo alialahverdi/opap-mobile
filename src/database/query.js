@@ -1,7 +1,6 @@
 import realm from './v1/realmInstance';
-import { createSchema } from '../utils/database';
 
-const store = (arr, schema) => {
+const store = async (arr, schema) => {
     try {
         arr.map(item => {
             realm.write(() => {

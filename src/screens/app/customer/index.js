@@ -6,43 +6,76 @@ import { Button } from 'react-native';
 const Customer = ({ navigation }) => {
 
     // ------- States ------- //
-    const [customerSpinner, setCustomerSpinner] = useState(false);
+    const [customerSpinner, setCustomerSpinner] = useState(true);
+    const [customers, setCustomers] = useState([]);
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        // getRealmCustomers();
+        getRealmCustomers();
     }, [])
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer');
-        if (realmCustomers.length > 0) return;
+        if (realmCustomers.length > 0) {
+            setCustomers(realmCustomers);
+            setCustomerSpinner(false);
+            return;
+        };
         getApiCustomers();
     }
 
     const getApiCustomers = () => {
-        api.get('/customer/get')
-            .then(res => {
-                store(res.content, "Customer")
+        api.get('/customer/get').then(res => {
+            store(res.content, "Customer").then(() => {
+                setCustomers(realmCustomers);
+                setCustomerSpinner(false);
             })
-            .catch(() => { })
+        }).catch(() => { })
+    }
+
+    const showCustomers = ({ item, index }) => {
+        return (
+            <View>
+                <Text>{item.CustomerName}</Text>
+            </View>
+        )
     }
 
     return (
-        <View style={styles.container}>
-            <Text>Customer Screen</Text>
-            <Button title='Button' onPress={getRealmCustomers} />
-        </View>
+        <SafeAreaView style={styles.container}>
+            {customerSpinner && (
+                <View style={styles.senterScreen}>
+                    <ActivityIndicator size="small" color="#6f74dd" />
+                </View>
+            )}
+            {!customerSpinner && (
+                <FlatList
+                    data={customers}
+                    renderItem={showCustomers}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            )}
+
+        </SafeAreaView>
     )
 }
 
 // define your styles
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    senterScreen: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: '#2c3e50',
     },
+    flatListContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red'
+    }
 })
 
 //make this component available to the app
