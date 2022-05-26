@@ -1,6 +1,5 @@
 import { Button } from 'react-native'
-import api from '../../../services/AxiosInstance'
-import axios from 'axios'
+import api from '../../../services/axiosInstance'
 
 // create a component
 const Product = ({ navigation }) => {

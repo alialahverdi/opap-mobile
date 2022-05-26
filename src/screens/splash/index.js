@@ -7,7 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const Splash = ({ navigation }) => {
 
     // ------- States ------- //
-
     const [spinner, setSpinner] = useState(true);
 
     // ------- Logic or Functions ------- //
