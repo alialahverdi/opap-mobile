@@ -1,7 +1,8 @@
 import api from '../../../services/axiosInstance';
-import realm from '../../../database/v1/realmInstance';
-import { store } from '../../../database/query';
-import { Button } from 'react-native';
+import realm from '../../../model/v1/realmInstance';
+import { store } from '../../../model/query';
+import CustomerCard from '../../../components/CustomerCard';
+
 // create a component
 const Customer = ({ navigation }) => {
 
@@ -27,7 +28,7 @@ const Customer = ({ navigation }) => {
     const getApiCustomers = () => {
         api.get('/customer/get').then(res => {
             store(res.content, "Customer").then(() => {
-                setCustomers(realmCustomers);
+                setCustomers(res.content);
                 setCustomerSpinner(false);
             })
         }).catch(() => { })
@@ -35,9 +36,9 @@ const Customer = ({ navigation }) => {
 
     const showCustomers = ({ item, index }) => {
         return (
-            <View>
-                <Text>{item.CustomerName}</Text>
-            </View>
+            <CustomerCard
+                customer={item}
+            />
         )
     }
 

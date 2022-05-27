@@ -7,6 +7,7 @@ const store = async (arr, schema) => {
                 realm.create(schema, item);
             });
         });
+        realm.close();
     } catch (error) {
         console.log(error)
     }

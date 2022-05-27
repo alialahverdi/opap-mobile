@@ -1,5 +1,5 @@
-import realm from '../../../database/v1/realmInstance';
-import { store } from '../../../database/query';
+import realm from '../../../model/v1/realmInstance';
+import { store } from '../../../model/query';
 
 const array = [
     {

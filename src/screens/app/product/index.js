@@ -19,7 +19,7 @@ const Product = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <Text>Product Screen</Text>
             {/* <ActivityIndicator size="small" color="#6f74dd" /> */}
-            <Button title='Button' onPress={getProductSync} />
+            {/* <Button title='Button' onPress={getProductSync} /> */}
         </SafeAreaView>
     )
 }
