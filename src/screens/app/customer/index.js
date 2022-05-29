@@ -1,7 +1,9 @@
+import { UIManager, LayoutAnimation } from 'react-native';
 import api from '../../../services/axiosInstance';
 import realm from '../../../model/v1/realmInstance';
 import { store } from '../../../model/query';
 import CustomerCard from '../../../components/CustomerCard';
+
 
 // create a component
 const Customer = ({ navigation }) => {
@@ -9,18 +11,21 @@ const Customer = ({ navigation }) => {
     // ------- States ------- //
     const [customerSpinner, setCustomerSpinner] = useState(true);
     const [customers, setCustomers] = useState([]);
+    const [prevIndex, setPrevIndex] = useState([]);
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental(true)
+        }
         getRealmCustomers();
     }, [])
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer');
+        const customers = realmCustomers.toJSON();
         if (realmCustomers.length > 0) {
-            setCustomers(realmCustomers);
-            setCustomerSpinner(false);
-            return;
+            return addExpandable(customers)
         };
         getApiCustomers();
     }
@@ -28,19 +33,53 @@ const Customer = ({ navigation }) => {
     const getApiCustomers = () => {
         api.get('/customer/get').then(res => {
             store(res.content, "Customer").then(() => {
-                setCustomers(res.content);
-                setCustomerSpinner(false);
+                addExpandable(res.content)
             })
         }).catch(() => { })
+    }
+
+    const addExpandable = (customers) => {
+        const newCustomers = customers.map(item => {
+            return {
+                ...item,
+                layoutHeight: 0
+            }
+        })
+        setCustomers(newCustomers);
+        setCustomerSpinner(false);
     }
 
     const showCustomers = ({ item, index }) => {
         return (
             <CustomerCard
                 customer={item}
+                onExpand={() => openLayoutCustomer(index)}
             />
         )
     }
+
+    const openLayoutCustomer = (index) => {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+        const customersCloned = [...customers];
+        if (prevIndex.includes(index)) {
+            customersCloned[index].layoutHeight = 0;
+            setCustomers(customersCloned)
+            setPrevIndex([])
+        } else {
+            let newCustomers = customersCloned.map(item => {
+                return {
+                    ...item,
+                    layoutHeight: 0,
+                }
+            })
+            newCustomers[index].layoutHeight == 0
+                ? newCustomers[index].layoutHeight = null
+                : newCustomers[index].layoutHeight = 0;
+            setCustomers(newCustomers)
+            setPrevIndex([index])
+        }
+    }
+
 
     return (
         <SafeAreaView style={styles.container}>

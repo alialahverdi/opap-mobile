@@ -18,6 +18,7 @@ global.Alert = ReactNative.Alert;
 global.ToastAndroid = ReactNative.ToastAndroid;
 global.ActivityIndicator = ReactNative.ActivityIndicator;
 global.FlatList = ReactNative.FlatList;
+global.ScrollView = ReactNative.ScrollView;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';
