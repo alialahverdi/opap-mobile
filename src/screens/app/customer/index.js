@@ -1,8 +1,10 @@
-import { UIManager, LayoutAnimation } from 'react-native';
-import api from '../../../services/axiosInstance';
-import realm from '../../../model/v1/realmInstance';
-import { store } from '../../../model/query';
-import CustomerCard from '../../../components/CustomerCard';
+import Layout from '../../../components/Layout'
+import { UIManager, LayoutAnimation } from 'react-native'
+import api from '../../../services/axiosInstance'
+import realm from '../../../model/v1/realmInstance'
+import { store } from '../../../model/query'
+import CustomerCard from '../../../components/CustomerCard'
+import SearchbarHeader from '../../../components/general/SearchbarHeader'
 
 
 // create a component
@@ -11,6 +13,8 @@ const Customer = ({ navigation }) => {
     // ------- States ------- //
     const [customerSpinner, setCustomerSpinner] = useState(true);
     const [customers, setCustomers] = useState([]);
+    const [searchedCustomers, setSearchedCustomers] = useState([]);
+    const [searchedCustomerText, setSearchedCustomerText] = useState("");
     const [prevIndex, setPrevIndex] = useState([]);
 
     // ------- Logic or Functions ------- //
@@ -46,6 +50,7 @@ const Customer = ({ navigation }) => {
             }
         })
         setCustomers(newCustomers);
+        setSearchedCustomers(newCustomers)
         setCustomerSpinner(false);
     }
 
@@ -80,9 +85,21 @@ const Customer = ({ navigation }) => {
         }
     }
 
+    const searchCustomer = (text) => {
+        let oldSearchedCustomers = [...searchedCustomers];
+        let newSearchedCustomers = oldSearchedCustomers.filter(item => {
+            let itemData = item.CustomerName.toUpperCase();
+            let textData = text.toUpperCase();
+            return itemData.indexOf(textData) > -1;
+        });
+        setCustomers(newSearchedCustomers);
+        setSearchedCustomerText(text);
+    }
+
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView>
+            <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
             {customerSpinner && (
                 <View style={styles.senterScreen}>
                     <ActivityIndicator size="small" color="#6f74dd" />
@@ -90,12 +107,12 @@ const Customer = ({ navigation }) => {
             )}
             {!customerSpinner && (
                 <FlatList
+                    style={{ paddingHorizontal: 10 }}
                     data={customers}
                     renderItem={showCustomers}
                     keyExtractor={(item, index) => index.toString()}
                 />
             )}
-
         </SafeAreaView>
     )
 }
@@ -103,7 +120,7 @@ const Customer = ({ navigation }) => {
 // define your styles
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        // marginHorizontal: 10
     },
     senterScreen: {
         flex: 1,

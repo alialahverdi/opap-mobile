@@ -69,23 +69,23 @@ const Login = ({ navigation }) => {
         <SafeAreaView>
             <TextInput
                 style={styles.textInput}
-                onChangeText={setUsername}
                 placeholder="نام کاربری"
                 value={username}
+                onChangeText={setUsername}
             />
             <TextInput
                 style={styles.textInput}
-                onChangeText={setPassword}
-                value={password}
                 placeholder="رمز عبور"
                 keyboardType="numeric"
+                value={password}
+                onChangeText={setPassword}
             />
             <View style={styles.uniqueIdContainer}>
                 <TextInput
                     style={styles.textInputUniqueId}
-                    onChangeText={setPassword}
-                    value={uniqueId}
                     editable={false}
+                    value={uniqueId}
+                    onChangeText={setPassword}
                 />
                 <TouchableOpacity
                     activeOpacity={.6}
@@ -116,9 +116,10 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 12,
         borderWidth: .5,
+        borderColor: "gray",
         padding: 10,
         textAlign: "right",
-        borderRadius: 5
+        borderRadius: 5,
     },
     button: {
         justifyContent: "center",
@@ -136,6 +137,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 40,
         borderWidth: .5,
+        borderColor: "gray",
         borderRadius: 5,
         textAlign: "right",
         padding: 10

@@ -41,7 +41,6 @@ const CustomerCard = ({ customer, onExpand }) => {
 const styles = StyleSheet.create({
     container: {
         marginVertical: 4,
-        marginHorizontal: 10,
         backgroundColor: "#fff",
         borderRadius: 5,
         paddingVertical: 10,
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     line: {
         height: 1,
         backgroundColor: '#f0f1f3',
-        marginRight: 20,
+        marginRight: 15,
         marginTop: 10
     },
     content: {
