@@ -23,3 +23,7 @@ global.ScrollView = ReactNative.ScrollView;
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';
 global.Ionicons = Ionicons;
+
+
+import font from '../constants/fonts';
+global.font = font;

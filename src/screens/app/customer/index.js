@@ -11,27 +11,27 @@ import SearchbarHeader from '../../../components/general/SearchbarHeader'
 const Customer = ({ navigation }) => {
 
     // ------- States ------- //
-    const [customerSpinner, setCustomerSpinner] = useState(true);
-    const [customers, setCustomers] = useState([]);
-    const [searchedCustomers, setSearchedCustomers] = useState([]);
-    const [searchedCustomerText, setSearchedCustomerText] = useState("");
-    const [prevIndex, setPrevIndex] = useState([]);
+    const [customerSpinner, setCustomerSpinner] = useState(true)
+    const [customers, setCustomers] = useState([])
+    const [searchedCustomers, setSearchedCustomers] = useState([])
+    const [searchedCustomerText, setSearchedCustomerText] = useState("")
+    const [prevIndex, setPrevIndex] = useState([])
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
         if (Platform.OS === 'android') {
             UIManager.setLayoutAnimationEnabledExperimental(true)
         }
-        getRealmCustomers();
+        getRealmCustomers()
     }, [])
 
     const getRealmCustomers = () => {
-        const realmCustomers = realm.objects('Customer');
-        const customers = realmCustomers.toJSON();
+        const realmCustomers = realm.objects('Customer')
+        const customers = realmCustomers.toJSON()
         if (realmCustomers.length > 0) {
             return addExpandable(customers)
         };
-        getApiCustomers();
+        getApiCustomers()
     }
 
     const getApiCustomers = () => {
@@ -49,9 +49,9 @@ const Customer = ({ navigation }) => {
                 layoutHeight: 0
             }
         })
-        setCustomers(newCustomers);
+        setCustomers(newCustomers)
         setSearchedCustomers(newCustomers)
-        setCustomerSpinner(false);
+        setCustomerSpinner(false)
     }
 
     const showCustomers = ({ item, index }) => {
@@ -64,8 +64,8 @@ const Customer = ({ navigation }) => {
     }
 
     const openLayoutCustomer = (index) => {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        const customersCloned = [...customers];
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+        const customersCloned = [...customers]
         if (prevIndex.includes(index)) {
             customersCloned[index].layoutHeight = 0;
             setCustomers(customersCloned)
@@ -86,40 +86,43 @@ const Customer = ({ navigation }) => {
     }
 
     const searchCustomer = (text) => {
-        let oldSearchedCustomers = [...searchedCustomers];
+        let oldSearchedCustomers = [...searchedCustomers]
         let newSearchedCustomers = oldSearchedCustomers.filter(item => {
-            let itemData = item.CustomerName.toUpperCase();
-            let textData = text.toUpperCase();
+            let itemData = item.CustomerName.toUpperCase()
+            let textData = text.toUpperCase()
             return itemData.indexOf(textData) > -1;
         });
-        setCustomers(newSearchedCustomers);
-        setSearchedCustomerText(text);
+        setCustomers(newSearchedCustomers)
+        setSearchedCustomerText(text)
     }
 
 
     return (
-        <SafeAreaView>
-            <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
+        <Layout>
             {customerSpinner && (
                 <View style={styles.senterScreen}>
                     <ActivityIndicator size="small" color="#6f74dd" />
                 </View>
             )}
             {!customerSpinner && (
-                <FlatList
-                    style={{ paddingHorizontal: 10 }}
-                    data={customers}
-                    renderItem={showCustomers}
-                    keyExtractor={(item, index) => index.toString()}
-                />
+                <>
+                    <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
+                    <FlatList
+                        style={{ paddingHorizontal: 10 }}
+                        data={customers}
+                        renderItem={showCustomers}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </>
             )}
-        </SafeAreaView>
+        </Layout>
     )
 }
 
 // define your styles
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         // marginHorizontal: 10
     },
     senterScreen: {

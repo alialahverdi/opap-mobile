@@ -4,7 +4,6 @@ const SearchbarHeader = ({ text, onChangeText }) => {
             <TextInput
                 style={styles.textInput}
                 placeholder="جست جو"
-                placeholderTextColor="gray"
                 value={text}
                 onChangeText={onChangeText}
             />
@@ -26,14 +25,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 40,
         marginHorizontal: 10,
-        marginVertical: 5
+        marginVertical: 5,
     },
     textInput: {
+        ...font.black,
         flex: 1,
         backgroundColor: "transparent",
         paddingHorizontal: 5,
-        color: "gray",
-        textAlign: "right"
+        textAlign: "right",
+        fontSize: 13
     },
 
 })

@@ -8,8 +8,8 @@ const CustomerCard = ({ customer, onExpand }) => {
                 onPress={onExpand}
             >
                 <View style={styles.customerPay}>
-                    <Text style={{ fontSize: 12 }}>فاکتور باز : {customer.CountOpen}</Text>
-                    <Text style={{ fontSize: 12 }}>مانده مشتری : {customer.RemAmount}</Text>
+                    <Text style={[font.black, { fontSize: 12 }]}>فاکتور باز : {customer.CountOpen}</Text>
+                    <Text style={[font.black, { fontSize: 12 }]}>مانده مشتری : {customer.RemAmount}</Text>
                 </View>
                 <View style={styles.customerInfo}>
                     <Text style={styles.customerName}>{customer.CustomerName}</Text>
@@ -56,15 +56,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15
     },
     customerName: {
-        fontSize: 15,
+        ...font.black,
         textAlign: "right",
     },
     customerID: {
+        ...font.black,
         textAlign: "right",
         fontSize: 10,
         marginTop: 8
     },
     customerAddr: {
+        ...font.black,
         textAlign: "right",
         fontSize: 10,
         marginTop: 12
@@ -99,6 +101,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     textContent: {
+        ...font.black,
         fontSize: 12,
         marginTop: 6
     }

@@ -3,6 +3,7 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackActions } from '@react-navigation/native';
 
+
 import api from '../../services/axiosInstance';
 
 // Create a component
@@ -66,7 +67,7 @@ const Login = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
             <TextInput
                 style={styles.textInput}
                 placeholder="نام کاربری"
@@ -103,7 +104,7 @@ const Login = ({ navigation }) => {
                 {
                     loginSpinner
                         ? <ActivityIndicator size="small" color="#fff" />
-                        : <Text style={{ color: "#fff" }}>ورود به حساب کاربری</Text>
+                        : <Text style={font.white}>ورود به حساب کاربری</Text>
                 }
             </TouchableOpacity>
         </SafeAreaView>
@@ -112,26 +113,23 @@ const Login = ({ navigation }) => {
 
 // Define your styles
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        marginHorizontal: 10
+    },
     textInput: {
+        ...font.gray,
         height: 40,
-        margin: 12,
+        marginVertical: 10,
         borderWidth: .5,
         borderColor: "gray",
         padding: 10,
         textAlign: "right",
         borderRadius: 5,
     },
-    button: {
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#6f74dd",
-        margin: 12,
-        height: 40,
-        borderRadius: 5
-    },
     uniqueIdContainer: {
         flexDirection: "row",
-        margin: 12,
+        marginVertical: 10,
     },
     textInputUniqueId: {
         flex: 1,
@@ -150,7 +148,15 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         borderRadius: 5
         // backgroundColor: "red"
-    }
+    },
+    button: {
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#6f74dd",
+        marginVertical: 10,
+        height: 40,
+        borderRadius: 5
+    },
 });
 
 //Make this component available to the app
