@@ -1,5 +1,5 @@
-const product = {
-    name: "product",
+const ProductSchema = {
+    name: "Product",
     properties: {
         ProductID: "int",
         ProductName: "string",
@@ -22,4 +22,4 @@ const product = {
     primaryKey: "ProductID"
 };
 
-export default product;
+export default ProductSchema;

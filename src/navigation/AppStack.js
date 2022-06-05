@@ -9,6 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/app/home';
 import CustomerScreen from '../screens/app/customer';
 import ProductScreen from '../screens/app/product';
+import OrderScreen from '../screens/app/order';
 import TestScreen from '../screens/app/Test';
 
 
@@ -24,14 +25,14 @@ function AppStack() {
                 // activeTintColor: "red"
             }}
         >
-            {/* <Tab.Screen
-                name="Test"
-                component={TestScreen}
+            <Tab.Screen
+                name="Order"
+                component={OrderScreen}
                 options={{
-                    tabBarLabel: "Test",
-                    tabBarIcon: props => <Icon name="podium" size={props.size} color={props.color} />
+                    tabBarLabel: "Order",
+                    tabBarIcon: props => <Icon name="reader" size={props.size} color={props.color} />
                 }}
-            /> */}
+            />
             <Tab.Screen
                 name="Product"
                 component={ProductScreen}

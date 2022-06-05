@@ -1,4 +1,4 @@
-import Layout from '../../../components/Layout'
+import Layout from '../../../components/layout'
 import { UIManager, LayoutAnimation } from 'react-native'
 import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
@@ -100,7 +100,7 @@ const Customer = ({ navigation }) => {
     return (
         <Layout>
             {customerSpinner && (
-                <View style={styles.senterScreen}>
+                <View style={styles.centerScreen}>
                     <ActivityIndicator size="small" color="#6f74dd" />
                 </View>
             )}
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         flex: 1,
         // marginHorizontal: 10
     },
-    senterScreen: {
+    centerScreen: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

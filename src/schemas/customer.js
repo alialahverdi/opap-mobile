@@ -1,4 +1,4 @@
-const customer = {
+const CustomerSchema = {
     name: "Customer",
     properties: {
         CustomerID: "int",
@@ -25,4 +25,4 @@ const customer = {
     primaryKey: "CustomerID",
 };
 
-export default customer;
+export default CustomerSchema;
