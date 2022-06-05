@@ -5,6 +5,7 @@ import realm from '../../../model/v1/realmInstance'
 import { store } from '../../../model/query'
 import CustomerCard from '../../../components/CustomerCard'
 import SearchbarHeader from '../../../components/general/SearchbarHeader'
+import { toEnglishDigits } from '../../../utils/numbersUtils'
 
 
 // create a component
@@ -86,14 +87,23 @@ const Customer = ({ navigation }) => {
     }
 
     const searchCustomer = (text) => {
-        let oldSearchedCustomers = [...searchedCustomers]
-        let newSearchedCustomers = oldSearchedCustomers.filter(item => {
-            let itemData = item.CustomerName.toUpperCase()
-            let textData = text.toUpperCase()
-            return itemData.indexOf(textData) > -1;
+        const oldSearchedCustomers = [...searchedCustomers]
+        const newSearchedCustomers = oldSearchedCustomers.filter(item => {
+            // return item.CustomerName.toLowerCase().match(text)
+            return contains(item, text)
         });
         setCustomers(newSearchedCustomers)
         setSearchedCustomerText(text)
+    }
+
+    const contains = (item, query) => {
+        const { CustomerName, CustomerID } = item;
+        const formattedQuery = toEnglishDigits(query.toString())
+        if (
+            CustomerName.includes(query) ||
+            CustomerID.toString().includes(formattedQuery)
+        ) return true
+        return false
     }
 
 

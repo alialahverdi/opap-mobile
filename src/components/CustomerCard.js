@@ -57,16 +57,18 @@ const styles = StyleSheet.create({
     },
     customerName: {
         ...font.black,
+        color: "#18277a",
         textAlign: "right",
     },
     customerID: {
-        ...font.black,
+        ...font.gray,
         textAlign: "right",
+        color: "#2367ff",
         fontSize: 10,
         marginTop: 8
     },
     customerAddr: {
-        ...font.black,
+        ...font.gray,
         textAlign: "right",
         fontSize: 10,
         marginTop: 12
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     textContent: {
-        ...font.black,
+        ...font.gray,
         fontSize: 12,
         marginTop: 6
     }

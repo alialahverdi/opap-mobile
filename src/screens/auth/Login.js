@@ -1,7 +1,8 @@
-import DeviceInfo from 'react-native-device-info';
-import Clipboard from '@react-native-clipboard/clipboard';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { StackActions } from '@react-navigation/native';
+import DeviceInfo from 'react-native-device-info'
+import Clipboard from '@react-native-clipboard/clipboard'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StackActions } from '@react-navigation/native'
+import { toEnglishDigits } from '../../utils/numbersUtils'
 
 
 import api from '../../services/axiosInstance';
@@ -40,8 +41,8 @@ const Login = ({ navigation }) => {
     const login = async () => {
         setLoginSpinner(true);
         const params = {
-            username,
-            password,
+            username: toEnglishDigits(username),
+            password: toEnglishDigits(password),
             deviceid: uniqueId,
             version: "1.0.0"
         }

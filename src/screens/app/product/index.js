@@ -3,6 +3,8 @@ import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
 import { store } from '../../../model/query'
 import SearchbarHeader from '../../../components/general/SearchbarHeader'
+import ProductCard from '../../../components/ProductCard'
+import { toEnglishDigits } from '../../../utils/numbersUtils'
 
 // create a component
 const Product = ({ navigation }) => {
@@ -10,6 +12,7 @@ const Product = ({ navigation }) => {
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
     const [products, setProducts] = useState([])
+    const [searchedProducts, setSearchedProducts] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
 
     // ------- Logic or Functions ------- //
@@ -22,6 +25,7 @@ const Product = ({ navigation }) => {
         const products = realmProducts.toJSON()
         if (realmProducts.length > 0) {
             setProducts(products)
+            setSearchedProducts(products)
             setProductSpinner(false)
             return
         };
@@ -31,14 +35,39 @@ const Product = ({ navigation }) => {
     const getApiProducts = () => {
         api.get('/product/get').then(res => {
             store(res.content, "Product").then(() => {
-                setProducts(products)
+                setProducts(res.content)
+                setSearchedProducts(res.content)
                 setProductSpinner(false)
             })
         }).catch(() => { })
     }
 
-    const searchProduct = () => {
+    const searchProduct = (text) => {
+        const oldSearchedProducts = [...searchedProducts]
+        const newSearchedProducts = oldSearchedProducts.filter(item => {
+            // return item.CustomerName.toLowerCase().match(text)
+            return contains(item, text)
+        });
+        setProducts(newSearchedProducts)
+        setSearchedProductText(text)
+    }
 
+    const contains = (item, query) => {
+        const { ProductName, ProductID } = item;
+        const formattedQuery = toEnglishDigits(query.toString())
+        if (
+            ProductName.includes(query) ||
+            ProductID.toString().includes(formattedQuery)
+        ) return true
+        return false
+    }
+
+    const showProducts = ({ item, index }) => {
+        return (
+            <ProductCard
+                product={item}
+            />
+        )
     }
 
     return (
@@ -51,7 +80,12 @@ const Product = ({ navigation }) => {
             {!productSpinner && (
                 <>
                     <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
-
+                    <FlatList
+                        style={{ paddingHorizontal: 10 }}
+                        data={products}
+                        renderItem={showProducts}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
                 </>
             )}
         </Layout>
