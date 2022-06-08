@@ -9,7 +9,7 @@ const HorizontalFilter = ({ data }) => {
     }
 
     return (
-        <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+        <View style={styles.container}>
             <FlatList
                 horizontal
                 inverted={true}
@@ -23,6 +23,10 @@ const HorizontalFilter = ({ data }) => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        marginHorizontal: 10,
+        marginVertical: 10
+    },
     filterCard: {
         padding: 10,
         marginLeft: 10,
