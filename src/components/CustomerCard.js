@@ -1,4 +1,4 @@
-const CustomerCard = ({ customer, onExpand }) => {
+const CustomerCard = ({ customer, onExpand, onOrder }) => {
 
     return (
         <View style={styles.container}>
@@ -28,10 +28,14 @@ const CustomerCard = ({ customer, onExpand }) => {
                         <Ionicons name="person" size={22} color="gray" />
                         <Text style={styles.textContent}>اطلاعات مشتری</Text>
                     </View>
-                    <View style={styles.item}>
+                    <TouchableOpacity
+                        style={styles.item}
+                        activeOpacity={.6}
+                        onPress={onOrder}
+                    >
                         <Ionicons name="ios-cart" size={22} color="gray" />
                         <Text style={styles.textContent}>ثبت سفارش</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

@@ -60,6 +60,7 @@ const Customer = ({ navigation }) => {
             <CustomerCard
                 customer={item}
                 onExpand={() => openLayoutCustomer(index)}
+                onOrder={() => onOrder(index)}
             />
         )
     }
@@ -84,6 +85,10 @@ const Customer = ({ navigation }) => {
             setCustomers(newCustomers)
             setPrevIndex([index])
         }
+    }
+
+    const onOrder = (index) => {
+        console.log(index)
     }
 
     const searchCustomer = (text) => {

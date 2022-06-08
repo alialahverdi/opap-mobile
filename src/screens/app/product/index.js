@@ -3,8 +3,11 @@ import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
 import { store } from '../../../model/query'
 import SearchbarHeader from '../../../components/general/SearchbarHeader'
+import HorizontalFilter from '../../../components/general/HorizontalFilter'
 import ProductCard from '../../../components/ProductCard'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
+
+const filterTypes = ['موجودی دار', 'سفارش دار', 'فرجه +۹۰', 'جایزه دار', 'موجودی دار', 'سفارش دار', 'فرجه +۹۰', 'جایزه دار']
 
 // create a component
 const Product = ({ navigation }) => {
@@ -70,6 +73,12 @@ const Product = ({ navigation }) => {
         )
     }
 
+    const showFilter = ({ item, index }) => {
+        return (
+            <HorizontalFilter />
+        )
+    }
+
     return (
         <Layout>
             {productSpinner && (
@@ -80,6 +89,7 @@ const Product = ({ navigation }) => {
             {!productSpinner && (
                 <>
                     <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
+                    <HorizontalFilter data={filterTypes} />
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={products}
