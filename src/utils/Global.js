@@ -19,6 +19,8 @@ global.ToastAndroid = ReactNative.ToastAndroid;
 global.ActivityIndicator = ReactNative.ActivityIndicator;
 global.FlatList = ReactNative.FlatList;
 global.ScrollView = ReactNative.ScrollView;
+global.Modal = ReactNative.Modal;
+global.VirtualizedList = ReactNative.VirtualizedList;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';

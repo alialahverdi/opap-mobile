@@ -14,5 +14,9 @@ export default {
     gray: {
         fontFamily: "IRANSansMobile(FaNum)",
         color: "#808080"
+    },
+    grayBold: {
+        fontFamily: "RANSansMobile(FaNum)_Bold",
+        color: "#808080"
     }
 }

@@ -1,7 +1,7 @@
 
 
 // create a component
-const Order = ({ navigation }) => {
+const OrderList = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
@@ -21,4 +21,4 @@ const styles = StyleSheet.create({
 })
 
 //make this component available to the app
-export default Order
+export default OrderList

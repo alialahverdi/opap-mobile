@@ -1,15 +1,25 @@
 import { formatNumber } from '../utils/numbersUtils'
 
-const ProductCard = ({ product, onExpand }) => {
+const ProductCard = ({ product, screenType, OnOrder }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.left}>
-                <View style={styles.orderButton}>
-                    <Ionicons name="ios-cart" size={20} color="#0351ff" />
-                </View>
-            </View>
-            <View style={styles.center}>
+            {screenType == "OrderedProducts" && (
+                <TouchableOpacity
+                    activeOpacity={.6}
+                    style={styles.left}
+                    onPress={() => OnOrder(product)}
+                >
+                    <View style={styles.orderButton}>
+                        <Ionicons name="ios-cart" size={20} color="#0351ff" />
+                    </View>
+                </TouchableOpacity>
+            )}
+            <View style={[
+                styles.center,
+                screenType == "OrderedProducts" ? { paddingLeft: 0 } : { paddingLeft: 15 },
+                screenType == "OrderedProducts" ? { flex: .6 } : { flex: .8 }
+            ]}>
                 <Text
                     numberOfLines={1}
                     style={styles.productNameText}
@@ -36,7 +46,8 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         // paddingLeft: 5,
         elevation: 1,
-        flexDirection: "row"
+        flexDirection: "row",
+        justifyContent: "flex-end"
     },
     left: {
         flex: .2,
@@ -53,8 +64,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     center: {
-        flex: .6,
-        alignItems: "flex-end"
+        alignItems: "flex-end",
     },
     productNameText: {
         ...font.black,

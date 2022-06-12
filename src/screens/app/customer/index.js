@@ -6,6 +6,7 @@ import { store } from '../../../model/query'
 import CustomerCard from '../../../components/CustomerCard'
 import SearchbarHeader from '../../../components/general/SearchbarHeader'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
+import { CommonActions } from '@react-navigation/native';
 
 
 // create a component
@@ -88,7 +89,10 @@ const Customer = ({ navigation }) => {
     }
 
     const onOrder = (index) => {
-        console.log(index)
+        navigation.navigate('OrderStack', {
+            screen: 'OrderedProducts',
+            params: { index },
+        });
     }
 
     const searchCustomer = (text) => {

@@ -57,7 +57,7 @@ const Home = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text>Home Screen</Text>
+            <Text>Home screen</Text>
         </View>
     )
 }

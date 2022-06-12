@@ -9,7 +9,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/app/home';
 import CustomerScreen from '../screens/app/customer';
 import ProductScreen from '../screens/app/product';
-import OrderScreen from '../screens/app/order';
+import OrderListScreen from '../screens/app/orderList';
 import TestScreen from '../screens/app/Test';
 
 
@@ -26,8 +26,8 @@ function AppStack() {
             }}
         >
             <Tab.Screen
-                name="Order"
-                component={OrderScreen}
+                name="OrderListScreen"
+                component={OrderListScreen}
                 options={{
                     tabBarLabel: "Order",
                     tabBarIcon: props => <Icon name="reader" size={props.size} color={props.color} />
