@@ -1,7 +1,7 @@
 import Layout from './layout'
 import api from '../services/axiosInstance'
 import realm from '../model/v1/realmInstance'
-import { store } from '../model/query'
+import { storeArray } from '../model/query'
 import SearchbarHeader from '../components/general/SearchbarHeader'
 import HorizontalFilter from '../components/general/HorizontalFilter'
 import ProductCard from '../components/ProductCard'
@@ -36,7 +36,7 @@ const Products = ({ screenType, OnOrder }) => {
 
     const getApiProducts = () => {
         api.get('/product/get').then(res => {
-            store(res.content, "Product").then(() => {
+            storeArray(res.content, "Product").then(() => {
                 setProducts(res.content)
                 setSearchedProducts(res.content)
                 setProductSpinner(false)

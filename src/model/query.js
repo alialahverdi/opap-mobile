@@ -1,15 +1,28 @@
 import realm from './v1/realmInstance';
 
-const store = async (arr, schema) => {
+const storeArray = async (arr, schema) => {
     try {
-        arr.map(item => {
+        const result = arr.map(item => {
             realm.write(() => {
                 realm.create(schema, item);
             });
-        });
+        })
+        return result
     } catch (error) {
         console.log(error)
     }
 };
 
-export { store };
+const storeObj = async (obj, schema) => {
+    try {
+        let result;
+        realm.write(() => {
+            result = realm.create(schema, obj);
+        });
+        return result
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+export { storeArray, storeObj };

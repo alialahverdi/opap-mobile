@@ -5,6 +5,7 @@ import OrderModal from '../../components/Modal/OrderModal'
 // create a component
 const OrderedProducts = ({ route, navigation }) => {
 
+    // console.log('route =======>', route.params)
     // ------- States ------- //
     const [orderModal, setOrderModal] = useState(false)
     const [productObj, setProductObj] = useState({})

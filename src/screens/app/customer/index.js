@@ -2,11 +2,13 @@ import Layout from '../../../components/layout'
 import { UIManager, LayoutAnimation } from 'react-native'
 import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
-import { store } from '../../../model/query'
+import { storeArray, storeObj } from '../../../model/query'
 import CustomerCard from '../../../components/CustomerCard'
 import SearchbarHeader from '../../../components/general/SearchbarHeader'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
-import { CommonActions } from '@react-navigation/native';
+import { generatorID } from '../../../utils/IDUtils'
+
+
 
 
 // create a component
@@ -38,7 +40,7 @@ const Customer = ({ navigation }) => {
 
     const getApiCustomers = () => {
         api.get('/customer/get').then(res => {
-            store(res.content, "Customer").then(() => {
+            storeArray(res.content, "Customer").then(() => {
                 addExpandable(res.content)
             })
         }).catch(() => { })
@@ -61,7 +63,7 @@ const Customer = ({ navigation }) => {
             <CustomerCard
                 customer={item}
                 onExpand={() => openLayoutCustomer(index)}
-                onOrder={() => onOrder(index)}
+                onOrder={() => onOrder(item)}
             />
         )
     }
@@ -88,10 +90,37 @@ const Customer = ({ navigation }) => {
         }
     }
 
-    const onOrder = (index) => {
+    const getPreviousOrders = (customer) => {
+        const realmOrders = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`);
+        const ordersEncoded = realmOrders.toJSON()
+        return ordersEncoded
+    }
+
+    const onOrder = (customer) => {
+        const previousOrders = getPreviousOrders(customer)
+        if (previousOrders.length > 0) {
+            navigateToOrderScreen(previousOrders[0])
+        } else {
+            storeOrder(customer)
+        }
+    }
+
+    const storeOrder = (customer) => {
+        const orderObj = {
+            OrderID: generatorID(),
+            CustomerID: customer.CustomerID,
+            CustomerName: customer.CustomerName,
+            Created_at: new Date().toString()
+        }
+        storeObj(orderObj, "Order").then(res => {
+            navigateToOrderScreen(res.toJSON())
+        })
+    }
+
+    const navigateToOrderScreen = (customer) => {
         navigation.navigate('OrderStack', {
             screen: 'OrderedProducts',
-            params: { index },
+            params: { customer }
         });
     }
 

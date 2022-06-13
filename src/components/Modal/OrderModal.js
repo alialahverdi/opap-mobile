@@ -70,6 +70,9 @@ const OrderModal = ({ visible, product, onRequestClose, onclose }) => {
                         <Text style={styles.stairText}>{product.PromotionDesc}</Text>
                     </View>
                 </View>
+                <View style={styles.footer}>
+
+                </View>
             </SafeAreaView>
         </Modal>
     )
@@ -80,15 +83,20 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
+        flex: .7,
         flexDirection: "row",
         justifyContent: "flex-end",
         alignItems: "center",
         backgroundColor: '#fff',
-        elevation: 2
+        elevation: 2,
     },
     content: {
+        flex: 8.3,
         paddingHorizontal: 15,
         paddingVertical: 10
+    },
+    footer: {
+        flex: 1,
     },
     arrowForwardeIconContainer: {
         padding: 10
