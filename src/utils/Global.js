@@ -3,6 +3,7 @@ global.React = require("react");
 global.Component = React.Component;
 global.useState = React.useState;
 global.useEffect = React.useEffect;
+global.useRef = React.useRef;
 
 // ----------------* React Native Components *----------------
 global.ReactNative = require("react-native");
@@ -20,7 +21,7 @@ global.ActivityIndicator = ReactNative.ActivityIndicator;
 global.FlatList = ReactNative.FlatList;
 global.ScrollView = ReactNative.ScrollView;
 global.Modal = ReactNative.Modal;
-global.VirtualizedList = ReactNative.VirtualizedList;
+global.Pressable = ReactNative.Pressable;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';

@@ -4,8 +4,7 @@ const OrderDetailSchema = {
     name: "OrderDetail",
     properties: {
         OrderID: "string",
-        ...ProductSchema.properties,
-        Created_at: "string"
+        ...ProductSchema.properties
     },
     primaryKey: "OrderID"
 }

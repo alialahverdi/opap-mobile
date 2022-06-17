@@ -18,5 +18,10 @@ export default {
     grayBold: {
         fontFamily: "RANSansMobile(FaNum)_Bold",
         color: "#808080"
+    },
+    disableBold: {
+        fontFamily: "IRANSansMobile(FaNum)",
+        color: "#a8a8a8",
+        fontWeight: "bold"
     }
 }

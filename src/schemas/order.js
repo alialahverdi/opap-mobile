@@ -7,7 +7,7 @@ const OrderSchema = {
         OrderDetail: "OrderDetail[]",
         Created_at: "string"
     },
-    primaryKey: "CustomerID"
+    primaryKey: "OrderID"
 }
 
 export default OrderSchema

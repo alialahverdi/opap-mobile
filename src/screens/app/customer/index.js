@@ -91,7 +91,7 @@ const Customer = ({ navigation }) => {
     }
 
     const getPreviousOrders = (customer) => {
-        const realmOrders = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`);
+        const realmOrders = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)
         const ordersEncoded = realmOrders.toJSON()
         return ordersEncoded
     }
@@ -99,7 +99,7 @@ const Customer = ({ navigation }) => {
     const onOrder = (customer) => {
         const previousOrders = getPreviousOrders(customer)
         if (previousOrders.length > 0) {
-            navigateToOrderScreen(previousOrders[0])
+            return navigateToOrderScreen(previousOrders[0])
         } else {
             storeOrder(customer)
         }
@@ -112,6 +112,7 @@ const Customer = ({ navigation }) => {
             CustomerName: customer.CustomerName,
             Created_at: new Date().toString()
         }
+        console.log('new Date().toString()', new Date().toString())
         storeObj(orderObj, "Order").then(res => {
             navigateToOrderScreen(res.toJSON())
         })
