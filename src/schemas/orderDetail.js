@@ -3,10 +3,9 @@ import ProductSchema from './product'
 const OrderDetailSchema = {
     name: "OrderDetail",
     properties: {
-        OrderID: "string",
+        count: "int",
         ...ProductSchema.properties
-    },
-    primaryKey: "OrderID"
+    }
 }
 
 export default OrderDetailSchema

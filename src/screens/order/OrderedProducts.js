@@ -5,7 +5,9 @@ import OrderModal from '../../components/Modal/OrderModal'
 // create a component
 const OrderedProducts = ({ route, navigation }) => {
 
-    // console.log('route =======>', route.params)
+    // ------- Constants ------- //
+    const customerObj = route.params.customer
+
     // ------- States ------- //
     const [orderModal, setOrderModal] = useState(false)
     const [productObj, setProductObj] = useState({})
@@ -15,6 +17,8 @@ const OrderedProducts = ({ route, navigation }) => {
         setOrderModal(true)
     }
 
+    // useEffect(() => { }, [orderModal])
+
     return (
         <Layout>
             <Products screenType="OrderedProducts" OnOrder={OnOrder} />
@@ -23,6 +27,7 @@ const OrderedProducts = ({ route, navigation }) => {
                 onclose={() => setOrderModal(false)}
                 onRequestClose={() => setOrderModal(false)}
                 product={productObj}
+                customer={customerObj}
             />
         </Layout>
     )

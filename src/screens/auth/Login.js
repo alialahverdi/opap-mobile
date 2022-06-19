@@ -48,11 +48,11 @@ const Login = ({ navigation }) => {
         }
         api.post('/check', params)
             .then(res => {
-                storeInStorage(res);
+                storeInStorage(res)
             })
             .catch(() => { })
             .finally(() => {
-                setLoginSpinner(false);
+                setLoginSpinner(false)
             })
     }
 

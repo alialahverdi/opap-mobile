@@ -2,10 +2,10 @@ import realm from './v1/realmInstance';
 
 const storeArray = async (arr, schema) => {
     try {
-        const result = arr.map(item => {
+        const result = arr.map(data => {
             realm.write(() => {
-                realm.create(schema, item);
-            });
+                realm.create(schema, data);
+            })
         })
         return result
     } catch (error) {
@@ -13,11 +13,11 @@ const storeArray = async (arr, schema) => {
     }
 };
 
-const storeObj = async (obj, schema) => {
+const storeObj = async (data, schema) => {
     try {
-        let result;
+        let result
         realm.write(() => {
-            result = realm.create(schema, obj);
+            result = realm.create(schema, data);
         });
         return result
     } catch (error) {
@@ -25,4 +25,24 @@ const storeObj = async (obj, schema) => {
     }
 };
 
-export { storeArray, storeObj };
+const updateArray = async (arr, data) => {
+    try {
+        realm.write(() => {
+            arr.push(data)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+const updateObj = async (data) => {
+    try {
+        realm.write(() => {
+            arr.push(data)
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { storeArray, storeObj, updateArray, updateObj };

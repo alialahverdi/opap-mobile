@@ -112,7 +112,6 @@ const Customer = ({ navigation }) => {
             CustomerName: customer.CustomerName,
             Created_at: new Date().toString()
         }
-        console.log('new Date().toString()', new Date().toString())
         storeObj(orderObj, "Order").then(res => {
             navigateToOrderScreen(res.toJSON())
         })

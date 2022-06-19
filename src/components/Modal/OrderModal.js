@@ -3,8 +3,11 @@ import IconButton from '../general/Button/IconButton'
 import Input from '../general/Input'
 import FullButton from '../general/Button/FullButton'
 import Ripple from 'react-native-material-ripple'
+import realm from '../../model/v1/realmInstance'
+import { updateArray, updateObj } from '../../model/query'
+import { toEnglishDigits } from '../../utils/numbersUtils'
 
-const OrderModal = ({ visible, product, onRequestClose, onclose }) => {
+const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => {
 
     // ------- States ------- //
     const [count, setCount] = useState("")
@@ -22,8 +25,32 @@ const OrderModal = ({ visible, product, onRequestClose, onclose }) => {
     const decrease = () => {
         setCount(prev => {
             const numCount = Number(prev) - 1
+            if (numCount <= 0) return ""
             return numCount.toString()
         })
+    }
+
+    const completeOrder = () => {
+        const newCount = Number(toEnglishDigits(count))
+        if (newCount > product.StockQty) return
+        const data = {
+            ...product,
+            StockQty: product.StockQty - newCount,
+            count: newCount
+        }
+        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
+        updateArray(currentOrder.OrderDetail, data).then(() => {
+            updateProductsRealm(data.StockQty)
+        })
+    }
+
+    const updateProductsRealm = (StockQty) => {
+        const currentProduct = realm.objects("Product").filtered(`ProductID == ${product.ProductID}`)[0]
+        realm.write(() => {
+            currentProduct.StockQty = StockQty
+        })
+        setCount("")
+        onclose()
     }
 
     return (
@@ -38,7 +65,10 @@ const OrderModal = ({ visible, product, onRequestClose, onclose }) => {
                         <Text style={styles.title}>جزییات کالا</Text>
                         <Ripple
                             style={styles.arrowForwardeIconContainer}
-                            onPress={onclose}
+                            onPress={() => {
+                                onclose()
+                                setCount("")
+                            }}
                         >
                             <Ionicons name="ios-arrow-forward" size={25} color="gray" style={{ marginTop: 2 }} />
                         </Ripple>
@@ -50,10 +80,10 @@ const OrderModal = ({ visible, product, onRequestClose, onclose }) => {
                             </View>
                             <View style={styles.inputContainer}>
                                 <Input
-                                    value={count}
-                                    onChangeText={setCount}
                                     placeholder="تعداد"
                                     keyboardType="numeric"
+                                    value={count}
+                                    onChangeText={setCount}
                                 />
                             </View>
                             <View style={styles.basicContainer}>
@@ -114,7 +144,11 @@ const OrderModal = ({ visible, product, onRequestClose, onclose }) => {
                 </View>
 
                 <View style={styles.footer}>
-                    <FullButton title="تکمیل سفارش" disabled={count != "" ? false : true} />
+                    <FullButton
+                        title="تکمیل سفارش"
+                        disabled={count != "" ? false : true}
+                        onPress={completeOrder}
+                    />
                 </View>
             </SafeAreaView>
         </Modal>
