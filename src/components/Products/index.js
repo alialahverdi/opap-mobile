@@ -1,15 +1,15 @@
-import Layout from './layout'
-import api from '../services/axiosInstance'
-import realm from '../model/v1/realmInstance'
-import { storeArray } from '../model/query'
-import SearchbarHeader from '../components/general/SearchbarHeader'
-import HorizontalFilter from '../components/general/HorizontalFilter'
-import ProductCard from '../components/ProductCard'
-import { toEnglishDigits } from '../utils/numbersUtils'
+import Layout from '../Layout'
+import api from '../../services/axiosInstance'
+import realm from '../../model/v1/realmInstance'
+import { storeArray } from '../../model/query'
+import SearchbarHeader from '../SearchbarHeader'
+import HorizontalFilter from '../HorizontalFilter'
+import ProductCard from '../ProductCard'
+import { toEnglishDigits } from '../../utils/numbersUtils'
 
 const filterTypes = ['موجودی دار', 'سفارش دار', 'فرجه +۹۰', 'جایزه دار', 'موجودی دار', 'سفارش دار', 'فرجه +۹۰', 'جایزه دار']
 
-const Products = ({ screenType, OnOrder }) => {
+const Products = ({ screenType, OnOrder, setIsShowList }) => {
 
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
@@ -23,11 +23,12 @@ const Products = ({ screenType, OnOrder }) => {
     }, [])
 
     const getRealmProducts = () => {
-        const realmProducts = realm.objects('Product')
+        const realmProducts = realm.objects("Product")
         const products = realmProducts.toJSON()
         if (realmProducts.length > 0) {
             setProducts(products)
             setSearchedProducts(products)
+            setIsShowList(true)
             setProductSpinner(false)
             return
         };
@@ -39,6 +40,7 @@ const Products = ({ screenType, OnOrder }) => {
             storeArray(res.content, "Product").then(() => {
                 setProducts(res.content)
                 setSearchedProducts(res.content)
+                setIsShowList(true)
                 setProductSpinner(false)
             })
         }).catch(() => { })

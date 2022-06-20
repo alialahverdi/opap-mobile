@@ -1,10 +1,10 @@
-import Layout from '../../../components/layout'
+import Layout from '../../../components/Layout'
 import { UIManager, LayoutAnimation } from 'react-native'
 import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
 import { storeArray, storeObj } from '../../../model/query'
 import CustomerCard from '../../../components/CustomerCard'
-import SearchbarHeader from '../../../components/general/SearchbarHeader'
+import SearchbarHeader from '../../../components/SearchbarHeader'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
 import { generatorID } from '../../../utils/IDUtils'
 
@@ -118,10 +118,11 @@ const Customer = ({ navigation }) => {
     }
 
     const navigateToOrderScreen = (customer) => {
-        navigation.navigate('OrderStack', {
-            screen: 'OrderedProducts',
-            params: { customer }
-        });
+        navigation.navigate("OrderScreen", { customer })
+        // navigation.navigate('OrderStack', {
+        //     screen: 'OrderedProducts',
+        //     params: { customer }
+        // });
     }
 
     const searchCustomer = (text) => {

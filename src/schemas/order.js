@@ -4,8 +4,9 @@ const OrderSchema = {
         OrderID: "string",
         CustomerID: "int",
         CustomerName: "string",
-        OrderDetail: "OrderDetail[]",
-        Created_at: "string"
+        isSent: { type: "bool", default: false },
+        Created_at: "string",
+        OrderDetail: "OrderDetail[]"
     },
     primaryKey: "OrderID"
 }

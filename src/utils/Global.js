@@ -26,6 +26,9 @@ global.Pressable = ReactNative.Pressable;
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';
 global.Ionicons = Ionicons;
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+global.MaterialCommunityIcons = MaterialCommunityIcons;
+
 
 
 import font from '../constants/fonts';

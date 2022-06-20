@@ -3,13 +3,19 @@ export default {
         fontFamily: "IRANSansMobile(FaNum)",
         color: "#000"
     },
-    boldBlack: {
-        fontFamily: "IRANSansMobile(FaNum)_Bold",
-        color: "#000"
+    blackBold: {
+        fontFamily: "IRANSansMobile(FaNum)",
+        color: "#000",
+        fontWeight: "bold"
     },
     white: {
         fontFamily: "IRANSansMobile(FaNum)",
         color: "#fff"
+    },
+    whiteBold: {
+        fontFamily: "IRANSansMobile(FaNum)",
+        color: "#fff",
+        fontWeight: "bold"
     },
     gray: {
         fontFamily: "IRANSansMobile(FaNum)",

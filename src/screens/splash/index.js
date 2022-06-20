@@ -14,7 +14,7 @@ const Splash = ({ navigation }) => {
     }, [])
 
     const getUserInfo = async () => {
-        const value = await AsyncStorage.getItem('userInfo');
+        const value = await AsyncStorage.getItem("userInfo");
         const userInfo = JSON.parse(value);
         checkLogin(userInfo);
     }
@@ -22,9 +22,9 @@ const Splash = ({ navigation }) => {
     const checkLogin = (userInfo) => {
         setTimeout(() => {
             if (userInfo != null) {
-                navigation.dispatch(StackActions.replace('AppStack'));
+                navigation.dispatch(StackActions.replace("AppStack"));
             } else {
-                navigation.dispatch(StackActions.replace('AuthStack'));
+                navigation.dispatch(StackActions.replace("AuthStack"));
             }
             setSpinner(false);
         }, 1000)

@@ -1,11 +1,12 @@
 import { formatNumber } from '../../utils/numbersUtils'
-import IconButton from '../general/Button/IconButton'
-import Input from '../general/Input'
-import FullButton from '../general/Button/FullButton'
+import IconButton from '../Button/IconButton'
+import Input from '../Input'
+import FullButton from '../Button/FullButton'
 import Ripple from 'react-native-material-ripple'
 import realm from '../../model/v1/realmInstance'
 import { updateArray, updateObj } from '../../model/query'
 import { toEnglishDigits } from '../../utils/numbersUtils'
+import Header from '../Header'
 
 const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => {
 
@@ -40,7 +41,8 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
         }
         const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
         updateArray(currentOrder.OrderDetail, data).then(() => {
-            updateProductsRealm(data.StockQty)
+            setCount("")
+            onclose()
         })
     }
 
@@ -61,18 +63,13 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
         >
             <SafeAreaView style={styles.container}>
                 <View>
-                    <View style={styles.header}>
-                        <Text style={styles.title}>جزییات کالا</Text>
-                        <Ripple
-                            style={styles.arrowForwardeIconContainer}
-                            onPress={() => {
-                                onclose()
-                                setCount("")
-                            }}
-                        >
-                            <Ionicons name="ios-arrow-forward" size={25} color="gray" style={{ marginTop: 2 }} />
-                        </Ripple>
-                    </View>
+                    <Header
+                        name="جزییات کالا"
+                        goBack={() => {
+                            onclose()
+                            setCount("")
+                        }}
+                    />
                     <View style={styles.content}>
                         <View style={styles.addToBasketContainer}>
                             <View style={styles.outlineContainer}>
@@ -160,13 +157,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between"
     },
-    header: {
-        // flex: .7,
-        flexDirection: "row",
-        justifyContent: "flex-end",
-        alignItems: "center",
-        elevation: 1,
-    },
     content: {
         // flex: 8.5,
         paddingHorizontal: 15,
@@ -176,12 +166,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginHorizontal: 15,
         marginBottom: 10
-    },
-    arrowForwardeIconContainer: {
-        padding: 10
-    },
-    title: {
-        ...font.black,
     },
     productName: {
         ...font.black,

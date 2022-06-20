@@ -12,7 +12,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from './src/screens/splash';
 import AuthStack from './src/navigation/AuthStack';
 import AppStack from './src/navigation/AppStack';
-import OrderStack from './src/navigation/OrderStack';
 
 
 // Create stack fro all screens
@@ -21,11 +20,10 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode='none'>
-        <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="AuthStack" component={AuthStack} />
         <Stack.Screen name="AppStack" component={AppStack} />
-        <Stack.Screen name="OrderStack" component={OrderStack} />
       </Stack.Navigator>
     </NavigationContainer>
   )

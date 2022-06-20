@@ -14,14 +14,13 @@ const TransitionScreenOptions = {
 // Create stack fro screens
 const Stack = createStackNavigator();
 
-function AuthStack() {
+const AuthStack = () => {
     return (
         <Stack.Navigator
-            headerMode='none'
+            headerMode="none"
             screenOptions={TransitionScreenOptions}
         >
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
         </Stack.Navigator>
     )
 }

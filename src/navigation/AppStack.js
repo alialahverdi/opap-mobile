@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 // Screens
 import HomeScreen from '../screens/app/home';
-import CustomerScreen from '../screens/app/customer';
+import CustomerStack from '../navigation/CustomerStack';
 import ProductScreen from '../screens/app/product';
 import OrderListScreen from '../screens/app/orderList';
 import TestScreen from '../screens/app/Test';
@@ -17,10 +17,10 @@ import TestScreen from '../screens/app/Test';
 const Tab = createBottomTabNavigator();
 
 
-function AppStack() {
+const AppStack = () => {
     return (
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="HomeScreen"
             tabBarOptions={{
                 // activeTintColor: "red"
             }}
@@ -34,7 +34,7 @@ function AppStack() {
                 }}
             />
             <Tab.Screen
-                name="Product"
+                name="ProductScreen"
                 component={ProductScreen}
                 options={{
                     tabBarLabel: "Product",
@@ -42,15 +42,15 @@ function AppStack() {
                 }}
             />
             <Tab.Screen
-                name="Customer"
-                component={CustomerScreen}
+                name="CustomerStack"
+                component={CustomerStack}
                 options={{
                     tabBarLabel: "Customer",
                     tabBarIcon: props => <Icon name="people" size={props.size} color={props.color} />
                 }}
             />
             <Tab.Screen
-                name="Home"
+                name="HomeScreen"
                 component={HomeScreen}
                 options={{
                     tabBarLabel: "Home",
