@@ -60,6 +60,7 @@ const Order = ({ route, navigation }) => {
                 visible={isShowOrderListModal}
                 onclose={() => setIsShowOrderListModal(false)}
                 onRequestClose={() => setIsShowOrderListModal(false)}
+                customer={customerObj}
                 unSentOrders={unSentOrders}
             />
         </Layout>

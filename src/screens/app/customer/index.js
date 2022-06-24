@@ -14,28 +14,33 @@ import { generatorID } from '../../../utils/IDUtils'
 // create a component
 const Customer = ({ navigation }) => {
 
+    if (Platform.OS === 'android') {
+        UIManager.setLayoutAnimationEnabledExperimental(true)
+    }
+
     // ------- States ------- //
     const [customerSpinner, setCustomerSpinner] = useState(true)
     const [customers, setCustomers] = useState([])
     const [searchedCustomers, setSearchedCustomers] = useState([])
+    const [page, setPage] = useState(0)
     const [searchedCustomerText, setSearchedCustomerText] = useState("")
     const [prevIndex, setPrevIndex] = useState([])
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        if (Platform.OS === 'android') {
-            UIManager.setLayoutAnimationEnabledExperimental(true)
-        }
         getRealmCustomers()
-    }, [])
+    }, [page])
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer')
         const customers = realmCustomers.toJSON()
-        if (realmCustomers.length > 0) {
-            return addExpandable(customers)
-        };
-        getApiCustomers()
+        const slicedCustomers = customers.slice(page, page + 15)
+        if (slicedCustomers.length > 0) {
+            return addExpandable(slicedCustomers)
+        }
+        if (customers.length == 0) {
+            return getApiCustomers()
+        }
     }
 
     const getApiCustomers = () => {
@@ -46,14 +51,17 @@ const Customer = ({ navigation }) => {
         }).catch(() => { })
     }
 
-    const addExpandable = (customers) => {
-        const newCustomers = customers.map(item => {
+    const addExpandable = (sentCustomers) => {
+        const newCustomers = sentCustomers.map(item => {
             return {
                 ...item,
                 layoutHeight: 0
             }
         })
-        setCustomers(newCustomers)
+        setCustomers(prev => [
+            ...prev,
+            ...newCustomers
+        ])
         setSearchedCustomers(newCustomers)
         setCustomerSpinner(false)
     }
@@ -145,6 +153,9 @@ const Customer = ({ navigation }) => {
         return false
     }
 
+    const handleLoadMore = () => {
+        setPage(prev => prev + 15)
+    }
 
     return (
         <Layout>
@@ -161,6 +172,7 @@ const Customer = ({ navigation }) => {
                         data={customers}
                         renderItem={showCustomers}
                         keyExtractor={(item, index) => index.toString()}
+                        onEndReached={handleLoadMore}
                     />
                 </>
             )}

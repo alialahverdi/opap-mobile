@@ -14,36 +14,44 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
     const [products, setProducts] = useState([])
+    const [page, setPage] = useState(0)
     const [searchedProducts, setSearchedProducts] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
         getRealmProducts()
-    }, [])
+    }, [page])
 
     const getRealmProducts = () => {
         const realmProducts = realm.objects("Product")
         const products = realmProducts.toJSON()
-        if (realmProducts.length > 0) {
-            setProducts(products)
-            setSearchedProducts(products)
-            setIsShowList(true)
-            setProductSpinner(false)
-            return
-        };
-        getApiProducts()
+        const slicedProducts = products.slice(page, page + 15)
+        if (slicedProducts.length > 0) {
+            return setStateProducts(slicedProducts)
+        }
+        if (products.length == 0) {
+            return getApiProducts()
+        }
     }
 
     const getApiProducts = () => {
         api.get('/product/get').then(res => {
             storeArray(res.content, "Product").then(() => {
-                setProducts(res.content)
-                setSearchedProducts(res.content)
-                setIsShowList(true)
-                setProductSpinner(false)
+                const slicedProducts = res.content.slice(page, page + 15)
+                setStateProducts(slicedProducts)
             })
         }).catch(() => { })
+    }
+
+    const setStateProducts = (sentProducts) => {
+        setProducts(prev => [
+            ...prev,
+            ...sentProducts
+        ])
+        setSearchedProducts(sentProducts)
+        setIsShowList(true)
+        setProductSpinner(false)
     }
 
     const searchProduct = (text) => {
@@ -76,6 +84,10 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
         )
     }
 
+    const handleLoadMore = () => {
+        setPage(prev => prev + 15)
+    }
+
 
     return (
         <Layout>
@@ -93,6 +105,7 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
                         data={products}
                         renderItem={showProducts}
                         keyExtractor={(item, index) => index.toString()}
+                        onEndReached={handleLoadMore}
                     />
                 </>
             )}

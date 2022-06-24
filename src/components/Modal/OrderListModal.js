@@ -4,7 +4,7 @@ import FullButton from '../Button/FullButton'
 import api from '../../services/axiosInstance'
 import Snackbar from "../../components/Snakbar"
 
-const OrderListModal = ({ visible, onRequestClose, onclose, unSentOrders }) => {
+const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrders }) => {
 
     // ------- States ------- //
     const [error, setError] = useState(null)
@@ -19,21 +19,25 @@ const OrderListModal = ({ visible, onRequestClose, onclose, unSentOrders }) => {
         )
     }
 
+    const createOrderItems = () => {
+        return unSentOrders.map(item => {
+            return {
+                p: item.ProductID,
+                q: item.count
+            }
+        })
+    }
+
     const completeOrder = () => {
         setCompleteOrderSpinner(true)
         const data = {
-            custID: 220423,
+            custID: customer.CustomerID,
             seq: 1,
-            orderItem: [
-                {
-                    p: 3001017,
-                    q: 1
-                }
-            ]
+            orderItem: createOrderItems()
         }
 
         api.post('/order/add', data).then(res => {
-
+            console.log('res', res)
         }).catch(error => {
             setError({ variant: "error", message: error.message })
             setTimeout(() => {
