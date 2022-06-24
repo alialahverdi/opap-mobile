@@ -1,6 +1,6 @@
 import Ripple from 'react-native-material-ripple'
 
-const FullButton = ({ title, disabled, onPress, ...rest }) => {
+const FullButton = ({ isLoading, title, onPress, disabled = false, ...rest }) => {
     return (
         <Ripple
             {...rest}
@@ -11,12 +11,15 @@ const FullButton = ({ title, disabled, onPress, ...rest }) => {
                 disabled ? styles.deActiveBackground : styles.activeBackground
             ]}
         >
-            <Text
-                style={[
-                    disabled ? styles.deactiveTitle : styles.activeTitle
-                ]}>
-                {title}
-            </Text>
+            {
+                isLoading
+                    ? <ActivityIndicator size="small" color="#fff" />
+                    : (
+                        <Text style={[disabled ? styles.deactiveTitle : styles.activeTitle]}>
+                            {title}
+                        </Text>
+                    )
+            }
         </Ripple>
     )
 }

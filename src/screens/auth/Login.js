@@ -3,12 +3,13 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackActions } from '@react-navigation/native'
 import { toEnglishDigits } from '../../utils/numbersUtils'
-
-
+import useSnackbar from "../../hooks/useSnackbar"
 import api from '../../services/axiosInstance';
 
 // Create a component
 const Login = ({ navigation }) => {
+
+    const { showSnakbar } = useSnackbar()
 
     // ------- States ------- //
     const [username, setUsername] = useState("");
@@ -50,7 +51,9 @@ const Login = ({ navigation }) => {
             .then(res => {
                 storeInStorage(res)
             })
-            .catch(() => { })
+            .catch(error => {
+                showSnakbar({ variant: "error", message: error.message })
+            })
             .finally(() => {
                 setLoginSpinner(false)
             })

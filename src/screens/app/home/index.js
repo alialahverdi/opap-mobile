@@ -1,10 +1,16 @@
-import realm from '../../../model/v1/realmInstance';
-import { store } from '../../../model/query';
+import { useContext } from 'react'
+import realm from '../../../model/v1/realmInstance'
+import { store } from '../../../model/query'
+import snackbarContext from '../../../contexts/snackbarContext'
+
 
 
 
 // create a component
 const Home = ({ navigation }) => {
+
+    // const [simsContent, setSimsContent] = useContext(snackbarContext);
+
 
     // ------- Logic or Functions ------- //
     useEffect(() => {

@@ -66,9 +66,5 @@ const Order = ({ route, navigation }) => {
     )
 }
 
-// define your styles
-const styles = StyleSheet.create({
-})
-
 //make this component available to the app
 export default Order

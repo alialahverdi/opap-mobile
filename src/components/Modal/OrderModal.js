@@ -2,25 +2,33 @@ import { formatNumber } from '../../utils/numbersUtils'
 import IconButton from '../Button/IconButton'
 import Input from '../Input'
 import FullButton from '../Button/FullButton'
-import Ripple from 'react-native-material-ripple'
 import realm from '../../model/v1/realmInstance'
-import { updateArray, updateObj } from '../../model/query'
+import { storeArray, updateArray, updateObj } from '../../model/query'
 import { toEnglishDigits } from '../../utils/numbersUtils'
 import Header from '../Header'
+import Snackbar from "../../components/Snakbar"
+
 
 const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => {
 
     // ------- States ------- //
     const [count, setCount] = useState("")
+    const [error, setError] = useState(null)
 
 
     // ------- Logic or Functions ------- //
 
     const increase = () => {
-        setCount(prev => {
-            const numCount = Number(prev) + 1
-            return numCount.toString()
-        })
+        if (product.StockQty) {
+            return setCount(prev => {
+                const numCount = Number(prev) + 1
+                return numCount.toString()
+            })
+        }
+        setError({ variant: "error", message: "موجودی کافی نمی باشد." })
+        setTimeout(() => {
+            setError(null)
+        }, 3000)
     }
 
     const decrease = () => {
@@ -31,7 +39,7 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
         })
     }
 
-    const completeOrder = () => {
+    const storeOrderDetail = () => {
         const newCount = Number(toEnglishDigits(count))
         if (newCount > product.StockQty) return
         const data = {
@@ -142,11 +150,13 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
 
                 <View style={styles.footer}>
                     <FullButton
-                        title="تکمیل سفارش"
+                        title="ثبت سفارش"
                         disabled={count != "" ? false : true}
-                        onPress={completeOrder}
+                        onPress={storeOrderDetail}
                     />
                 </View>
+
+                {error && <Snackbar content={error} />}
             </SafeAreaView>
         </Modal>
     )
