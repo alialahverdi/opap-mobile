@@ -21,7 +21,14 @@ const Header = ({ name, goBack, onShowOrderListModal, countOrder }) => {
                     style={styles.basketContainer}
                     onPress={onShowOrderListModal}
                 >
-                    <View style={styles.counter}>
+                    <View
+                        style={[
+                            countOrder == 0
+                                ? styles.counterDisable
+                                : styles.counterActive,
+                            styles.counter
+                        ]}
+                    >
                         <Text style={styles.counterText}>{countOrder}</Text>
                     </View>
                     <Ionicons
@@ -76,12 +83,17 @@ const styles = StyleSheet.create({
         width: 22,
         height: 22,
         borderRadius: 10,
-        backgroundColor: "red",
         zIndex: 1,
         marginRight: -8
     },
     counterText: {
         ...font.whiteBold
+    },
+    counterActive: {
+        backgroundColor: "red",
+    },
+    counterDisable: {
+        backgroundColor: "transparent",
     }
 })
 

@@ -3,11 +3,16 @@ import OrderCard from '../OrderCard'
 import FullButton from '../Button/FullButton'
 import api from '../../services/axiosInstance'
 import Snackbar from "../../components/Snakbar"
+import realm from "../../model/v1/realmInstance"
+import useSnackbar from '../../hooks/useSnackbar'
 
-const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrders }) => {
+const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrders, setUnSentOrders }) => {
+
+    // ------- Constants ------- //
+    const { showSnakbar } = useSnackbar()
 
     // ------- States ------- //
-    const [error, setError] = useState(null)
+    const [snackbarMessage, setSnackbarMessage] = useState(null)
     const [completeOrderSpinner, setCompleteOrderSpinner] = useState(false)
 
     // ------- Logic or Functions ------- //
@@ -30,23 +35,51 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
 
     const completeOrder = () => {
         setCompleteOrderSpinner(true)
+
+        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
+        if (currentOrder.isSent) {
+            setSnackbarMessage({
+                variant: "error",
+                message: "این سفارش قبلا ثبت شده است."
+            })
+            return setCompleteOrderSpinner(false)
+        }
+
         const data = {
             custID: customer.CustomerID,
-            seq: 1,
+            seq: new Date().getTime(),
             orderItem: createOrderItems()
         }
 
         api.post('/order/add', data).then(res => {
-            console.log('res', res)
+            updateOrder(currentOrder).then(() => {
+                setUnSentOrders([])
+                onclose()
+                showSnakbar({
+                    variant: "success",
+                    message: "سفارش با موفقیت ثبت شد."
+                })
+            })
         }).catch(error => {
-            setError({ variant: "error", message: error.message })
-            setTimeout(() => {
-                setError(null)
-            }, 3000)
+            setSnackbarMessage({ variant: "error", message: error.message })
         }).finally(() => {
             setCompleteOrderSpinner(false)
         })
     }
+
+    const updateOrder = async (currentOrder) => {
+        realm.write(() => {
+            currentOrder.isSent = true
+        })
+    }
+
+    useEffect(() => {
+        if (snackbarMessage != null) {
+            setTimeout(() => {
+                setSnackbarMessage(null)
+            }, 3000)
+        }
+    }, [snackbarMessage])
 
 
     return (
@@ -79,7 +112,7 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
                     </View>
                 )}
 
-                {error && <Snackbar content={error} />}
+                {snackbarMessage && <Snackbar content={snackbarMessage} />}
             </SafeAreaView>
         </Modal>
     )

@@ -62,6 +62,7 @@ const Order = ({ route, navigation }) => {
                 onRequestClose={() => setIsShowOrderListModal(false)}
                 customer={customerObj}
                 unSentOrders={unSentOrders}
+                setUnSentOrders={setUnSentOrders}
             />
         </Layout>
     )

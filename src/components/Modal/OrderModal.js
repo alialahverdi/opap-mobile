@@ -13,22 +13,30 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
 
     // ------- States ------- //
     const [count, setCount] = useState("")
-    const [error, setError] = useState(null)
+    const [snackbarMessage, setSnackbarMessage] = useState(null)
 
 
     // ------- Logic or Functions ------- //
 
+    useEffect(() => {
+        if (snackbarMessage != null) {
+            setTimeout(() => {
+                setSnackbarMessage(null)
+            }, 3000)
+        }
+    }, [snackbarMessage])
+
     const increase = () => {
-        if (product.StockQty) {
-            return setCount(prev => {
-                const numCount = Number(prev) + 1
-                return numCount.toString()
+        if (!product.StockQty) {
+            return setSnackbarMessage({
+                variant: "error",
+                message: "موجودی کافی نمی باشد."
             })
         }
-        setError({ variant: "error", message: "موجودی کافی نمی باشد." })
-        setTimeout(() => {
-            setError(null)
-        }, 3000)
+        setCount(prev => {
+            const numCount = Number(prev) + 1
+            return numCount.toString()
+        })
     }
 
     const decrease = () => {
@@ -41,13 +49,18 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
 
     const storeOrderDetail = () => {
         const newCount = Number(toEnglishDigits(count))
-        if (newCount > product.StockQty) return
+        if (newCount > product.StockQty) {
+            return setSnackbarMessage({
+                variant: "error",
+                message: "موجودی کافی نمی باشد."
+            })
+        }
+        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
         const data = {
             ...product,
             StockQty: product.StockQty - newCount,
             count: newCount
         }
-        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
         updateArray(currentOrder.OrderDetail, data).then(() => {
             setCount("")
             onclose()
@@ -156,7 +169,7 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
                     />
                 </View>
 
-                {error && <Snackbar content={error} />}
+                {snackbarMessage && <Snackbar content={snackbarMessage} />}
             </SafeAreaView>
         </Modal>
     )
