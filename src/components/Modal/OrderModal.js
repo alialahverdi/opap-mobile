@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { formatNumber } from '../../utils/numbersUtils'
 import IconButton from '../Button/IconButton'
 import Input from '../Input'
@@ -25,6 +26,7 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
             }, 3000)
         }
     }, [snackbarMessage])
+
 
     const increase = () => {
         if (!product.StockQty) {

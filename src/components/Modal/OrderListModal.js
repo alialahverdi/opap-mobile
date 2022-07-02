@@ -5,6 +5,7 @@ import api from '../../services/axiosInstance'
 import Snackbar from "../../components/Snakbar"
 import realm from "../../model/v1/realmInstance"
 import useSnackbar from '../../hooks/useSnackbar'
+import { formatNumber } from '../../utils/numbersUtils'
 
 const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrders, setUnSentOrders }) => {
 
@@ -16,6 +17,14 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
     const [completeOrderSpinner, setCompleteOrderSpinner] = useState(false)
 
     // ------- Logic or Functions ------- //
+    useEffect(() => {
+        if (snackbarMessage != null) {
+            setTimeout(() => {
+                setSnackbarMessage(null)
+            }, 3000)
+        }
+    }, [snackbarMessage])
+
     const showProducts = ({ item, index }) => {
         return (
             <OrderCard
@@ -73,13 +82,12 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
         })
     }
 
-    useEffect(() => {
-        if (snackbarMessage != null) {
-            setTimeout(() => {
-                setSnackbarMessage(null)
-            }, 3000)
-        }
-    }, [snackbarMessage])
+    const factorSum = () => {
+        const prices = unSentOrders.map((i) => i.SalesPrice * i.count)
+        const reducer = (accumulator, curr) => accumulator + curr;
+        const total = prices.reduce(reducer)
+        return total
+    }
 
 
     return (
@@ -104,11 +112,20 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
                 </View>
                 {unSentOrders.length > 0 && (
                     <View style={styles.footer}>
-                        <FullButton
-                            isLoading={completeOrderSpinner}
-                            title="تکمیل سفارش"
-                            onPress={completeOrder}
-                        />
+                        <View>
+                            <FullButton
+                                isLoading={completeOrderSpinner}
+                                title="تکمیل سفارش"
+                                onPress={completeOrder}
+                            />
+                        </View>
+                        <View>
+                            <View style={styles.totalContainer}>
+                                <Text style={styles.toman}>تومان</Text>
+                                <Text style={styles.totalText}>{formatNumber(factorSum())}</Text>
+                            </View>
+                            {/* <Text>right</Text> */}
+                        </View>
                     </View>
                 )}
 
@@ -125,10 +142,29 @@ const styles = StyleSheet.create({
         backgroundColor: '#f0f1f3'
     },
     footer: {
-        justifyContent: "center",
-        marginHorizontal: 15,
-        marginBottom: 10
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: '#fff',
+        height: 60,
+        elevation: 5,
+        paddingHorizontal: 25
     },
+    totalText: {
+        ...font.black,
+        color: "#2367ff",
+        fontSize: Platform.OS == "android" ? 20 : 20
+    },
+    toman: {
+        ...font.black,
+        color: "#2367ff",
+        fontSize: 12,
+        marginRight: 5,
+        marginTop: 7
+    },
+    totalContainer: {
+        flexDirection: "row",
+    }
 })
 
 export default OrderListModal

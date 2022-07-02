@@ -5,6 +5,10 @@ export default {
     },
     blackBold: {
         fontFamily: "IRANSansMobile(FaNum)",
+        color: "#000"
+    },
+    iosBlackBold: {
+        fontFamily: "IRANSansMobile(FaNum)",
         color: "#000",
         fontWeight: "bold"
     },
@@ -22,7 +26,7 @@ export default {
         color: "#808080"
     },
     grayBold: {
-        fontFamily: "RANSansMobile(FaNum)_Bold",
+        fontFamily: "IRANSansMobile(FaNum)",
         color: "#808080"
     },
     disableBold: {

@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
         height: 40,
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 5,
-        // shadowColor: "gray",
-        // shadowOpacity: .5,
+        borderRadius: 8,
+        paddingHorizontal: 25,
+        shadowColor: "gray",
+        shadowOpacity: .5,
         elevation: 1
     },
     activeBackground: {
