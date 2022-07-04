@@ -1,5 +1,5 @@
 import realm from '../../../model/v1/realmInstance'
-import OrderCard from '../../../components/OrderCard'
+import OrderTabsCard from '../../../components/OrderCard/OrderTabsCard'
 
 // create a component
 const SentOrders = ({ navigation }) => {
@@ -19,21 +19,21 @@ const SentOrders = ({ navigation }) => {
 
     const showSentOrders = ({ item, index }) => {
         return (
-            <OrderCard
-                product={item}
+            <OrderTabsCard
+                sent
+                orderItem={item}
             />
         )
     }
 
     return (
         <SafeAreaView>
-            <Text>ارسال شده ها</Text>
-            {/* <FlatList
+            <FlatList
                 style={{ paddingHorizontal: 10 }}
                 data={sentOrders}
                 renderItem={showSentOrders}
                 keyExtractor={(item, index) => index.toString()}
-            /> */}
+            />
         </SafeAreaView>
     )
 }
