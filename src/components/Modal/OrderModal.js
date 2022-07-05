@@ -10,7 +10,7 @@ import Header from '../Header'
 import Snackbar from "../../components/Snakbar"
 
 
-const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => {
+const OrderModal = ({ type, title, visible, product, customer, onRequestClose, onclose }) => {
 
     // ------- States ------- //
     const [count, setCount] = useState("")
@@ -18,6 +18,12 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
 
 
     // ------- Logic or Functions ------- //
+
+    useEffect(() => {
+        if (product && type == "edit") {
+            setCount(product.count.toString())
+        }
+    }, [product])
 
     useEffect(() => {
         if (snackbarMessage != null) {
@@ -49,7 +55,7 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
         })
     }
 
-    const storeOrderDetail = () => {
+    const onOrder = () => {
         const newCount = Number(toEnglishDigits(count))
         if (newCount > product.StockQty) {
             return setSnackbarMessage({
@@ -63,10 +69,17 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
             StockQty: product.StockQty - newCount,
             count: newCount
         }
+        //TODO: update and create detail order 
+        return
+
         updateArray(currentOrder.OrderDetail, data).then(() => {
             setCount("")
             onclose()
         })
+    }
+
+    const updateOrderDetail = () => {
+        const newCount = Number(toEnglishDigits(count))
     }
 
     const updateProductsRealm = (StockQty) => {
@@ -87,7 +100,7 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
             <SafeAreaView style={styles.container}>
                 <View>
                     <Header
-                        name="جزییات کالا"
+                        name={title}
                         goBack={() => {
                             onclose()
                             setCount("")
@@ -165,9 +178,9 @@ const OrderModal = ({ visible, product, customer, onRequestClose, onclose }) => 
 
                 <View style={styles.footer}>
                     <FullButton
-                        title="ثبت سفارش"
+                        title={type == "create" ? "ثبت" : "ویرایش"}
                         disabled={count != "" ? false : true}
-                        onPress={storeOrderDetail}
+                        onPress={onOrder}
                     />
                 </View>
 

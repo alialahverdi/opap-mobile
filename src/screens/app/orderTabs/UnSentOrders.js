@@ -2,6 +2,8 @@ import realm from '../../../model/v1/realmInstance'
 import OrderCard from '../../../components/OrderCard'
 import OrderTabsCard from '../../../components/OrderCard/OrderTabsCard'
 import useSnackbar from '../../../hooks/useSnackbar'
+import OrderModal from '../../../components/Modal/OrderModal'
+import OrderListModal from '../../../components/Modal/OrderListModal'
 
 // create a component
 const UnSentOrders = () => {
@@ -10,6 +12,10 @@ const UnSentOrders = () => {
 
     // ------- States ------- //
     const [unSentOrders, setUnSentOrders] = useState([])
+    const [orderModal, setOrderModal] = useState(false)
+    const [isShowOrderListModal, setIsShowOrderListModal] = useState(false)
+    const [productObj, setProductObj] = useState({})
+    const [unSentOrdersDetail, setUnSentOrdersDetail] = useState([])
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -20,6 +26,12 @@ const UnSentOrders = () => {
         const orders = realm.objects("Order")
         const realmUnSentOrders = orders.filtered(`isSent == false`)
         setUnSentOrders(realmUnSentOrders)
+    }
+
+    const onUpdate = (orderItem) => {
+        // console.log('orderItem', orderItem.OrderDetail)
+        setUnSentOrdersDetail(orderItem.OrderDetail)
+        setIsShowOrderListModal(true)
     }
 
     const deleteOrder = (orderItem) => {
@@ -40,6 +52,7 @@ const UnSentOrders = () => {
                 unSent
                 orderItem={item}
                 onDelete={() => deleteOrder(item)}
+                onUpdate={() => onUpdate(item)}
             />
         )
     }
@@ -51,6 +64,24 @@ const UnSentOrders = () => {
                 data={unSentOrders}
                 renderItem={showUnSentOrders}
                 keyExtractor={(item, index) => index.toString()}
+            />
+
+            <OrderModal
+                visible={orderModal}
+                onclose={() => setOrderModal(false)}
+                onRequestClose={() => setOrderModal(false)}
+                product={productObj}
+            // customer={customerObj}
+            />
+
+            <OrderListModal
+                type="update"
+                title="ویرایش سفارش"
+                visible={isShowOrderListModal}
+                onclose={() => setIsShowOrderListModal(false)}
+                onRequestClose={() => setIsShowOrderListModal(false)}
+                product={productObj}
+                unSentOrders={unSentOrdersDetail}
             />
         </SafeAreaView>
     )

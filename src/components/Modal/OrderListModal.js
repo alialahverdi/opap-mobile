@@ -7,7 +7,17 @@ import realm from "../../model/v1/realmInstance"
 import useSnackbar from '../../hooks/useSnackbar'
 import { formatNumber } from '../../utils/numbersUtils'
 
-const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrders, setUnSentOrders }) => {
+const OrderListModal = ({
+    type,
+    title,
+    visible,
+    customer,
+    onRequestClose,
+    onclose,
+    unSentOrders,
+    setUnSentOrders,
+    onUpdate
+}) => {
 
     // ------- Constants ------- //
     const { showSnakbar } = useSnackbar()
@@ -25,10 +35,11 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
         }
     }, [snackbarMessage])
 
-    const showProducts = ({ item, index }) => {
+    const showOrderDetails = ({ item, index }) => {
         return (
             <OrderCard
                 product={item}
+                onUpdate={() => onUpdate(item)}
             />
         )
     }
@@ -100,17 +111,17 @@ const OrderListModal = ({ visible, customer, onRequestClose, onclose, unSentOrde
             <SafeAreaView style={styles.container}>
                 <View>
                     <Header
-                        name="سفارش ها"
+                        name={title}
                         goBack={onclose}
                     />
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={unSentOrders}
-                        renderItem={showProducts}
+                        renderItem={showOrderDetails}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 </View>
-                {unSentOrders.length > 0 && (
+                {unSentOrders.length > 0 && type === "create" && (
                     <View style={styles.footer}>
                         <View>
                             <FullButton

@@ -14,6 +14,7 @@ const Order = ({ route, navigation }) => {
     // ------- States ------- //
     const [orderModal, setOrderModal] = useState(false)
     const [isShowList, setIsShowList] = useState(false)
+    const [orderModalType, setOrderModalType] = useState("create")
     const [isShowOrderListModal, setIsShowOrderListModal] = useState(false)
     const [unSentOrders, setUnSentOrders] = useState([])
     const [productObj, setProductObj] = useState({})
@@ -50,19 +51,41 @@ const Order = ({ route, navigation }) => {
                 setIsShowList={setIsShowList}
             />
             <OrderModal
+                type={orderModalType}
+                title={orderModalType == "create" ? "ثبت کالا" : "ویرایش کالا"}
                 visible={orderModal}
-                onclose={() => setOrderModal(false)}
-                onRequestClose={() => setOrderModal(false)}
+                onclose={() => {
+                    setOrderModal(false)
+                    setOrderModalType("create")
+                }}
+                onRequestClose={() => {
+                    setOrderModalType("create")
+                    setOrderModal(false)
+                }}
                 product={productObj}
                 customer={customerObj}
             />
             <OrderListModal
+                type="create"
+                title="ثبت سفارش"
                 visible={isShowOrderListModal}
-                onclose={() => setIsShowOrderListModal(false)}
-                onRequestClose={() => setIsShowOrderListModal(false)}
+                onclose={() => {
+                    setIsShowOrderListModal(false)
+                    setOrderModalType("create")
+                }}
+                onRequestClose={() => {
+                    setIsShowOrderListModal(false)
+                    setOrderModalType("create")
+                }}
                 customer={customerObj}
                 unSentOrders={unSentOrders}
                 setUnSentOrders={setUnSentOrders}
+                onUpdate={value => {
+                    setOrderModalType("edit")
+                    setProductObj(value)
+                    setIsShowOrderListModal(false)
+                    setOrderModal(true)
+                }}
             />
         </Layout>
     )

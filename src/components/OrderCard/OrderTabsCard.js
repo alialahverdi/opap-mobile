@@ -2,7 +2,7 @@ import Ripple from 'react-native-material-ripple'
 import { formatNumber } from '../../utils/numbersUtils'
 
 // create a component
-const OrderTabsCard = ({ orderItem, sent, onDelete }) => {
+const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete }) => {
 
     const factorSum = () => {
         if (orderItem.OrderDetail.length > 0) {
@@ -31,7 +31,10 @@ const OrderTabsCard = ({ orderItem, sent, onDelete }) => {
                             color="#0351ff"
                         />
                     </Ripple>
-                    <Ripple style={styles.buttonContainer}>
+                    <Ripple
+                        style={styles.buttonContainer}
+                        onPress={onUpdate}
+                    >
                         <MaterialCommunityIcons
                             name="pencil"
                             size={20}
