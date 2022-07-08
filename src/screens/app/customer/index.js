@@ -21,6 +21,7 @@ const Customer = ({ navigation }) => {
     // ------- States ------- //
     const [customerSpinner, setCustomerSpinner] = useState(true)
     const [customers, setCustomers] = useState([])
+    const [realmCustomers, setRealmCustomers] = useState([])
     const [searchedCustomers, setSearchedCustomers] = useState([])
     const [page, setPage] = useState(0)
     const [searchedCustomerText, setSearchedCustomerText] = useState("")
@@ -29,14 +30,13 @@ const Customer = ({ navigation }) => {
     // ------- Logic or Functions ------- //
     useEffect(() => {
         getRealmCustomers()
-    }, [page])
+    }, [])
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer')
-        const customers = realmCustomers.toJSON()
-        const slicedCustomers = customers.slice(page, page + 15)
-        if (slicedCustomers.length > 0) {
-            return addExpandable(slicedCustomers)
+        const customers = JSON.parse(JSON.stringify(realmCustomers))
+        if (customers.length > 0) {
+            return addExpandable(customers)
         }
         if (customers.length == 0) {
             return getApiCustomers()
@@ -58,12 +58,17 @@ const Customer = ({ navigation }) => {
                 layoutHeight: 0
             }
         })
-        setCustomers(prev => [
-            ...prev,
-            ...newCustomers
-        ])
+        setCustomers(newCustomers)
         setSearchedCustomers(newCustomers)
         setCustomerSpinner(false)
+    }
+
+    const setLoadedCustomer = () => {
+        const slicedCustomers = realmCustomers.slice(page, page + 15)
+        setCustomers(prev => [
+            ...prev,
+            ...slicedCustomers
+        ])
     }
 
     const showCustomers = ({ item, index }) => {
@@ -144,7 +149,7 @@ const Customer = ({ navigation }) => {
     }
 
     const contains = (item, query) => {
-        const { CustomerName, CustomerID } = item;
+        const { CustomerName, CustomerID } = item
         const formattedQuery = toEnglishDigits(query.toString())
         if (
             CustomerName.includes(query) ||

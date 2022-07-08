@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo } from 'react'
 import { formatNumber } from '../../utils/numbersUtils'
 import IconButton from '../Button/IconButton'
 import Input from '../Input'
@@ -20,7 +20,7 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
     // ------- Logic or Functions ------- //
 
     useEffect(() => {
-        if (product && type == "edit") {
+        if (product && type === "update") {
             setCount(product.count.toString())
         }
     }, [product])
@@ -63,23 +63,31 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
                 message: "موجودی کافی نمی باشد."
             })
         }
-        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
         const data = {
             ...product,
-            StockQty: product.StockQty - newCount,
+            // StockQty: product.StockQty - newCount,
             count: newCount
         }
-        //TODO: update and create detail order 
-        return
 
+        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
+        const currentRowOrder = currentOrder.OrderDetail.find(item => item.ProductID === product.ProductID)
+
+        if (currentRowOrder !== undefined) {
+            return updateOrderDetail(currentRowOrder, newCount)
+        }
         updateArray(currentOrder.OrderDetail, data).then(() => {
             setCount("")
             onclose()
         })
+
     }
 
-    const updateOrderDetail = () => {
-        const newCount = Number(toEnglishDigits(count))
+    const updateOrderDetail = (currentRowOrder, newCount) => {
+        realm.write(() => {
+            currentRowOrder.count = newCount
+        })
+        setCount("")
+        onclose()
     }
 
     const updateProductsRealm = (StockQty) => {

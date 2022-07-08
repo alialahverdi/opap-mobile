@@ -4,9 +4,12 @@ import Products from '../../../components/Products'
 // create a component
 const Product = ({ navigation }) => {
 
+    // ------- States ------- //
+    const [isShowList, setIsShowList] = useState(false)
+
     return (
         <Layout>
-            <Products screenType="Product" />
+            <Products screenType="Product" setIsShowList={setIsShowList} />
         </Layout>
     )
 }

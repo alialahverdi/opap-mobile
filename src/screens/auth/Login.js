@@ -40,23 +40,43 @@ const Login = ({ navigation }) => {
     }
 
     const login = async () => {
-        setLoginSpinner(true);
+        setLoginSpinner(true)
         const params = {
             username: toEnglishDigits(username),
             password: toEnglishDigits(password),
             deviceid: uniqueId,
             version: "1.0.0"
         }
-        api.post('/check', params)
-            .then(res => {
-                storeInStorage(res)
-            })
-            .catch(error => {
-                showSnakbar({ variant: "error", message: error.message })
-            })
-            .finally(() => {
-                setLoginSpinner(false)
-            })
+
+        let response = await fetch(
+            `http://94.182.208.37:9922/check`,
+            {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(params)
+            },
+        );
+        let json = await response.json()
+        if (json.code == 0) {
+            storeInStorage(json)
+        } else {
+            showSnakbar({ variant: "error", message: json.message })
+        }
+        setLoginSpinner(false)
+
+        // api.post('/check', params)
+        //     .then(res => {
+        //         storeInStorage(res)
+        //     })
+        //     .catch(error => {
+        //         showSnakbar({ variant: "error", message: error.message })
+        //     })
+        //     .finally(() => {
+        //         setLoginSpinner(false)
+        //     })
     }
 
     const storeInStorage = async (userInfo) => {

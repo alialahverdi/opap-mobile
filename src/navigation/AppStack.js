@@ -20,9 +20,9 @@ const Tab = createBottomTabNavigator()
 const getTabBarVisibility = (route) => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? 'CustomerStack'
     if (routeName === "OrderScreen") {
-        return false;
+        return false
     }
-    return true;
+    return true
 }
 
 

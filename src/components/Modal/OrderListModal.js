@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import Header from '../Header'
 import OrderCard from '../OrderCard'
 import FullButton from '../Button/FullButton'
@@ -40,8 +41,19 @@ const OrderListModal = ({
             <OrderCard
                 product={item}
                 onUpdate={() => onUpdate(item)}
+                onDelete={() => onDelete(item)}
             />
         )
+    }
+
+    const onDelete = (currentOrderDetail) => {
+        realm.write(() => {
+            realm.delete(currentOrderDetail)
+        })
+        setSnackbarMessage({
+            variant: "success",
+            message: "سفارش با موفقیت حذف شد."
+        })
     }
 
     const createOrderItems = () => {
@@ -106,7 +118,6 @@ const OrderListModal = ({
             animationType="slide"
             visible={visible}
             onRequestClose={onRequestClose}
-            style={{ zIndex: 0 }}
         >
             <SafeAreaView style={styles.container}>
                 <View>

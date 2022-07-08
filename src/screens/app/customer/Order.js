@@ -56,7 +56,11 @@ const Order = ({ route, navigation }) => {
                 visible={orderModal}
                 onclose={() => {
                     setOrderModal(false)
-                    setOrderModalType("create")
+                    if (orderModalType === "update") {
+                        setIsShowOrderListModal(true)
+                    } else {
+                        setOrderModalType("create")
+                    }
                 }}
                 onRequestClose={() => {
                     setOrderModalType("create")
@@ -66,7 +70,7 @@ const Order = ({ route, navigation }) => {
                 customer={customerObj}
             />
             <OrderListModal
-                type="create"
+                type={orderModalType}
                 title="ثبت سفارش"
                 visible={isShowOrderListModal}
                 onclose={() => {
@@ -81,7 +85,7 @@ const Order = ({ route, navigation }) => {
                 unSentOrders={unSentOrders}
                 setUnSentOrders={setUnSentOrders}
                 onUpdate={value => {
-                    setOrderModalType("edit")
+                    setOrderModalType("update")
                     setProductObj(value)
                     setIsShowOrderListModal(false)
                     setOrderModal(true)

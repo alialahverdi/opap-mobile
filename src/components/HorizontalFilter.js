@@ -1,10 +1,63 @@
-const HorizontalFilter = ({ data }) => {
+import Ripple from 'react-native-material-ripple'
+
+const HorizontalFilter = ({ onPress }) => {
+
+    // ------- States ------- //
+    const [filterTypes, setFilterTypes] = useState([
+        {
+            name: "همه",
+            isActice: true
+        },
+        {
+            name: "موجودی دار",
+            isActice: false
+        },
+        {
+            name: "سفارش دار",
+            isActice: false
+        },
+        {
+            name: "فرجه +۹۰",
+            isActice: false
+        },
+        {
+            name: "جایزه دار",
+            isActice: false
+        }
+    ])
+
+    // ------- Logic or Functions ------- //
+    const onFilter = (filter, renderIndex) => {
+        onPress(filter).then(() => {
+            const cloneFilterTypes = [...filterTypes]
+            const changedFilterTypes = cloneFilterTypes.map((item, index) => {
+                if (item.isActice) {
+                    item.isActice = false
+                }
+                if (index == renderIndex) {
+                    item.isActice = true
+                }
+                return item
+            })
+            setFilterTypes(changedFilterTypes)
+        })
+    }
 
     const renderItem = ({ item, index }) => {
         return (
-            <TouchableOpacity activeOpacity={.6} style={styles.filterCard}>
-                <Text>{item}</Text>
-            </TouchableOpacity>
+            <Ripple
+                style={[
+                    styles.filterCard,
+                    item.isActice && styles.activeChip,
+                    index === 0 ? { marginRight: 0 } : { marginRight: 10 }
+                ]}
+                onPress={() => onFilter(item, index)}
+            >
+                <Text style={[
+                    styles.content,
+                    item.isActice && styles.activeText,
+                ]}>{item.name}</Text>
+            </Ripple>
         )
     }
 
@@ -14,7 +67,7 @@ const HorizontalFilter = ({ data }) => {
                 horizontal
                 inverted={true}
                 showsHorizontalScrollIndicator={false}
-                data={data}
+                data={filterTypes}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
             />
@@ -25,14 +78,28 @@ const HorizontalFilter = ({ data }) => {
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 10,
-        marginVertical: 10
+        marginVertical: 10,
+        paddingRight: 5,
+        // backgroundColor: 'red'
     },
     filterCard: {
-        padding: 10,
-        marginLeft: 10,
+        paddingVertical: Platform.OS == "android" ? 5 : 10,
+        paddingHorizontal: 12,
+        marginRight: 10,
         borderRadius: 5,
-        // borderWidth: .5,
         backgroundColor: '#fff'
+    },
+    content: {
+        ...font.gray,
+        fontSize: Platform.OS == "android" ? 12 : 14
+    },
+    activeChip: {
+        borderWidth: .5,
+        borderColor: "#0351ff",
+
+    },
+    activeText: {
+        color: "#0351ff",
     }
 })
 

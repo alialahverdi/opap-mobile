@@ -7,8 +7,6 @@ import HorizontalFilter from '../HorizontalFilter'
 import ProductCard from '../ProductCard'
 import { toEnglishDigits } from '../../utils/numbersUtils'
 
-const filterTypes = ['موجودی دار', 'سفارش دار', 'فرجه +۹۰', 'جایزه دار', 'موجودی دار', 'سفارش دار', 'فرجه +۹۰', 'جایزه دار']
-
 const Products = ({ screenType, OnOrder, setIsShowList }) => {
 
     // ------- States ------- //
@@ -21,14 +19,14 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
     // ------- Logic or Functions ------- //
     useEffect(() => {
         getRealmProducts()
-    }, [page])
+    }, [])
 
     const getRealmProducts = () => {
         const realmProducts = realm.objects("Product")
-        const products = realmProducts.toJSON()
-        const slicedProducts = products.slice(page, page + 15)
-        if (slicedProducts.length > 0) {
-            return setStateProducts(slicedProducts)
+        const products = JSON.parse(JSON.stringify(realmProducts))
+        // const slicedProducts = products.slice(page, page + 15)
+        if (products.length > 0) {
+            return setStateProducts(products)
         }
         if (products.length == 0) {
             return getApiProducts()
@@ -88,6 +86,23 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
         setPage(prev => prev + 15)
     }
 
+    const filterHorizontal = async (filter) => {
+        const newSearchedProducts = await filteredProducts(filter)
+        setProducts(newSearchedProducts)
+    }
+
+    const filteredProducts = async (filter) => {
+        const oldSearchedProducts = [...searchedProducts]
+
+        if (filter.name.includes("همه")) {
+            return oldSearchedProducts
+        }
+
+        if (filter.name.includes("موجودی دار")) {
+            return oldSearchedProducts.filter(item => item.StockQty > 0)
+        }
+    }
+
 
     return (
         <Layout>
@@ -99,7 +114,7 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
             {!productSpinner && (
                 <>
                     <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
-                    <HorizontalFilter data={filterTypes} />
+                    <HorizontalFilter onPress={filterHorizontal} />
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={products}

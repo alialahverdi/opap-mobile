@@ -1,12 +1,15 @@
 import Ripple from 'react-native-material-ripple'
 import { formatNumber } from '../../utils/numbersUtils'
 
-const OrderCard = ({ product, onUpdate }) => {
+const OrderCard = ({ product, onUpdate, onDelete }) => {
 
     return (
         <View style={styles.container}>
             <View style={styles.left}>
-                <Ripple style={[styles.buttonContainer, { marginRight: 10 }]}>
+                <Ripple
+                    style={[styles.buttonContainer, { marginRight: 10 }]}
+                    onPress={onDelete}
+                >
                     <MaterialCommunityIcons
                         name="delete"
                         size={20}

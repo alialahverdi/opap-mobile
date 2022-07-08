@@ -1,15 +1,22 @@
 import realm from '../../../model/v1/realmInstance'
 import OrderTabsCard from '../../../components/OrderCard/OrderTabsCard'
+import { useIsFocused } from '@react-navigation/native'
 
 // create a component
 const SentOrders = ({ navigation }) => {
+
+    // ------- Constants ------- //
+    const isFocused = useIsFocused()
+
     // ------- States ------- //
     const [sentOrders, setSentOrders] = useState([])
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        getRealmOrders()
-    }, [])
+        if (isFocused) {
+            getRealmOrders()
+        }
+    }, [isFocused])
 
     const getRealmOrders = () => {
         const orders = realm.objects("Order")
