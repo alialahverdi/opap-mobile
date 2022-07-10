@@ -33,3 +33,7 @@ global.MaterialCommunityIcons = MaterialCommunityIcons;
 
 import font from '../constants/fonts';
 global.font = font;
+
+// theme
+import theme from '../constants/theme';
+global.themeColor = theme;

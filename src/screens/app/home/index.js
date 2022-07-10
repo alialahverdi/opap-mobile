@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import realm from '../../../model/v1/realmInstance'
 import { store } from '../../../model/query'
 import snackbarContext from '../../../contexts/snackbarContext'
+import Layout from '../../../components/Layout'
 
 
 
@@ -17,20 +18,14 @@ const Home = ({ navigation }) => {
     }, [])
 
     return (
-        <View style={styles.container}>
-            <Text>Home screen</Text>
-        </View>
+        <Layout>
+            <Text>Home</Text>
+        </Layout>
     )
 }
 
 // define your styles
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f0f1f3',
-    },
 })
 
 //make this component available to the app
