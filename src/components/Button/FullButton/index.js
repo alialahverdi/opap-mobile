@@ -1,13 +1,13 @@
 import Ripple from 'react-native-material-ripple'
 
-const FullButton = ({ isLoading, title, onPress, disabled = false, ...rest }) => {
+const FullButton = ({ containerStyle, isLoading, title, onPress, disabled = false, ...rest }) => {
     return (
         <Ripple
             {...rest}
             disabled={disabled}
             onPress={onPress}
             style={[
-                styles.container,
+                styles.container, containerStyle,
                 disabled ? styles.deActiveBackground : styles.activeBackground
             ]}
         >
@@ -37,18 +37,16 @@ const styles = StyleSheet.create({
         elevation: 1
     },
     activeBackground: {
-        backgroundColor: "#2367ff"
+        backgroundColor: themeColor.secondary
     },
     deActiveBackground: {
         backgroundColor: "#e0e0e0"
     },
     activeTitle: {
-        ...font.white,
-        fontSize: 16
+        ...font.white
     },
     deactiveTitle: {
-        ...font.disableBold,
-        fontSize: 16
+        ...font.disableBold
     }
 })
 

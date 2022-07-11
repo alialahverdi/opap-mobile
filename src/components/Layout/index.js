@@ -1,6 +1,9 @@
-const Layout = ({ children }) => {
+import { StatusBar } from 'react-native'
+
+const Layout = ({ children, containerStyle }) => {
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, containerStyle]}>
+            <StatusBar backgroundColor={themeColor.primary} />
             {children}
         </SafeAreaView>
     )

@@ -1,5 +1,11 @@
+import { Dimensions } from 'react-native'
 import { StackActions } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Animatable from 'react-native-animatable'
+import Layout from '../../components/Layout'
+
+const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_HEIGHT = Dimensions.get('window').height;
 
 
 // Create a component
@@ -9,6 +15,7 @@ const Splash = ({ navigation }) => {
     const [spinner, setSpinner] = useState(true);
 
     // ------- Logic or Functions ------- //
+
     useEffect(() => {
         getUserInfo()
     }, [])
@@ -30,11 +37,33 @@ const Splash = ({ navigation }) => {
         }, 1000)
     }
 
+    const zoomOut = {
+        0: {
+            opacity: 0
+        },
+        0.5: {
+            opacity: .5,
+            scale: 1.2,
+        },
+        1: {
+            opacity: 1,
+            scale: 1,
+        },
+    };
+
+
     return (
-        <SafeAreaView style={styles.container}>
-            <Text style={{ marginBottom: 20 }}>Splash Screen</Text>
-            {spinner && <ActivityIndicator size="small" color="#6f74dd" />}
-        </SafeAreaView>
+        <Layout containerStyle={styles.container}>
+            <View />
+            <Animatable.View
+                animation={zoomOut}
+                duration={2000}
+                useNativeDriver={true}
+                style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={styles.appName}>Opap</Text>
+            </Animatable.View>
+            <Text style={styles.version}>Version : 0.1.0</Text>
+        </Layout>
     )
 }
 
@@ -42,10 +71,19 @@ const Splash = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // backgroundColor: '#2c3e50',
+        backgroundColor: themeColor.primary,
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
+    appName: {
+        ...font.whiteBold,
+        fontSize: 30
+    },
+    version: {
+        color: '#fff',
+        fontSize: 11,
+        marginBottom: "1%"
+    }
 })
 
 //Make this component available to the app

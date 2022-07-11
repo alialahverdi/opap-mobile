@@ -6,6 +6,8 @@ import SearchbarHeader from '../SearchbarHeader'
 import HorizontalFilter from '../HorizontalFilter'
 import ProductCard from '../ProductCard'
 import { toEnglishDigits } from '../../utils/numbersUtils'
+import Ripple from 'react-native-material-ripple'
+
 
 const Products = ({ screenType, OnOrder, setIsShowList }) => {
 
@@ -15,6 +17,28 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
     const [page, setPage] = useState(0)
     const [searchedProducts, setSearchedProducts] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
+    const [filterTypes, setFilterTypes] = useState([
+        {
+            name: "همه",
+            isActice: true
+        },
+        {
+            name: "موجودی دار",
+            isActice: false
+        },
+        {
+            name: "سفارش دار",
+            isActice: false
+        },
+        {
+            name: "فرجه +۹۰",
+            isActice: false
+        },
+        {
+            name: "جایزه دار",
+            isActice: false
+        }
+    ])
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -52,16 +76,6 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
         setProductSpinner(false)
     }
 
-    const searchProduct = (text) => {
-        const oldSearchedProducts = [...searchedProducts]
-        const newSearchedProducts = oldSearchedProducts.filter(item => {
-            // return item.CustomerName.toLowerCase().match(text)
-            return contains(item, text)
-        });
-        setProducts(newSearchedProducts)
-        setSearchedProductText(text)
-    }
-
     const contains = (item, query) => {
         const { ProductName, ProductID } = item;
         const formattedQuery = toEnglishDigits(query.toString())
@@ -86,8 +100,31 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
         setPage(prev => prev + 15)
     }
 
+    const searchProduct = (text, horizontal = false) => {
+        const oldSearchedProducts = [...searchedProducts]
+
+        const isNotHorizontal = filterTypes.some(item => item.name == "همه" && item.isActice)
+
+
+
+        let newSearchedProducts;
+
+        if (isNotHorizontal) {
+            newSearchedProducts = oldSearchedProducts.filter(item => contains(item, text))
+        } else {
+            newSearchedProducts = products.filter(item => contains(item, text))
+        }
+
+        if (horizontal) {
+            return newSearchedProducts
+        }
+        setProducts(newSearchedProducts)
+        setSearchedProductText(text)
+    }
+
     const filterHorizontal = async (filter) => {
         const newSearchedProducts = await filteredProducts(filter)
+        // console.log('newSearchedProducts', newSearchedProducts)
         setProducts(newSearchedProducts)
     }
 
@@ -95,12 +132,52 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
         const oldSearchedProducts = [...searchedProducts]
 
         if (filter.name.includes("همه")) {
+            if (searchedProductText !== "") {
+                return searchProduct(searchedProductText, true)
+            }
             return oldSearchedProducts
         }
 
         if (filter.name.includes("موجودی دار")) {
+            if (searchedProductText !== "") {
+                return products.filter(item => item.StockQty > 0)
+            }
             return oldSearchedProducts.filter(item => item.StockQty > 0)
         }
+    }
+
+    const onFilter = (filter, renderIndex) => {
+        filterHorizontal(filter).then(() => {
+            const cloneFilterTypes = [...filterTypes]
+            const changedFilterTypes = cloneFilterTypes.map((item, index) => {
+                if (item.isActice) {
+                    item.isActice = false
+                }
+                if (index == renderIndex) {
+                    item.isActice = true
+                }
+                return item
+            })
+            setFilterTypes(changedFilterTypes)
+        })
+    }
+
+    const horizontalRenderItem = ({ item, index }) => {
+        return (
+            <Ripple
+                style={[
+                    styles.filterCard,
+                    item.isActice && styles.activeChip,
+                    index === 0 ? { marginRight: 0 } : { marginRight: 10 }
+                ]}
+                onPress={() => onFilter(item, index)}
+            >
+                <Text style={[
+                    styles.content,
+                    item.isActice && styles.activeText,
+                ]}>{item.name}</Text>
+            </Ripple>
+        )
     }
 
 
@@ -114,7 +191,17 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
             {!productSpinner && (
                 <>
                     <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
-                    <HorizontalFilter onPress={filterHorizontal} />
+                    <View>
+                        <FlatList
+                            style={styles.horizontalContainer}
+                            horizontal
+                            inverted={true}
+                            showsHorizontalScrollIndicator={false}
+                            data={filterTypes}
+                            renderItem={horizontalRenderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={products}
@@ -134,6 +221,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    horizontalContainer: {
+        marginHorizontal: 10,
+        marginVertical: 10,
+        paddingRight: 5,
+    },
+    filterCard: {
+        paddingVertical: Platform.OS == "android" ? 5 : 10,
+        paddingHorizontal: 12,
+        marginRight: 10,
+        borderRadius: 5,
+        backgroundColor: '#fff'
+    },
+    content: {
+        ...font.gray,
+        fontSize: Platform.OS == "android" ? 12 : 14
+    },
+    activeChip: {
+        borderWidth: .5,
+        borderColor: "#0351ff",
+
+    },
+    activeText: {
+        color: "#0351ff",
+    }
 })
 
 export default Products

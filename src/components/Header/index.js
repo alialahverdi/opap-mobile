@@ -1,7 +1,7 @@
 import Ripple from 'react-native-material-ripple'
 
 // create a component
-const Header = ({ name, goBack, onShowOrderListModal, countOrder }) => {
+const Header = ({ title, goBack, onShowOrderListModal, countOrder }) => {
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -40,12 +40,12 @@ const Header = ({ name, goBack, onShowOrderListModal, countOrder }) => {
                 </Ripple>
             )}
             <View style={styles.right}>
-                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.title}>{title}</Text>
                 <Ripple
                     style={styles.iconContainer}
                     onPress={goBack}
                 >
-                    <Ionicons name="ios-arrow-forward" size={25} color="gray" style={{ marginTop: 2 }} />
+                    <Ionicons name="ios-arrow-forward" size={25} color="gray" style={{ marginTop: 5 }} />
                 </Ripple>
             </View>
         </View>
@@ -58,13 +58,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "center",
         elevation: 1,
+        // backgroundColor: themeColor.primary,
+        // borderBottomLeftRadius: 10,
+        // borderBottomRightRadius: 10
     },
     right: {
         flexDirection: "row",
         alignItems: "center",
     },
     title: {
-        ...font.black,
+        ...font.white,
     },
     iconContainer: {
         padding: 10

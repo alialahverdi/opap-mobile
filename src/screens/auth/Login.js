@@ -4,7 +4,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackActions } from '@react-navigation/native'
 import { toEnglishDigits } from '../../utils/numbersUtils'
 import useSnackbar from "../../hooks/useSnackbar"
-import api from '../../services/axiosInstance';
+import api from '../../services/axiosInstance'
+import Layout from '../../components/Layout'
+import * as Animatable from 'react-native-animatable'
+import FullButton from '../../components/Button/FullButton'
+import Header from '../../components/Header'
+
+
 
 // Create a component
 const Login = ({ navigation }) => {
@@ -48,35 +54,16 @@ const Login = ({ navigation }) => {
             version: "1.0.0"
         }
 
-        let response = await fetch(
-            `http://94.182.208.37:9922/check`,
-            {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(params)
-            },
-        );
-        let json = await response.json()
-        if (json.code == 0) {
-            storeInStorage(json)
-        } else {
-            showSnakbar({ variant: "error", message: json.message })
-        }
-        setLoginSpinner(false)
-
-        // api.post('/check', params)
-        //     .then(res => {
-        //         storeInStorage(res)
-        //     })
-        //     .catch(error => {
-        //         showSnakbar({ variant: "error", message: error.message })
-        //     })
-        //     .finally(() => {
-        //         setLoginSpinner(false)
-        //     })
+        api.post('/check', params)
+            .then(res => {
+                storeInStorage(res)
+            })
+            .catch(error => {
+                showSnakbar({ variant: "error", message: error.message })
+            })
+            .finally(() => {
+                setLoginSpinner(false)
+            })
     }
 
     const storeInStorage = async (userInfo) => {
@@ -85,53 +72,50 @@ const Login = ({ navigation }) => {
     }
 
     const navigateToApp = () => {
-        setUsername("");
-        setPassword("");
+        setUsername("")
+        setPassword("")
         navigation.dispatch(StackActions.replace('AppStack'));
     }
 
     return (
-        <SafeAreaView style={styles.container}>
-            <TextInput
-                style={styles.textInput}
-                placeholder="نام کاربری"
-                value={username}
-                onChangeText={setUsername}
-            />
-            <TextInput
-                style={styles.textInput}
-                placeholder="رمز عبور"
-                keyboardType="numeric"
-                value={password}
-                onChangeText={setPassword}
-            />
-            <View style={styles.uniqueIdContainer}>
+        <>
+            <Layout containerStyle={styles.container}>
                 <TextInput
-                    style={styles.textInputUniqueId}
-                    editable={false}
-                    value={uniqueId}
+                    style={styles.textInput}
+                    placeholder="نام کاربری"
+                    value={username}
+                    onChangeText={setUsername}
+                />
+                <TextInput
+                    style={styles.textInput}
+                    placeholder="رمز عبور"
+                    keyboardType="numeric"
+                    value={password}
                     onChangeText={setPassword}
                 />
-                <TouchableOpacity
-                    activeOpacity={.6}
-                    style={styles.copyButton}
-                    onPress={copyToClipboard}
-                >
-                    <Ionicons name="copy" size={18} color="#fff" />
-                </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-                activeOpacity={.6}
-                style={styles.button}
-                onPress={login}
-            >
-                {
-                    loginSpinner
-                        ? <ActivityIndicator size="small" color="#fff" />
-                        : <Text style={font.white}>ورود به حساب کاربری</Text>
-                }
-            </TouchableOpacity>
-        </SafeAreaView>
+                <View style={styles.uniqueIdContainer}>
+                    <TextInput
+                        style={styles.textInputUniqueId}
+                        editable={false}
+                        value={uniqueId}
+                        onChangeText={setPassword}
+                    />
+                    <TouchableOpacity
+                        activeOpacity={.6}
+                        style={styles.copyButton}
+                        onPress={copyToClipboard}
+                    >
+                        <Ionicons name="copy" size={18} color="#fff" />
+                    </TouchableOpacity>
+                </View>
+                <FullButton
+                    containerStyle={styles.button}
+                    isLoading={loginSpinner}
+                    title="ورود به حساب کاربری"
+                    onPress={login}
+                />
+            </Layout>
+        </>
     );
 };
 
@@ -174,12 +158,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "red"
     },
     button: {
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#6f74dd",
         marginVertical: 10,
-        height: 40,
-        borderRadius: 5
     },
 });
 

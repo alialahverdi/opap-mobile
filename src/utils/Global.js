@@ -12,7 +12,6 @@ global.View = ReactNative.View;
 global.Text = ReactNative.Text;
 global.StyleSheet = ReactNative.StyleSheet;
 global.TouchableOpacity = ReactNative.TouchableOpacity;
-global.StatusBar = ReactNative.StatusBar;
 global.TextInput = ReactNative.TextInput;
 global.Platform = ReactNative.Platform;
 global.Alert = ReactNative.Alert;
@@ -21,7 +20,6 @@ global.ActivityIndicator = ReactNative.ActivityIndicator;
 global.FlatList = ReactNative.FlatList;
 global.ScrollView = ReactNative.ScrollView;
 global.Modal = ReactNative.Modal;
-global.Pressable = ReactNative.Pressable;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';
