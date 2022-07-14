@@ -5,6 +5,7 @@ import useSnackbar from '../../../hooks/useSnackbar'
 import OrderModal from '../../../components/Modal/OrderModal'
 import OrderListModal from '../../../components/Modal/OrderListModal'
 import { useIsFocused } from '@react-navigation/native'
+import api from '../../../services/axiosInstance'
 
 // create a component
 const UnSentOrders = ({ navigation }) => {
@@ -33,17 +34,12 @@ const UnSentOrders = ({ navigation }) => {
         setUnSentOrders(realmUnSentOrders)
     }
 
-    const onUpdate = (customer) => {
-        // navigation.navigate('OrderScreen')
-        // console.log('navigation', navigation.navigate(CustomerStack))
-        // const customer = { customer }
-        // navigation.navigate('CustomerStack', {
-        //     screen: 'OrderScreen',
-        //     params: { customer }
-        // });
-        // console.log('item ======>', orderItem)
-        // setUnSentOrdersDetail(orderItem.OrderDetail)
-        // setIsShowOrderListModal(true)
+    const onUpdate = (orderItem) => {
+        const customer = JSON.parse(JSON.stringify(orderItem))
+        navigation.navigate('CustomerStack', {
+            screen: 'OrderScreen',
+            params: { customer }
+        })
     }
 
     const deleteOrder = (orderItem) => {
@@ -58,6 +54,41 @@ const UnSentOrders = ({ navigation }) => {
         })
     }
 
+    const createOrderItems = (orderDetails) => {
+        return orderDetails.map(item => {
+            return {
+                p: item.ProductID,
+                q: item.count
+            }
+        })
+    }
+
+    const updateOrder = async (currentOrder) => {
+        realm.write(() => {
+            currentOrder.isSent = true
+        })
+    }
+
+    const sendOrder = async (customer) => {
+
+        const data = {
+            custID: customer.CustomerID,
+            seq: new Date().getTime(),
+            orderItem: createOrderItems(customer.OrderDetail)
+        }
+
+        api.post('/order/add', data).then(res => {
+            updateOrder(customer).then(() => {
+                showSnakbar({
+                    variant: "success",
+                    message: "سفارش با موفقیت ثبت شد."
+                })
+            })
+        }).catch(error => {
+            showSnakbar({ variant: "error", message: error.message })
+        })
+    }
+
     const showUnSentOrders = ({ item, index }) => {
         return (
             <OrderTabsCard
@@ -65,6 +96,7 @@ const UnSentOrders = ({ navigation }) => {
                 orderItem={item}
                 onDelete={() => deleteOrder(item)}
                 onUpdate={() => onUpdate(item)}
+                sendOrder={sendOrder}
             />
         )
     }

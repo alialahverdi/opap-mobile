@@ -1,8 +1,12 @@
 import Ripple from 'react-native-material-ripple'
 import { formatNumber } from '../../utils/numbersUtils'
+import Button from '../Button'
+
 
 // create a component
-const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete }) => {
+const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
+
+    const [sendOrderLoading, setSendOrderLoading] = useState(false)
 
     const factorSum = () => {
         if (orderItem.OrderDetail.length > 0) {
@@ -15,6 +19,13 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete }) => {
 
     const vertex = () => {
 
+    }
+
+    const onPress = () => {
+        setSendOrderLoading(true)
+        sendOrder(orderItem).then(() => {
+            setSendOrderLoading(false)
+        })
     }
 
     return (
@@ -50,20 +61,23 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete }) => {
                 >
                     {orderItem.CustomerName}
                 </Text>
-                {/* <View style={styles.infoProduct}>
-                    <Text style={styles.infoText}>{formatNumber(factorSum())} </Text>
-                    <Text style={styles.infoText}>تعداد :</Text>
-                </View> */}
-                {/* <View style={styles.infoProduct}>
-                    <Text style={styles.toman}>تومان</Text>
-                    <Text style={styles.infoText}>{formatNumber(vertex())} </Text>
+                <View style={[styles.infoProduct, { marginTop: 10 }]}>
+                    <Text style={styles.toman}>روز</Text>
+                    <Text style={styles.infoText}>{formatNumber(vertex()) ?? 0} </Text>
                     <Text style={styles.infoText}>رأس :</Text>
-                </View> */}
+                </View>
                 <View style={styles.infoProduct}>
-                    <Text style={styles.toman}>تومان</Text>
-                    <Text style={styles.infoText}>{formatNumber(factorSum())} </Text>
+                    <Text style={styles.toman}>ریال</Text>
+                    <Text style={styles.infoText}>{formatNumber(factorSum()) ?? 0} </Text>
                     <Text style={styles.infoText}>قیمت کل :</Text>
                 </View>
+                <Button
+                    isLoading={sendOrderLoading}
+                    containerStyle={styles.actions}
+                    title="ارسال سفارش"
+                    color="#6495ED"
+                    onPress={onPress}
+                />
             </View>
         </View>
     )
@@ -105,12 +119,12 @@ const styles = StyleSheet.create({
     },
     infoProduct: {
         flexDirection: "row",
-        marginTop: 10
+        marginTop: 5
     },
     infoText: {
         ...font.black,
         color: "#2367ff",
-        fontSize: Platform.OS == "android" ? 12 : 14
+        fontSize: Platform.OS == "android" ? 14 : 14
     },
     toman: {
         ...font.gray,
@@ -131,6 +145,9 @@ const styles = StyleSheet.create({
         fontFamily: 'IRANSansMobile(FaNum)',
         fontSize: 10,
         color: '#6CB641',
+    },
+    actions: {
+        marginTop: 10
     }
 })
 

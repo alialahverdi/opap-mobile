@@ -4,11 +4,10 @@ import OrderModal from '../../../components/Modal/OrderModal'
 import OrderListModal from '../../../components/Modal/OrderListModal'
 import Header from '../../../components/Header'
 import realm from '../../../model/v1/realmInstance'
+import { StackActions } from '@react-navigation/native'
 
 // create a component
 const Order = ({ route, navigation }) => {
-
-    console.log('route', route.params)
 
     // ------- Constants ------- //
     const customerObj = route.params.customer
@@ -23,7 +22,7 @@ const Order = ({ route, navigation }) => {
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        // getRealmOrders()
+        getRealmOrders()
     }, [])
 
     const getRealmOrders = () => {
@@ -42,7 +41,7 @@ const Order = ({ route, navigation }) => {
             {isShowList && (
                 <Header
                     name="ثبت سفارش"
-                    goBack={() => navigation.goBack()}
+                    goBack={() => navigation.dispatch(StackActions.replace("CustomerScreen"))}
                     countOrder={unSentOrders.length}
                     onShowOrderListModal={() => setIsShowOrderListModal(!isShowOrderListModal)}
                 />

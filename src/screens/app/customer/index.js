@@ -7,6 +7,8 @@ import CustomerCard from '../../../components/CustomerCard'
 import SearchbarHeader from '../../../components/SearchbarHeader'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
 import { generatorID } from '../../../utils/IDUtils'
+import AlertModal from '../../../components/Modal/AlertModal'
+
 
 
 
@@ -18,6 +20,9 @@ const Customer = ({ navigation }) => {
         UIManager.setLayoutAnimationEnabledExperimental(true)
     }
 
+    // ------- Constants ------- //
+
+
     // ------- States ------- //
     const [customerSpinner, setCustomerSpinner] = useState(true)
     const [customers, setCustomers] = useState([])
@@ -26,6 +31,9 @@ const Customer = ({ navigation }) => {
     const [page, setPage] = useState(0)
     const [searchedCustomerText, setSearchedCustomerText] = useState("")
     const [prevIndex, setPrevIndex] = useState([])
+    const [isShowModal, setIsShowModal] = useState(false)
+    const [customerObj, setCustomerObj] = useState({})
+
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -110,12 +118,12 @@ const Customer = ({ navigation }) => {
     }
 
     const onOrder = (customer) => {
+        setCustomerObj(customer)
         const previousOrders = getPreviousOrders(customer)
         if (previousOrders.length > 0) {
-            return navigateToOrderScreen(previousOrders[0])
-        } else {
-            storeOrder(customer)
+            return setIsShowModal(true)
         }
+        return storeOrder(customer)
     }
 
     const storeOrder = (customer) => {
@@ -181,6 +189,16 @@ const Customer = ({ navigation }) => {
                     />
                 </>
             )}
+
+            <AlertModal
+                isShowModal={isShowModal}
+                hideModal={() => setIsShowModal(false)}
+                cancel={() => setIsShowModal(false)}
+                newOrder={() => {
+                    storeOrder(customerObj)
+                    setIsShowModal(false)
+                }}
+            />
         </Layout>
     )
 }
