@@ -38,7 +38,7 @@ const AppStack = () => {
                 name="OrderTabsScreen"
                 component={OrderTabsScreen}
                 options={{
-                    tabBarLabel: "Order",
+                    tabBarLabel: "سفارشات",
                     tabBarIcon: props => <Icon name="reader" size={props.size} color={props.color} />
                 }}
             />
@@ -46,7 +46,7 @@ const AppStack = () => {
                 name="ProductScreen"
                 component={ProductScreen}
                 options={{
-                    tabBarLabel: "Product",
+                    tabBarLabel: "محصولات",
                     tabBarIcon: props => <Icon name="podium" size={props.size} color={props.color} />
                 }}
             />
@@ -54,7 +54,7 @@ const AppStack = () => {
                 name="CustomerStack"
                 component={CustomerStack}
                 options={({ route }) => ({
-                    tabBarLabel: "Customer",
+                    tabBarLabel: "مشتریان",
                     tabBarIcon: props => <Icon name="people" size={props.size} color={props.color} />,
                     tabBarVisible: getTabBarVisibility(route)
                 })}
@@ -63,7 +63,7 @@ const AppStack = () => {
                 name="HomeScreen"
                 component={HomeScreen}
                 options={{
-                    tabBarLabel: "Home",
+                    tabBarLabel: "خانه",
                     tabBarIcon: props => <Icon name="home" size={props.size} color={props.color} />
                 }}
             />

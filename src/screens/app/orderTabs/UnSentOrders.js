@@ -7,7 +7,7 @@ import OrderListModal from '../../../components/Modal/OrderListModal'
 import { useIsFocused } from '@react-navigation/native'
 
 // create a component
-const UnSentOrders = () => {
+const UnSentOrders = ({ navigation }) => {
 
     // ------- Constants ------- //
     const isFocused = useIsFocused()
@@ -33,9 +33,17 @@ const UnSentOrders = () => {
         setUnSentOrders(realmUnSentOrders)
     }
 
-    const onUpdate = (orderItem) => {
-        setUnSentOrdersDetail(orderItem.OrderDetail)
-        setIsShowOrderListModal(true)
+    const onUpdate = (customer) => {
+        // navigation.navigate('OrderScreen')
+        // console.log('navigation', navigation.navigate(CustomerStack))
+        // const customer = { customer }
+        // navigation.navigate('CustomerStack', {
+        //     screen: 'OrderScreen',
+        //     params: { customer }
+        // });
+        // console.log('item ======>', orderItem)
+        // setUnSentOrdersDetail(orderItem.OrderDetail)
+        // setIsShowOrderListModal(true)
     }
 
     const deleteOrder = (orderItem) => {

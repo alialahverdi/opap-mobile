@@ -8,6 +8,8 @@ import realm from '../../../model/v1/realmInstance'
 // create a component
 const Order = ({ route, navigation }) => {
 
+    console.log('route', route.params)
+
     // ------- Constants ------- //
     const customerObj = route.params.customer
 
@@ -21,7 +23,7 @@ const Order = ({ route, navigation }) => {
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        getRealmOrders()
+        // getRealmOrders()
     }, [])
 
     const getRealmOrders = () => {
