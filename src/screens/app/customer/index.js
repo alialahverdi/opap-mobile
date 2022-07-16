@@ -11,8 +11,6 @@ import AlertModal from '../../../components/Modal/AlertModal'
 
 
 
-
-
 // create a component
 const Customer = ({ navigation }) => {
 

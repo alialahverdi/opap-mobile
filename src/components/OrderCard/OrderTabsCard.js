@@ -30,18 +30,18 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
 
     return (
         <View style={styles.container}>
-            {!sent && (
-                <View style={styles.left}>
-                    <Ripple
-                        style={[styles.buttonContainer, { marginRight: 10 }]}
-                        onPress={onDelete}
-                    >
-                        <MaterialCommunityIcons
-                            name="delete"
-                            size={20}
-                            color="#0351ff"
-                        />
-                    </Ripple>
+            <View style={styles.left}>
+                <Ripple
+                    style={[styles.buttonContainer, { marginRight: 10 }]}
+                    onPress={onDelete}
+                >
+                    <MaterialCommunityIcons
+                        name="delete"
+                        size={20}
+                        color="#0351ff"
+                    />
+                </Ripple>
+                {!sent && (
                     <Ripple
                         style={styles.buttonContainer}
                         onPress={onUpdate}
@@ -52,8 +52,20 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
                             color="#0351ff"
                         />
                     </Ripple>
-                </View>
-            )}
+                )}
+                {sent && (
+                    <Ripple
+                        style={styles.buttonContainer}
+                        onPress={onUpdate}
+                    >
+                        <MaterialCommunityIcons
+                            name="eye"
+                            size={20}
+                            color="#0351ff"
+                        />
+                    </Ripple>
+                )}
+            </View>
             <View style={styles.right}>
                 <Text
                     numberOfLines={1}
@@ -74,7 +86,7 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
                 <Button
                     isLoading={sendOrderLoading}
                     containerStyle={styles.actions}
-                    title="ارسال سفارش"
+                    title={sent ? "ارسال مجدد" : "ارسال سفارش"}
                     color="#6495ED"
                     onPress={onPress}
                 />

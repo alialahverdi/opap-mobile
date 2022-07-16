@@ -4,8 +4,6 @@ import Ripple from 'react-native-material-ripple'
 const Header = ({ title, goBack, onShowOrderListModal, countOrder }) => {
 
     // ------- Logic or Functions ------- //
-    useEffect(() => {
-    }, [])
 
     return (
         <View
@@ -67,7 +65,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     title: {
-        ...font.white,
+        ...font.black,
     },
     iconContainer: {
         padding: 10

@@ -16,10 +16,7 @@ const UnSentOrders = ({ navigation }) => {
 
     // ------- States ------- //
     const [unSentOrders, setUnSentOrders] = useState([])
-    const [orderModal, setOrderModal] = useState(false)
-    const [isShowOrderListModal, setIsShowOrderListModal] = useState(false)
-    const [productObj, setProductObj] = useState({})
-    const [unSentOrdersDetail, setUnSentOrdersDetail] = useState([])
+
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -32,6 +29,7 @@ const UnSentOrders = ({ navigation }) => {
         const orders = realm.objects("Order")
         const realmUnSentOrders = orders.filtered(`isSent == false`)
         setUnSentOrders(realmUnSentOrders)
+
     }
 
     const onUpdate = (orderItem) => {
@@ -108,27 +106,6 @@ const UnSentOrders = ({ navigation }) => {
                 data={unSentOrders}
                 renderItem={showUnSentOrders}
                 keyExtractor={(item, index) => index.toString()}
-            />
-            {/* <OrderModal
-                type="update"
-                visible={orderModal}
-                onclose={() => setOrderModal(false)}
-                onRequestClose={() => setOrderModal(false)}
-                product={productObj}
-            /> */}
-            <OrderListModal
-                type="update"
-                title="ویرایش سفارش"
-                visible={isShowOrderListModal}
-                onclose={() => setIsShowOrderListModal(false)}
-                onRequestClose={() => setIsShowOrderListModal(false)}
-                product={productObj}
-                unSentOrders={unSentOrdersDetail}
-                onUpdate={value => {
-                    setProductObj(value)
-                    setIsShowOrderListModal(false)
-                    setOrderModal(true)
-                }}
             />
         </SafeAreaView>
     )

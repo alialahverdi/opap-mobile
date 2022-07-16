@@ -7,6 +7,7 @@ import Snackbar from "../../components/Snakbar"
 import realm from "../../model/v1/realmInstance"
 import useSnackbar from '../../hooks/useSnackbar'
 import { formatNumber } from '../../utils/numbersUtils'
+import { StackActions } from '@react-navigation/native'
 
 const OrderListModal = ({
     type,
@@ -15,9 +16,10 @@ const OrderListModal = ({
     customer,
     onRequestClose,
     onclose,
-    unSentOrders,
+    orders,
     setUnSentOrders,
-    onUpdate
+    onUpdate,
+    navigation
 }) => {
 
     // ------- Constants ------- //
@@ -39,6 +41,7 @@ const OrderListModal = ({
     const showOrderDetails = ({ item, index }) => {
         return (
             <OrderCard
+                type="show"
                 product={item}
                 onUpdate={() => onUpdate(item)}
                 onDelete={() => onDelete(item)}
@@ -57,7 +60,7 @@ const OrderListModal = ({
     }
 
     const createOrderItems = () => {
-        return unSentOrders.map(item => {
+        return orders.map(item => {
             return {
                 p: item.ProductID,
                 q: item.count
@@ -85,12 +88,13 @@ const OrderListModal = ({
 
         api.post('/order/add', data).then(res => {
             updateOrder(currentOrder).then(() => {
-                setUnSentOrders([])
                 onclose()
                 showSnakbar({
                     variant: "success",
                     message: "سفارش با موفقیت ثبت شد."
                 })
+                navigation.dispatch(StackActions.replace("CustomerScreen"))
+
             })
         }).catch(error => {
             setSnackbarMessage({ variant: "error", message: error.message })
@@ -106,7 +110,7 @@ const OrderListModal = ({
     }
 
     const factorSum = () => {
-        const prices = unSentOrders.map((i) => i.SalesPrice * i.count)
+        const prices = orders.map((i) => i.SalesPrice * i.count)
         const reducer = (accumulator, curr) => accumulator + curr;
         const total = prices.reduce(reducer)
         return total
@@ -122,17 +126,17 @@ const OrderListModal = ({
             <SafeAreaView style={styles.container}>
                 <View>
                     <Header
-                        name={title}
+                        title={title}
                         goBack={onclose}
                     />
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
-                        data={unSentOrders}
+                        data={orders}
                         renderItem={showOrderDetails}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 </View>
-                {unSentOrders.length > 0 && type === "create" && (
+                {orders.length > 0 && type === "create" && (
                     <View style={styles.footer}>
                         <View>
                             <FullButton
@@ -146,7 +150,6 @@ const OrderListModal = ({
                                 <Text style={styles.toman}>تومان</Text>
                                 <Text style={styles.totalText}>{formatNumber(factorSum())}</Text>
                             </View>
-                            {/* <Text>right</Text> */}
                         </View>
                     </View>
                 )}

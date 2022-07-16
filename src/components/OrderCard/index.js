@@ -1,32 +1,34 @@
 import Ripple from 'react-native-material-ripple'
 import { formatNumber } from '../../utils/numbersUtils'
 
-const OrderCard = ({ product, onUpdate, onDelete }) => {
+const OrderCard = ({ type, product, onUpdate, onDelete }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.left}>
-                <Ripple
-                    style={[styles.buttonContainer, { marginRight: 10 }]}
-                    onPress={onDelete}
-                >
-                    <MaterialCommunityIcons
-                        name="delete"
-                        size={20}
-                        color="#0351ff"
-                    />
-                </Ripple>
-                <Ripple
-                    style={styles.buttonContainer}
-                    onPress={onUpdate}
-                >
-                    <MaterialCommunityIcons
-                        name="pencil"
-                        size={20}
-                        color="#0351ff"
-                    />
-                </Ripple>
-            </View>
+            {!type === "show" && (
+                <View style={styles.left}>
+                    <Ripple
+                        style={[styles.buttonContainer, { marginRight: 10 }]}
+                        onPress={onDelete}
+                    >
+                        <MaterialCommunityIcons
+                            name="delete"
+                            size={20}
+                            color="#0351ff"
+                        />
+                    </Ripple>
+                    <Ripple
+                        style={styles.buttonContainer}
+                        onPress={onUpdate}
+                    >
+                        <MaterialCommunityIcons
+                            name="pencil"
+                            size={20}
+                            color="#0351ff"
+                        />
+                    </Ripple>
+                </View>
+            )}
             <View style={styles.right}>
                 <Text
                     numberOfLines={1}

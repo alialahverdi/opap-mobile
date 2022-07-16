@@ -40,7 +40,7 @@ const Order = ({ route, navigation }) => {
         <Layout>
             {isShowList && (
                 <Header
-                    name="ثبت سفارش"
+                    title="سفارشات"
                     goBack={() => navigation.dispatch(StackActions.replace("CustomerScreen"))}
                     countOrder={unSentOrders.length}
                     onShowOrderListModal={() => setIsShowOrderListModal(!isShowOrderListModal)}
@@ -71,26 +71,24 @@ const Order = ({ route, navigation }) => {
                 customer={customerObj}
             />
             <OrderListModal
-                type={orderModalType}
+                type="create"
                 title="ثبت سفارش"
                 visible={isShowOrderListModal}
                 onclose={() => {
                     setIsShowOrderListModal(false)
-                    setOrderModalType("create")
                 }}
                 onRequestClose={() => {
                     setIsShowOrderListModal(false)
-                    setOrderModalType("create")
                 }}
                 customer={customerObj}
-                unSentOrders={unSentOrders}
+                orders={unSentOrders}
                 setUnSentOrders={setUnSentOrders}
                 onUpdate={value => {
                     setOrderModalType("update")
                     setProductObj(value)
                     setIsShowOrderListModal(false)
-                    setOrderModal(true)
                 }}
+                navigation={navigation}
             />
         </Layout>
     )
