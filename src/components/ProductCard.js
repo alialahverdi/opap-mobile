@@ -1,17 +1,19 @@
 import { formatNumber } from '../utils/numbersUtils'
 import Ripple from 'react-native-material-ripple'
 
-const ProductCard = ({ product, screenType, OnOrder }) => {
+const ProductCard = ({ product, screenType, onPress }) => {
 
     return (
         <View style={styles.container}>
-            {screenType == "OrderedProducts" && (
-                <View style={styles.left}>
-                    <Ripple style={styles.orderButton} onPress={() => OnOrder(product)} >
-                        <Ionicons name="ios-cart" size={20} color="#0351ff" />
-                    </Ripple>
-                </View>
-            )}
+            <View style={styles.left}>
+                <Ripple style={styles.orderButton} onPress={onPress} >
+                    <Ionicons
+                        name={screenType === "ProductScreen" ? "eye" : "ios-cart"}
+                        size={20}
+                        color="#0351ff"
+                    />
+                </Ripple>
+            </View>
             <View style={[
                 styles.center,
                 screenType == "OrderedProducts" ? { paddingLeft: 0 } : { paddingLeft: 15 },

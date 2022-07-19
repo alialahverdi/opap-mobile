@@ -17,7 +17,7 @@ const OrderListModal = ({
     onRequestClose,
     onclose,
     orders,
-    setUnSentOrders,
+    onDelete,
     onUpdate,
     navigation
 }) => {
@@ -41,22 +41,12 @@ const OrderListModal = ({
     const showOrderDetails = ({ item, index }) => {
         return (
             <OrderCard
-                type="show"
+                type={type}
                 product={item}
                 onUpdate={() => onUpdate(item)}
                 onDelete={() => onDelete(item)}
             />
         )
-    }
-
-    const onDelete = (currentOrderDetail) => {
-        realm.write(() => {
-            realm.delete(currentOrderDetail)
-        })
-        setSnackbarMessage({
-            variant: "success",
-            message: "سفارش با موفقیت حذف شد."
-        })
     }
 
     const createOrderItems = () => {

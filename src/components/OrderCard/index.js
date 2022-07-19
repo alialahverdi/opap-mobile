@@ -5,7 +5,7 @@ const OrderCard = ({ type, product, onUpdate, onDelete }) => {
 
     return (
         <View style={styles.container}>
-            {!type === "show" && (
+            {type !== "show" && (
                 <View style={styles.left}>
                     <Ripple
                         style={[styles.buttonContainer, { marginRight: 10 }]}

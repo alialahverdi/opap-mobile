@@ -30,6 +30,7 @@ const SentOrders = ({ navigation }) => {
     }
 
     const deleteOrder = (orderItem) => {
+        setOrderDetail([])
         const orders = realm.objects("Order")
         const currentOrder = orders.filtered(`OrderID == '${orderItem.OrderID}'`)[0]
         realm.write(() => {

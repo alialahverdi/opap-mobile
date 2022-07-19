@@ -9,7 +9,7 @@ import { toEnglishDigits } from '../../utils/numbersUtils'
 import Ripple from 'react-native-material-ripple'
 
 
-const Products = ({ screenType, OnOrder, setIsShowList }) => {
+const Products = ({ screenType, onPress, setIsShowList }) => {
 
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
@@ -91,7 +91,7 @@ const Products = ({ screenType, OnOrder, setIsShowList }) => {
             <ProductCard
                 product={item}
                 screenType={screenType}
-                OnOrder={OnOrder}
+                onPress={() => onPress(item)}
             />
         )
     }

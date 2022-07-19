@@ -5,18 +5,21 @@ import OrderListModal from '../../../components/Modal/OrderListModal'
 import Header from '../../../components/Header'
 import realm from '../../../model/v1/realmInstance'
 import { StackActions } from '@react-navigation/native'
+import useSnackbar from '../../../hooks/useSnackbar'
 
 // create a component
 const Order = ({ route, navigation }) => {
 
     // ------- Constants ------- //
     const customerObj = route.params.customer
+    const { showSnakbar } = useSnackbar()
 
     // ------- States ------- //
     const [orderModal, setOrderModal] = useState(false)
     const [isShowList, setIsShowList] = useState(false)
     const [orderModalType, setOrderModalType] = useState("create")
     const [isShowOrderListModal, setIsShowOrderListModal] = useState(false)
+    const [snackbarMessage, setSnackbarMessage] = useState(null)
     const [unSentOrders, setUnSentOrders] = useState([])
     const [productObj, setProductObj] = useState({})
 
@@ -24,6 +27,14 @@ const Order = ({ route, navigation }) => {
     useEffect(() => {
         getRealmOrders()
     }, [])
+
+    useEffect(() => {
+        if (snackbarMessage != null) {
+            setTimeout(() => {
+                setSnackbarMessage(null)
+            }, 3000)
+        }
+    }, [snackbarMessage])
 
     const getRealmOrders = () => {
         const orders = realm.objects("Order")
@@ -35,6 +46,18 @@ const Order = ({ route, navigation }) => {
         setProductObj(product)
         setOrderModal(true)
     }
+
+    const onDelete = (currentOrderDetail) => {
+        setProductObj({})
+        realm.write(() => {
+            realm.delete(currentOrderDetail)
+        })
+        setSnackbarMessage({
+            variant: "success",
+            message: "سفارش با موفقیت حذف شد."
+        })
+    }
+
 
     return (
         <Layout>
@@ -48,7 +71,7 @@ const Order = ({ route, navigation }) => {
             )}
             <Products
                 screenType="OrderedProducts"
-                OnOrder={onOrder}
+                onPress={onOrder}
                 setIsShowList={setIsShowList}
             />
             <OrderModal
@@ -87,7 +110,9 @@ const Order = ({ route, navigation }) => {
                     setOrderModalType("update")
                     setProductObj(value)
                     setIsShowOrderListModal(false)
+                    setOrderModal(true)
                 }}
+                onDelete={onDelete}
                 navigation={navigation}
             />
         </Layout>

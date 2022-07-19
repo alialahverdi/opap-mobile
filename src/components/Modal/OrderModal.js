@@ -21,7 +21,9 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
 
     useEffect(() => {
         if (product && type === "update") {
-            setCount(product.count.toString())
+            if (product.count != undefined) {
+                setCount(product.count.toString())
+            }
         }
     }, [product])
 
@@ -108,30 +110,39 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
             <SafeAreaView style={styles.container}>
                 <View>
                     <Header
-                        name={title}
+                        title={title}
                         goBack={() => {
                             onclose()
                             setCount("")
                         }}
                     />
                     <View style={styles.content}>
-                        <View style={styles.addToBasketContainer}>
-                            <View style={styles.outlineContainer}>
-                                <IconButton outline iconName="remove" onPress={decrease} />
+                        {type !== "show" && (
+                            <View style={styles.addToBasketContainer}>
+                                <View style={styles.outlineContainer}>
+                                    <IconButton outline iconName="remove" onPress={decrease} />
+                                </View>
+                                <View style={styles.inputContainer}>
+                                    <Input
+                                        placeholder="تعداد"
+                                        keyboardType="numeric"
+                                        value={count}
+                                        onChangeText={setCount}
+                                    />
+                                </View>
+                                <View style={styles.basicContainer}>
+                                    <IconButton basic iconName="add" onPress={increase} />
+                                </View>
                             </View>
-                            <View style={styles.inputContainer}>
-                                <Input
-                                    placeholder="تعداد"
-                                    keyboardType="numeric"
-                                    value={count}
-                                    onChangeText={setCount}
-                                />
-                            </View>
-                            <View style={styles.basicContainer}>
-                                <IconButton basic iconName="add" onPress={increase} />
-                            </View>
-                        </View>
-                        <Text style={styles.productName}>{product.ProductID} - {product.ProductName}</Text>
+                        )}
+                        <Text
+                            style={[
+                                styles.productName,
+                                type !== "show" && { marginTop: 30 }
+                            ]}
+                        >
+                            {product.ProductID} - {product.ProductName}
+                        </Text>
                         <View style={styles.detailContainer}>
                             <Text style={styles.value}>{product.SupplierName}</Text>
                             <Text style={styles.key}>تامین کننده</Text>
@@ -184,13 +195,15 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
                     </View>
                 </View>
 
-                <View style={styles.footer}>
-                    <FullButton
-                        title={type == "create" ? "ثبت" : "ویرایش"}
-                        disabled={count != "" ? false : true}
-                        onPress={onOrder}
-                    />
-                </View>
+                {type !== "show" && (
+                    <View style={styles.footer}>
+                        <FullButton
+                            title={type == "create" ? "ثبت" : "ویرایش"}
+                            disabled={count != "" ? false : true}
+                            onPress={onOrder}
+                        />
+                    </View>
+                )}
 
                 {snackbarMessage && <Snackbar content={snackbarMessage} />}
             </SafeAreaView>
@@ -217,7 +230,6 @@ const styles = StyleSheet.create({
         ...font.black,
         fontSize: 15,
         color: "#18277a",
-        marginTop: 30,
         marginBottom: Platform.OS == "ios" ? 30 : 10,
         textAlign: 'right'
     },
