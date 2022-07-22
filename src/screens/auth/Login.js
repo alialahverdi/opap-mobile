@@ -9,6 +9,8 @@ import Layout from '../../components/Layout'
 import * as Animatable from 'react-native-animatable'
 import FullButton from '../../components/Button/FullButton'
 import Header from '../../components/Header'
+import { Image, Platform } from 'react-native'
+import Ripple from 'react-native-material-ripple'
 
 
 
@@ -67,6 +69,8 @@ const Login = ({ navigation }) => {
     }
 
     const storeInStorage = async (userInfo) => {
+        const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
+        userInfo.LoginDate = today
         await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         navigateToApp();
     }
@@ -78,73 +82,128 @@ const Login = ({ navigation }) => {
     }
 
     return (
-        <>
-            <Layout containerStyle={styles.container}>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="نام کاربری"
-                    value={username}
-                    onChangeText={setUsername}
-                />
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="رمز عبور"
-                    keyboardType="numeric"
-                    value={password}
-                    onChangeText={setPassword}
-                />
-                <View style={styles.uniqueIdContainer}>
-                    <TextInput
-                        style={styles.textInputUniqueId}
-                        editable={false}
-                        value={uniqueId}
-                        onChangeText={setPassword}
+        <Layout containerStyle={styles.container}>
+            <View style={styles.formContainer}>
+                <Animatable.View
+                    animation="fadeInUp"
+                    useNativeDriver={true}
+                >
+                    <View style={styles.imgContainer}>
+                        <Image
+                            source={require('../../assets/img/Login.png')}
+                            style={{ width: 140, height: 140 }}
+                        />
+                    </View>
+                    <View style={styles.inputContainer}>
+                        <TextInput
+                            placeholder="نام کاربری"
+                            placeholderTextColor="gray"
+                            value={username}
+                            style={styles.inputs}
+                            onChangeText={setUsername}
+                        />
+                        <Ionicons
+                            name='ios-person'
+                            style={{ color: 'gray' }}
+                            size={18}
+                        />
+                    </View>
+                    <View style={styles.line} />
+
+                    <View style={[
+                        styles.inputContainer,
+                        { marginTop: Platform.OS === "ios" ? 40 : 10 }
+                    ]}>
+                        <TextInput
+                            placeholder="رمز عبور"
+                            placeholderTextColor="gray"
+                            keyboardType="numeric"
+                            style={styles.inputs}
+                            value={password}
+                            onChangeText={setPassword}
+                        />
+                        <Ionicons
+                            name="lock-closed"
+                            style={{ color: 'gray' }}
+                            size={18}
+                        />
+                    </View>
+                    <View style={styles.line} />
+
+                    <View style={styles.uniqueIdContainer}>
+                        <TextInput
+                            style={styles.textInputUniqueId}
+                            editable={false}
+                            value={uniqueId}
+                            onChangeText={setPassword}
+                        />
+                        <Ripple
+                            style={styles.copyButton}
+                            onPress={copyToClipboard}
+                        >
+                            <Ionicons name="copy" size={18} color="#fff" />
+                        </Ripple>
+                    </View>
+
+                    <FullButton
+                        containerStyle={styles.button}
+                        isLoading={loginSpinner}
+                        title="ورود به حساب کاربری"
+                        onPress={login}
                     />
-                    <TouchableOpacity
-                        activeOpacity={.6}
-                        style={styles.copyButton}
-                        onPress={copyToClipboard}
-                    >
-                        <Ionicons name="copy" size={18} color="#fff" />
-                    </TouchableOpacity>
-                </View>
-                <FullButton
-                    containerStyle={styles.button}
-                    isLoading={loginSpinner}
-                    title="ورود به حساب کاربری"
-                    onPress={login}
-                />
-            </Layout>
-        </>
+
+                </Animatable.View>
+            </View>
+        </Layout>
     );
 };
 
 // Define your styles
 const styles = StyleSheet.create({
     container: {
+        flex: 1
+    },
+    formContainer: {
+        marginTop: "15%",
+        justifyContent: "center",
+        paddingHorizontal: 20,
+    },
+    imgContainer: {
+        alignItems: "center"
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        // marginTop: 20
+    },
+    inputs: {
         flex: 1,
-        marginHorizontal: 10
+        textAlign: 'right',
+        fontSize: 14,
+        paddingRight: 10,
+        ...font.black
     },
-    textInput: {
-        ...font.gray,
-        height: 40,
-        marginVertical: 10,
-        borderWidth: .5,
-        borderColor: "gray",
-        padding: 10,
-        textAlign: "right",
-        borderRadius: 5,
+    line: {
+        backgroundColor: "#ddd",
+        width: "100%",
+        height: 1,
+        marginTop: Platform.OS === "ios" ? 10 : 0
     },
+
     uniqueIdContainer: {
         flexDirection: "row",
-        marginVertical: 10,
+        // backgroundColor: 'red',
+        marginTop: 20
+        // marginVertical: 10,
     },
     textInputUniqueId: {
         flex: 1,
         height: 40,
-        borderWidth: .5,
-        borderColor: "gray",
-        borderRadius: 5,
+        borderBottomWidth: 1,
+        borderColor: "#ddd",
+        color: "gray",
+        // borderRadius: 5,
         textAlign: "right",
         padding: 10
     },
@@ -158,7 +217,8 @@ const styles = StyleSheet.create({
         // backgroundColor: "red"
     },
     button: {
-        marginVertical: 10,
+        // marginVertical: 10,
+        marginTop: 30,
     },
 });
 

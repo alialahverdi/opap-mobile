@@ -2,12 +2,11 @@ import realm from './v1/realmInstance';
 
 const storeArray = async (arr, schema) => {
     try {
-        const result = arr.map(data => {
-            realm.write(() => {
-                realm.create(schema, data);
+        realm.write(() => {
+            arr.map(data => {
+                realm.create(schema, data)
             })
         })
-        return result
     } catch (error) {
         console.log(error)
     }
@@ -45,4 +44,14 @@ const updateObj = async (data) => {
     }
 }
 
-export { storeArray, storeObj, updateArray, updateObj };
+const deleteAllDataFromSchema = async (schema) => {
+    try {
+        realm.write(() => {
+            realm.delete(realm.objects(schema))
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { storeArray, storeObj, updateArray, updateObj, deleteAllDataFromSchema };

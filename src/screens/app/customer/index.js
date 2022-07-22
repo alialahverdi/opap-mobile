@@ -2,12 +2,13 @@ import Layout from '../../../components/Layout'
 import { UIManager, LayoutAnimation } from 'react-native'
 import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
-import { storeArray, storeObj } from '../../../model/query'
+import { storeArray, storeObj, deleteAllDataFromSchema } from '../../../model/query'
 import CustomerCard from '../../../components/CustomerCard'
 import SearchbarHeader from '../../../components/SearchbarHeader'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
 import { generatorID } from '../../../utils/IDUtils'
 import AlertModal from '../../../components/Modal/AlertModal'
+import * as Animatable from 'react-native-animatable'
 
 
 
@@ -30,6 +31,7 @@ const Customer = ({ navigation }) => {
     const [searchedCustomerText, setSearchedCustomerText] = useState("")
     const [prevIndex, setPrevIndex] = useState([])
     const [isShowModal, setIsShowModal] = useState(false)
+    const [refreshing, setRefreshing] = useState(false)
     const [customerObj, setCustomerObj] = useState({})
 
 
@@ -67,6 +69,7 @@ const Customer = ({ navigation }) => {
         setCustomers(newCustomers)
         setSearchedCustomers(newCustomers)
         setCustomerSpinner(false)
+        setRefreshing(false)
     }
 
     const setLoadedCustomer = () => {
@@ -78,12 +81,23 @@ const Customer = ({ navigation }) => {
     }
 
     const showCustomers = ({ item, index }) => {
+        const delayindex = index + 1
+
         return (
-            <CustomerCard
-                customer={item}
-                onExpand={() => openLayoutCustomer(index)}
-                onOrder={() => onOrder(item)}
-            />
+            <Animatable.View
+                animation="fadeInUp"
+                duration={400}
+                delay={delayindex * 100}
+                useNativeDriver={true}
+
+            >
+                <CustomerCard
+                    customer={item}
+                    onExpand={() => openLayoutCustomer(index)}
+                    onOrder={() => onOrder(item)}
+                />
+            </Animatable.View>
+
         )
     }
 
@@ -138,10 +152,6 @@ const Customer = ({ navigation }) => {
 
     const navigateToOrderScreen = (customer) => {
         navigation.navigate("OrderScreen", { customer })
-        // navigation.navigate('OrderStack', {
-        //     screen: 'OrderedProducts',
-        //     params: { customer }
-        // });
     }
 
     const searchCustomer = (text) => {
@@ -164,6 +174,17 @@ const Customer = ({ navigation }) => {
         return false
     }
 
+    const handleRefresh = () => {
+        setRefreshing(true)
+        api.get('/customer/get').then(res => {
+            deleteAllDataFromSchema("Customer").then(() => {
+                storeArray(res.content, "Customer").then(() => {
+                    addExpandable(res.content)
+                })
+            })
+        }).catch(() => { })
+    }
+
     const handleLoadMore = () => {
         setPage(prev => prev + 15)
     }
@@ -183,7 +204,10 @@ const Customer = ({ navigation }) => {
                         data={customers}
                         renderItem={showCustomers}
                         keyExtractor={(item, index) => index.toString()}
-                        onEndReached={handleLoadMore}
+                        // onEndReached={handleLoadMore}
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+
                     />
                 </>
             )}

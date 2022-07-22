@@ -27,13 +27,14 @@ const Splash = ({ navigation }) => {
     }
 
     const checkLogin = (userInfo) => {
+        const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
         setTimeout(() => {
-            if (userInfo != null) {
+            if (userInfo != null && userInfo.LoginDate === today) {
                 navigation.dispatch(StackActions.replace("AppStack"));
             } else {
                 navigation.dispatch(StackActions.replace("AuthStack"));
             }
-            setSpinner(false);
+            setSpinner(false)
         }, 1000)
     }
 

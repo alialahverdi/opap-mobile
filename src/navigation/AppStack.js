@@ -12,6 +12,7 @@ import CustomerStack from '../navigation/CustomerStack';
 import ProductScreen from '../screens/app/product';
 import OrderTabsScreen from '../screens/app/orderTabs';
 import TestScreen from '../screens/app/Test';
+import { color } from 'react-native-reanimated';
 
 
 // Create Tab fro screens
@@ -23,6 +24,18 @@ const getTabBarVisibility = (route) => {
         return false
     }
     return true
+}
+
+const label = (props, label) => {
+    return (
+        <Text style={[
+            { color: props.color },
+            styles.lable
+        ]}
+        >
+            {label}
+        </Text>
+    )
 }
 
 
@@ -38,7 +51,7 @@ const AppStack = () => {
                 name="OrderTabsScreen"
                 component={OrderTabsScreen}
                 options={{
-                    tabBarLabel: "سفارشات",
+                    tabBarLabel: props => label(props, "سفارشات"),
                     tabBarIcon: props => <Icon name="reader" size={props.size} color={props.color} />
                 }}
             />
@@ -46,15 +59,15 @@ const AppStack = () => {
                 name="ProductScreen"
                 component={ProductScreen}
                 options={{
-                    tabBarLabel: "محصولات",
-                    tabBarIcon: props => <Icon name="podium" size={props.size} color={props.color} />
+                    tabBarLabel: props => label(props, "محصولات"),
+                    tabBarIcon: props => <Icon name="bandage-outline" size={props.size} color={props.color} />
                 }}
             />
             <Tab.Screen
                 name="CustomerStack"
                 component={CustomerStack}
                 options={({ route }) => ({
-                    tabBarLabel: "مشتریان",
+                    tabBarLabel: props => label(props, "مشتریان"),
                     tabBarIcon: props => <Icon name="people" size={props.size} color={props.color} />,
                     tabBarVisible: getTabBarVisibility(route)
                 })}
@@ -63,12 +76,20 @@ const AppStack = () => {
                 name="HomeScreen"
                 component={HomeScreen}
                 options={{
-                    tabBarLabel: "خانه",
+                    tabBarLabel: props => label(props, "خانه"),
                     tabBarIcon: props => <Icon name="home" size={props.size} color={props.color} />
                 }}
             />
         </Tab.Navigator>
     )
 }
+
+
+const styles = StyleSheet.create({
+    lable: {
+        fontFamily: "IRANSansMobile(FaNum)",
+        fontSize: Platform.OS === "ios" ? 12 : 10
+    }
+})
 
 export default AppStack;

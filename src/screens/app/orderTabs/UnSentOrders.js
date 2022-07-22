@@ -1,11 +1,9 @@
 import realm from '../../../model/v1/realmInstance'
-import OrderCard from '../../../components/OrderCard'
 import OrderTabsCard from '../../../components/OrderCard/OrderTabsCard'
 import useSnackbar from '../../../hooks/useSnackbar'
-import OrderModal from '../../../components/Modal/OrderModal'
-import OrderListModal from '../../../components/Modal/OrderListModal'
 import { useIsFocused } from '@react-navigation/native'
 import api from '../../../services/axiosInstance'
+import * as Animatable from 'react-native-animatable'
 
 // create a component
 const UnSentOrders = ({ navigation }) => {
@@ -68,14 +66,13 @@ const UnSentOrders = ({ navigation }) => {
     }
 
     const sendOrder = async (customer) => {
-
         const data = {
             custID: customer.CustomerID,
             seq: new Date().getTime(),
             orderItem: createOrderItems(customer.OrderDetail)
         }
 
-        api.post('/order/add', data).then(res => {
+        await api.post('/order/add', data).then(res => {
             updateOrder(customer).then(() => {
                 showSnakbar({
                     variant: "success",
@@ -88,14 +85,25 @@ const UnSentOrders = ({ navigation }) => {
     }
 
     const showUnSentOrders = ({ item, index }) => {
+        const delayindex = index + 1
+
         return (
-            <OrderTabsCard
-                unSent
-                orderItem={item}
-                onDelete={() => deleteOrder(item)}
-                onUpdate={() => onUpdate(item)}
-                sendOrder={sendOrder}
-            />
+            <Animatable.View
+                animation="fadeInUp"
+                duration={400}
+                delay={delayindex * 100}
+                useNativeDriver={true}
+
+            >
+                <OrderTabsCard
+                    unSent
+                    orderItem={item}
+                    onDelete={() => deleteOrder(item)}
+                    onUpdate={() => onUpdate(item)}
+                    sendOrder={sendOrder}
+                />
+            </Animatable.View>
+
         )
     }
 

@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
         marginVertical: 4,
         backgroundColor: "#fff",
         borderRadius: 5,
-        paddingVertical: 10,
-        // paddingLeft: 5,
+        paddingTop: Platform.OS === "ios" ? 10 : 5,
+        paddingBottom: 5,
         elevation: 1,
         flexDirection: "row",
         justifyContent: "flex-end"
@@ -67,12 +67,13 @@ const styles = StyleSheet.create({
     },
     productNameText: {
         ...font.black,
+        fontSize: Platform.OS == "android" ? 12 : 14,
         color: "#18277a"
     },
     salesPriceText: {
         ...font.gray,
-        fontSize: 13,
-        marginTop: 10
+        fontSize: 12,
+        marginTop: Platform.OS === "ios" ? 10 : 5
     },
     right: {
         flex: .2,
@@ -81,20 +82,20 @@ const styles = StyleSheet.create({
     },
     productIdText: {
         ...font.black,
+        fontSize: Platform.OS == "android" ? 12 : 14,
         color: "#2367ff"
     },
     supplierContainer: {
-        marginTop: 20,
+        marginTop: Platform.OS === "ios" ? 15 : 10,
         paddingVertical: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 12,
         borderRadius: 15,
         alignItems: 'center',
-        backgroundColor: 'rgba(108, 182, 65, 0.1)',
-        // width: 80,
+        backgroundColor: 'rgba(108, 182, 65, 0.1)'
     },
     supplierText: {
         fontFamily: 'IRANSansMobile(FaNum)',
-        fontSize: 10,
+        fontSize: Platform.OS === "ios" ? 12 : 9,
         color: '#6CB641',
     }
 })

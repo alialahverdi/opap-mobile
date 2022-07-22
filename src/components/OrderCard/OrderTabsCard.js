@@ -88,6 +88,7 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
                     containerStyle={styles.actions}
                     title={sent ? "ارسال مجدد" : "ارسال سفارش"}
                     color="#6495ED"
+                    width={95}
                     onPress={onPress}
                 />
             </View>

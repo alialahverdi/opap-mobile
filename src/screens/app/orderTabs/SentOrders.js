@@ -3,6 +3,8 @@ import OrderTabsCard from '../../../components/OrderCard/OrderTabsCard'
 import { useIsFocused } from '@react-navigation/native'
 import OrderListModal from '../../../components/Modal/OrderListModal'
 import useSnackbar from '../../../hooks/useSnackbar'
+import api from '../../../services/axiosInstance'
+import * as Animatable from 'react-native-animatable'
 
 // create a component
 const SentOrders = ({ navigation }) => {
@@ -42,17 +44,55 @@ const SentOrders = ({ navigation }) => {
         })
     }
 
+    const createOrderItems = (orderDetails) => {
+        return orderDetails.map(item => {
+            return {
+                p: item.ProductID,
+                q: item.count
+            }
+        })
+    }
+
+    const againeSendOrder = async (customer) => {
+        const data = {
+            custID: customer.CustomerID,
+            seq: new Date().getTime(),
+            orderItem: createOrderItems(customer.OrderDetail)
+        }
+
+        await api.post('/order/add', data).then(res => {
+            showSnakbar({
+                variant: "success",
+                message: "ارسال مجدد سفارش با موفقیت ثبت شد."
+            })
+        }).catch(error => {
+            showSnakbar({ variant: "error", message: error.message })
+        })
+    }
+
     const showSentOrders = ({ item, index }) => {
+        const delayindex = index + 1
+
         return (
-            <OrderTabsCard
-                sent
-                orderItem={item}
-                onDelete={() => deleteOrder(item)}
-                onUpdate={() => {
-                    setOrderDetail(item.OrderDetail)
-                    setIsShowOrderListModal(true)
-                }}
-            />
+            <Animatable.View
+                animation="fadeInUp"
+                duration={400}
+                delay={delayindex * 100}
+                useNativeDriver={true}
+
+            >
+                <OrderTabsCard
+                    sent
+                    orderItem={item}
+                    onDelete={() => deleteOrder(item)}
+                    onUpdate={() => {
+                        setOrderDetail(item.OrderDetail)
+                        setIsShowOrderListModal(true)
+                    }}
+                    sendOrder={againeSendOrder}
+                />
+            </Animatable.View>
+
         )
     }
 

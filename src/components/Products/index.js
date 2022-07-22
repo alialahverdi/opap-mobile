@@ -1,12 +1,13 @@
 import Layout from '../Layout'
 import api from '../../services/axiosInstance'
 import realm from '../../model/v1/realmInstance'
-import { storeArray } from '../../model/query'
+import { storeArray, deleteAllDataFromSchema } from '../../model/query'
 import SearchbarHeader from '../SearchbarHeader'
 import HorizontalFilter from '../HorizontalFilter'
 import ProductCard from '../ProductCard'
 import { toEnglishDigits } from '../../utils/numbersUtils'
 import Ripple from 'react-native-material-ripple'
+import * as Animatable from 'react-native-animatable'
 
 
 const Products = ({ screenType, onPress, setIsShowList }) => {
@@ -17,6 +18,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     const [page, setPage] = useState(0)
     const [searchedProducts, setSearchedProducts] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
+    const [refreshing, setRefreshing] = useState(false)
     const [filterTypes, setFilterTypes] = useState([
         {
             name: "همه",
@@ -48,7 +50,6 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     const getRealmProducts = () => {
         const realmProducts = realm.objects("Product")
         const products = JSON.parse(JSON.stringify(realmProducts))
-        // const slicedProducts = products.slice(page, page + 15)
         if (products.length > 0) {
             return setStateProducts(products)
         }
@@ -60,20 +61,17 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     const getApiProducts = () => {
         api.get('/product/get').then(res => {
             storeArray(res.content, "Product").then(() => {
-                const slicedProducts = res.content.slice(page, page + 15)
-                setStateProducts(slicedProducts)
+                setStateProducts(res.content)
             })
         }).catch(() => { })
     }
 
     const setStateProducts = (sentProducts) => {
-        setProducts(prev => [
-            ...prev,
-            ...sentProducts
-        ])
+        setProducts(sentProducts)
         setSearchedProducts(sentProducts)
         setIsShowList(true)
         setProductSpinner(false)
+        setRefreshing(false)
     }
 
     const contains = (item, query) => {
@@ -87,17 +85,24 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     }
 
     const showProducts = ({ item, index }) => {
-        return (
-            <ProductCard
-                product={item}
-                screenType={screenType}
-                onPress={() => onPress(item)}
-            />
-        )
-    }
+        const delayindex = index + 1
 
-    const handleLoadMore = () => {
-        setPage(prev => prev + 15)
+        return (
+            <Animatable.View
+                animation="fadeInUp"
+                duration={400}
+                delay={delayindex * 100}
+                useNativeDriver={true}
+
+            >
+                <ProductCard
+                    product={item}
+                    screenType={screenType}
+                    onPress={() => onPress(item)}
+                />
+            </Animatable.View>
+
+        )
     }
 
     const searchProduct = (text, horizontal = false) => {
@@ -180,6 +185,20 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         )
     }
 
+    const handleRefresh = () => {
+        setRefreshing(true)
+        api.get('/product/get').then(res => {
+            deleteAllDataFromSchema("Product").then(() => {
+                storeArray(res.content, "Product").then(() => {
+                    setStateProducts(res.content)
+                })
+            })
+        }).catch(() => { })
+    }
+
+    const handleLoadMore = () => {
+        setPage(prev => prev + 15)
+    }
 
     return (
         <Layout>
@@ -207,7 +226,9 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                         data={products}
                         renderItem={showProducts}
                         keyExtractor={(item, index) => index.toString()}
-                        onEndReached={handleLoadMore}
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                    // onEndReached={handleLoadMore}
                     />
                 </>
             )}
@@ -223,7 +244,7 @@ const styles = StyleSheet.create({
     },
     horizontalContainer: {
         marginHorizontal: 10,
-        marginVertical: 10,
+        marginVertical: 5,
         paddingRight: 5,
     },
     filterCard: {

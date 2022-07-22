@@ -1,12 +1,12 @@
 import Ripple from 'react-native-material-ripple'
 
-const Button = ({ containerStyle, title, color, isLoading, onPress }) => {
+const Button = ({ containerStyle, title, color, isLoading, onPress, width }) => {
     return (
         <Ripple
             style={[
                 containerStyle,
                 styles.container,
-                { backgroundColor: color }
+                { backgroundColor: color, width: width }
             ]}
             onPress={onPress}
         >

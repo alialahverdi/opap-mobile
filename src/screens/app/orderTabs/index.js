@@ -12,8 +12,17 @@ const OrdertTabs = () => {
         <Tab.Navigator
             initialRouteName="SentOrdersScreen"
             screenOptions={{
+                tabBarStyle: { backgroundColor: themeColor.primary },
                 tabBarLabelStyle: {
                     fontFamily: "IRANSansMobile(FaNum)"
+                },
+                tabBarActiveTintColor: "#fff",
+                tabBarInactiveTintColor: "rgba(255, 255, 255, .5)",
+                tabBarIndicatorStyle: {
+                    backgroundColor: '#fff',
+                    margin: 1,
+                    height: 3,
+                    borderRadius: 10
                 }
             }}
         >
