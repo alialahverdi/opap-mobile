@@ -93,7 +93,6 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                 duration={400}
                 delay={delayindex * 100}
                 useNativeDriver={true}
-
             >
                 <ProductCard
                     product={item}
@@ -129,7 +128,6 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
 
     const filterHorizontal = async (filter) => {
         const newSearchedProducts = await filteredProducts(filter)
-        // console.log('newSearchedProducts', newSearchedProducts)
         setProducts(newSearchedProducts)
     }
 

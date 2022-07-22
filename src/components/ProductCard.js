@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingTop: Platform.OS === "ios" ? 10 : 5,
         paddingBottom: 5,
-        elevation: 1,
         flexDirection: "row",
         justifyContent: "flex-end"
     },

@@ -1,3 +1,5 @@
+import Ripple from "react-native-material-ripple";
+
 const CustomerCard = ({ customer, onExpand, onOrder }) => {
 
     return (
@@ -28,14 +30,14 @@ const CustomerCard = ({ customer, onExpand, onOrder }) => {
                         <Ionicons name="person" size={22} color="gray" />
                         <Text style={styles.textContent}>اطلاعات مشتری</Text>
                     </View>
-                    <TouchableOpacity
+                    <Ripple
                         style={styles.item}
                         activeOpacity={.6}
                         onPress={onOrder}
                     >
                         <Ionicons name="ios-cart" size={22} color="gray" />
                         <Text style={styles.textContent}>ثبت سفارش</Text>
-                    </TouchableOpacity>
+                    </Ripple>
                 </View>
             </View>
         </View>
@@ -48,8 +50,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         paddingVertical: 10,
-        paddingLeft: 20,
-        elevation: 1
+        paddingLeft: 20
     },
     header: {
         flexDirection: "row",

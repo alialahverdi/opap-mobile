@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         padding: 10,
-        elevation: 1,
         flexDirection: "row",
         justifyContent: "flex-end"
     },

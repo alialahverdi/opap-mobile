@@ -4,6 +4,7 @@ import useSnackbar from '../../../hooks/useSnackbar'
 import { useIsFocused } from '@react-navigation/native'
 import api from '../../../services/axiosInstance'
 import * as Animatable from 'react-native-animatable'
+import Layout from '../../../components/Layout'
 
 // create a component
 const UnSentOrders = ({ navigation }) => {
@@ -108,14 +109,14 @@ const UnSentOrders = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView>
+        <Layout>
             <FlatList
                 style={{ paddingHorizontal: 10 }}
                 data={unSentOrders}
                 renderItem={showUnSentOrders}
                 keyExtractor={(item, index) => index.toString()}
             />
-        </SafeAreaView>
+        </Layout>
     )
 }
 

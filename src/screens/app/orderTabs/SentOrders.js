@@ -5,6 +5,7 @@ import OrderListModal from '../../../components/Modal/OrderListModal'
 import useSnackbar from '../../../hooks/useSnackbar'
 import api from '../../../services/axiosInstance'
 import * as Animatable from 'react-native-animatable'
+import Layout from '../../../components/Layout'
 
 // create a component
 const SentOrders = ({ navigation }) => {
@@ -97,7 +98,7 @@ const SentOrders = ({ navigation }) => {
     }
 
     return (
-        <SafeAreaView>
+        <Layout>
             <FlatList
                 style={{ paddingHorizontal: 10 }}
                 data={sentOrders}
@@ -112,7 +113,7 @@ const SentOrders = ({ navigation }) => {
                 onRequestClose={() => setIsShowOrderListModal(false)}
                 orders={orderDetail}
             />
-        </SafeAreaView>
+        </Layout>
     )
 }
 

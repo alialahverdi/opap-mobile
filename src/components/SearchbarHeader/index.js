@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
         height: 40,
         marginHorizontal: 10,
         marginVertical: 5,
+        flex: 1
     },
     textInput: {
         ...font.black,

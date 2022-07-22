@@ -2,6 +2,7 @@ import { forwardRef } from 'react'
 import Modal from 'react-native-modal'
 import Ripple from 'react-native-material-ripple'
 import FullButton from '../Button/FullButton'
+import Button from '../Button'
 
 
 
@@ -25,33 +26,27 @@ const AlertModal = forwardRef((props, ref) => {
         >
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Ripple
-                        onPress={hideModal}>
-                        <Ionicons
-                            name="ios-close"
-                            style={{ color: '#fff', fontSize: 30, padding: 5 }}
-                        />
-                    </Ripple>
                     <Text style={styles.title}>سفارش تکراری</Text>
                 </View>
                 <View style={styles.body}>
                     <Text style={styles.description}>شما یک سفارش تکراری دارید آیا مایل به ساخت سفارش جدید هستید؟</Text>
                     <View style={styles.actions}>
-                        <View>
-                            <FullButton
-                                isLoading={false}
-                                title="انصزاف"
-                                containerStyle={styles.cancel}
-                                onPress={cancel}
-                            />
-                        </View>
-                        <View>
-                            <FullButton
-                                isLoading={false}
-                                title="سفارش جدید"
-                                onPress={newOrder}
-                            />
-                        </View>
+                        <Button
+                            isLoading={false}
+                            containerStyle={styles.cancel}
+                            title="انصراف"
+                            color="#6495ED"
+                            width={80}
+                            onPress={cancel}
+                        />
+                        <Button
+                            isLoading={false}
+                            containerStyle={styles.cancel}
+                            title="سفارش جدید"
+                            color="#6495ED"
+                            width={100}
+                            onPress={newOrder}
+                        />
                     </View>
                 </View>
             </View>
@@ -65,11 +60,10 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fff',
         borderRadius: 5
-        // textAlign: ''
     },
     header: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         paddingHorizontal: '5%',
         height: 40,
@@ -78,7 +72,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 5
     },
     title: {
-        ...font.whiteBold,
+        ...font.white,
         fontSize: 20
     },
     body: {
@@ -94,7 +88,7 @@ const styles = StyleSheet.create({
     },
     actions: {
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
         alignItems: "center",
         backgroundColor: '#fff',
         // height: 60,
@@ -102,7 +96,8 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     cancel: {
-        backgroundColor: 'red'
+        backgroundColor: 'red',
+        marginLeft: 30
     }
 })
 

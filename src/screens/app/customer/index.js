@@ -1,5 +1,5 @@
 import Layout from '../../../components/Layout'
-import { UIManager, LayoutAnimation } from 'react-native'
+import { UIManager, LayoutAnimation, Switch } from 'react-native'
 import api from '../../../services/axiosInstance'
 import realm from '../../../model/v1/realmInstance'
 import { storeArray, storeObj, deleteAllDataFromSchema } from '../../../model/query'
@@ -32,6 +32,7 @@ const Customer = ({ navigation }) => {
     const [prevIndex, setPrevIndex] = useState([])
     const [isShowModal, setIsShowModal] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
+    const [isEnabled, setIsEnabled] = useState(false);
     const [customerObj, setCustomerObj] = useState({})
 
 
@@ -189,6 +190,8 @@ const Customer = ({ navigation }) => {
         setPage(prev => prev + 15)
     }
 
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+
     return (
         <Layout>
             {customerSpinner && (
@@ -198,7 +201,18 @@ const Customer = ({ navigation }) => {
             )}
             {!customerSpinner && (
                 <>
-                    <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <View style={styles.dalyVisit}>
+                            <Switch
+                                trackColor={{ false: "#ddd", true: "#81b0ff" }}
+                                thumbColor={isEnabled ? "#2367ff" : "#f4f3f4"}
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                            />
+                            <Text style={styles.dalyVisitTitle}>ویزیت روزانه</Text>
+                        </View>
+                        <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
+                    </View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={customers}
@@ -241,6 +255,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'red'
+    },
+    dalyVisit: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 15,
+        marginTop: 5
+    },
+    dalyVisitTitle: {
+        ...font.gray,
+        fontSize: 12
     }
 })
 
