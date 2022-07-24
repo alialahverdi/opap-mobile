@@ -32,7 +32,7 @@ const Customer = ({ navigation }) => {
     const [prevIndex, setPrevIndex] = useState([])
     const [isShowModal, setIsShowModal] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
-    const [isEnabled, setIsEnabled] = useState(false);
+    const [isShowDailyVisit, setIsShowDailyVisit] = useState(true);
     const [customerObj, setCustomerObj] = useState({})
 
 
@@ -67,7 +67,16 @@ const Customer = ({ navigation }) => {
                 layoutHeight: 0
             }
         })
-        setCustomers(newCustomers)
+
+        let filteredCustomers
+        if (isShowDailyVisit) {
+            filteredCustomers = newCustomers.filtered((i) => i.TodayVisit)
+            console.log('isShowDailyVisit', isShowDailyVisit)
+        } else {
+            filteredCustomers = newCustomers
+            console.log('end', isShowDailyVisit)
+        }
+        setCustomers(filteredCustomers)
         setSearchedCustomers(newCustomers)
         setCustomerSpinner(false)
         setRefreshing(false)
@@ -190,7 +199,7 @@ const Customer = ({ navigation }) => {
         setPage(prev => prev + 15)
     }
 
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch = () => setIsShowDailyVisit(previousState => !previousState);
 
     return (
         <Layout>
@@ -205,9 +214,9 @@ const Customer = ({ navigation }) => {
                         <View style={styles.dalyVisit}>
                             <Switch
                                 trackColor={{ false: "#ddd", true: "#81b0ff" }}
-                                thumbColor={isEnabled ? "#2367ff" : "#f4f3f4"}
+                                thumbColor={isShowDailyVisit ? "#2367ff" : "#f4f3f4"}
                                 onValueChange={toggleSwitch}
-                                value={isEnabled}
+                                value={isShowDailyVisit}
                             />
                             <Text style={styles.dalyVisitTitle}>ویزیت روزانه</Text>
                         </View>
