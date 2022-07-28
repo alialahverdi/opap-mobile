@@ -69,13 +69,14 @@ const Customer = ({ navigation }) => {
         })
 
         let filteredCustomers
-        if (isShowDailyVisit) {
-            filteredCustomers = newCustomers.filtered((i) => i.TodayVisit)
-            console.log('isShowDailyVisit', isShowDailyVisit)
-        } else {
-            filteredCustomers = newCustomers
-            console.log('end', isShowDailyVisit)
-        }
+        filteredCustomers = newCustomers
+        // if (isShowDailyVisit) {
+        //     filteredCustomers = newCustomers.filtered((i) => i.TodayVisit)
+        //     console.log('isShowDailyVisit', isShowDailyVisit)
+        // } else {
+        //     filteredCustomers = newCustomers
+        //     console.log('end', isShowDailyVisit)
+        // }
         setCustomers(filteredCustomers)
         setSearchedCustomers(newCustomers)
         setCustomerSpinner(false)

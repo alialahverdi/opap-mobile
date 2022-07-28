@@ -14,10 +14,12 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
 
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
-    const [products, setProducts] = useState([])
-    const [page, setPage] = useState(0)
+    const [allProducts, setAllProducts] = useState("")
+    const [renderedProducts, setRenderedProducts] = useState([])
     const [searchedProducts, setSearchedProducts] = useState([])
+    const [filteredProducts, setFilteredProducts] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
+    const [page, setPage] = useState(0)
     const [refreshing, setRefreshing] = useState(false)
     const [filterTypes, setFilterTypes] = useState([
         {
@@ -67,8 +69,8 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     }
 
     const setStateProducts = (sentProducts) => {
-        setProducts(sentProducts)
-        setSearchedProducts(sentProducts)
+        setRenderedProducts(sentProducts)
+        setAllProducts(sentProducts)
         setIsShowList(true)
         setProductSpinner(false)
         setRefreshing(false)
@@ -104,59 +106,51 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         )
     }
 
-    const searchProduct = (text, horizontal = false) => {
-        const oldSearchedProducts = [...searchedProducts]
+    const searchProduct = (text) => {
 
-        const isNotHorizontal = filterTypes.some(item => item.name == "همه" && item.isActice)
+        let latestsearchedProducts;
 
-
-
-        let newSearchedProducts;
-
-        if (isNotHorizontal) {
-            newSearchedProducts = oldSearchedProducts.filter(item => contains(item, text))
+        if (!filterTypes.some(item => item.name == "همه" && item.isActice)) {
+            latestsearchedProducts = [...filteredProducts]
         } else {
-            newSearchedProducts = products.filter(item => contains(item, text))
+            latestsearchedProducts = allProducts
         }
 
-        if (horizontal) {
-            return newSearchedProducts
-        }
-        setProducts(newSearchedProducts)
+        const newSearchedProducts = latestsearchedProducts.filter(item => contains(item, text))
+        setSearchedProducts(newSearchedProducts)
+        setRenderedProducts(newSearchedProducts)
         setSearchedProductText(text)
     }
 
     const filterHorizontal = async (filter) => {
-        const newSearchedProducts = await filteredProducts(filter)
-        setProducts(newSearchedProducts)
+        const newSearchedProducts = await getFilteredProducts(filter)
+        setFilteredProducts(newSearchedProducts)
+        setRenderedProducts(newSearchedProducts)
     }
 
-    const filteredProducts = async (filter) => {
-        const oldSearchedProducts = [...searchedProducts]
+    const getFilteredProducts = async (filter) => {
+
+        const latestFilteredProducts = searchedProductText !== ""
+            ? [...searchedProducts] : [...allProducts]
 
         if (filter.name.includes("همه")) {
-            if (searchedProductText !== "") {
-                return searchProduct(searchedProductText, true)
-            }
-            return oldSearchedProducts
+            return latestFilteredProducts
         }
 
         if (filter.name.includes("موجودی دار")) {
-            if (searchedProductText !== "") {
-                return products.filter(item => item.StockQty > 0)
-            }
-            return oldSearchedProducts.filter(item => item.StockQty > 0)
+            return latestFilteredProducts.filter(item => item.StockQty > 0)
         }
+
     }
 
-    const onFilter = (filter, renderIndex) => {
-        filterHorizontal(filter).then(() => {
+    const onFilter = (filter, selectedIndex) => {
+        filterHorizontal(filter).then((filter) => {
             const cloneFilterTypes = [...filterTypes]
             const changedFilterTypes = cloneFilterTypes.map((item, index) => {
                 if (item.isActice) {
                     item.isActice = false
                 }
-                if (index == renderIndex) {
+                if (index == selectedIndex) {
                     item.isActice = true
                 }
                 return item
@@ -207,7 +201,9 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
             )}
             {!productSpinner && (
                 <>
-                    <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
+                    <View style={{ flexDirection: 'row' }}>
+                        <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
+                    </View>
                     <View>
                         <FlatList
                             style={styles.horizontalContainer}
@@ -221,7 +217,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                     </View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
-                        data={products}
+                        data={renderedProducts}
                         renderItem={showProducts}
                         keyExtractor={(item, index) => index.toString()}
                         refreshing={refreshing}
