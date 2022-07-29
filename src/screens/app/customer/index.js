@@ -9,6 +9,7 @@ import { toEnglishDigits } from '../../../utils/numbersUtils'
 import { generatorID } from '../../../utils/IDUtils'
 import AlertModal from '../../../components/Modal/AlertModal'
 import * as Animatable from 'react-native-animatable'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 
@@ -20,15 +21,15 @@ const Customer = ({ navigation }) => {
     }
 
     // ------- Constants ------- //
+    const initialRender = useRef(true)
 
 
     // ------- States ------- //
     const [customerSpinner, setCustomerSpinner] = useState(true)
-    const [customers, setCustomers] = useState([])
-    const [realmCustomers, setRealmCustomers] = useState([])
-    const [searchedCustomers, setSearchedCustomers] = useState([])
-    const [page, setPage] = useState(0)
+    const [allCustomers, setAllCustomers] = useState([])
+    const [renderedCustomers, setRenderedCustomers] = useState([])
     const [searchedCustomerText, setSearchedCustomerText] = useState("")
+    const [page, setPage] = useState(0)
     const [prevIndex, setPrevIndex] = useState([])
     const [isShowModal, setIsShowModal] = useState(false)
     const [refreshing, setRefreshing] = useState(false)
@@ -38,54 +39,80 @@ const Customer = ({ navigation }) => {
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        getRealmCustomers()
+        getAndCheckVisitDate()
     }, [])
+
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        } else {
+            setStateCustomers(allCustomers)
+            setSearchedCustomerText("")
+        }
+    }, [isShowDailyVisit])
+
+
+    const getAndCheckVisitDate = async () => {
+        const visitDate = await AsyncStorage.getItem("visitDate")
+        const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
+        if (visitDate !== null && visitDate === today) {
+            return getRealmCustomers()
+        }
+        return getApiCustomers()
+    }
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer')
         const customers = JSON.parse(JSON.stringify(realmCustomers))
-        if (customers.length > 0) {
-            return addExpandable(customers)
-        }
-        if (customers.length == 0) {
-            return getApiCustomers()
-        }
-    }
-
-    const getApiCustomers = () => {
-        api.get('/customer/get').then(res => {
-            storeArray(res.content, "Customer").then(() => {
-                addExpandable(res.content)
-            })
-        }).catch(() => { })
-    }
-
-    const addExpandable = (sentCustomers) => {
-        const newCustomers = sentCustomers.map(item => {
+        const newCustomers = customers.map(item => {
             return {
                 ...item,
                 layoutHeight: 0
             }
         })
+        setAllCustomers(newCustomers)
+        setStateCustomers(customers)
+        // if (customers.length > 0) {
+        //     return addExpandable(customers)
+        // }
+        // if (customers.length == 0) {
+        //     return getApiCustomers()
+        // }
+    }
+
+    const getApiCustomers = async () => {
+        const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
+        await AsyncStorage.setItem('visitDate', today)
+        api.get('/customer/get').then(res => {
+            storeArray(res.content, "Customer").then(() => {
+                const newCustomers = res.content.map(item => {
+                    return {
+                        ...item,
+                        layoutHeight: 0
+                    }
+                })
+                setAllCustomers(newCustomers)
+                setStateCustomers(newCustomers)
+            })
+        }).catch(() => { })
+    }
+
+    const setStateCustomers = (sentCustomers) => {
 
         let filteredCustomers
-        filteredCustomers = newCustomers
-        // if (isShowDailyVisit) {
-        //     filteredCustomers = newCustomers.filtered((i) => i.TodayVisit)
-        //     console.log('isShowDailyVisit', isShowDailyVisit)
-        // } else {
-        //     filteredCustomers = newCustomers
-        //     console.log('end', isShowDailyVisit)
-        // }
-        setCustomers(filteredCustomers)
-        setSearchedCustomers(newCustomers)
+        if (isShowDailyVisit) {
+            filteredCustomers = sentCustomers.filter((i) => i.TodayVisit)
+        } else {
+            filteredCustomers = sentCustomers
+        }
+        setRenderedCustomers(filteredCustomers)
         setCustomerSpinner(false)
         setRefreshing(false)
     }
 
     const setLoadedCustomer = () => {
-        const slicedCustomers = realmCustomers.slice(page, page + 15)
-        setCustomers(prev => [
+        const slicedCustomers = allCustomers.slice(page, page + 15)
+        setRenderedCustomers(prev => [
             ...prev,
             ...slicedCustomers
         ])
@@ -100,7 +127,6 @@ const Customer = ({ navigation }) => {
                 duration={400}
                 delay={delayindex * 100}
                 useNativeDriver={true}
-
             >
                 <CustomerCard
                     customer={item}
@@ -114,10 +140,10 @@ const Customer = ({ navigation }) => {
 
     const openLayoutCustomer = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-        const customersCloned = [...customers]
+        const customersCloned = searchedCustomerText !== "" ? [...renderedCustomers] : [...allCustomers]
         if (prevIndex.includes(index)) {
             customersCloned[index].layoutHeight = 0;
-            setCustomers(customersCloned)
+            setRenderedCustomers(customersCloned)
             setPrevIndex([])
         } else {
             let newCustomers = customersCloned.map(item => {
@@ -129,7 +155,7 @@ const Customer = ({ navigation }) => {
             newCustomers[index].layoutHeight == 0
                 ? newCustomers[index].layoutHeight = null
                 : newCustomers[index].layoutHeight = 0;
-            setCustomers(newCustomers)
+            setRenderedCustomers(newCustomers)
             setPrevIndex([index])
         }
     }
@@ -166,12 +192,12 @@ const Customer = ({ navigation }) => {
     }
 
     const searchCustomer = (text) => {
-        const oldSearchedCustomers = [...searchedCustomers]
+        const oldSearchedCustomers = [...allCustomers]
         const newSearchedCustomers = oldSearchedCustomers.filter(item => {
             // return item.CustomerName.toLowerCase().match(text)
             return contains(item, text)
         });
-        setCustomers(newSearchedCustomers)
+        setRenderedCustomers(newSearchedCustomers)
         setSearchedCustomerText(text)
     }
 
@@ -211,7 +237,12 @@ const Customer = ({ navigation }) => {
             )}
             {!customerSpinner && (
                 <>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Animatable.View
+                        animation="fadeInUp"
+                        duration={400}
+                        useNativeDriver={true}
+                        style={{ flexDirection: 'row', alignItems: 'center' }}
+                    >
                         <View style={styles.dalyVisit}>
                             <Switch
                                 trackColor={{ false: "#ddd", true: "#81b0ff" }}
@@ -222,10 +253,10 @@ const Customer = ({ navigation }) => {
                             <Text style={styles.dalyVisitTitle}>ویزیت روزانه</Text>
                         </View>
                         <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
-                    </View>
+                    </Animatable.View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
-                        data={customers}
+                        data={renderedCustomers}
                         renderItem={showCustomers}
                         keyExtractor={(item, index) => index.toString()}
                         // onEndReached={handleLoadMore}

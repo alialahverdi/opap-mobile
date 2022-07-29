@@ -14,7 +14,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
 
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
-    const [allProducts, setAllProducts] = useState("")
+    const [allProducts, setAllProducts] = useState([])
     const [renderedProducts, setRenderedProducts] = useState([])
     const [searchedProducts, setSearchedProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
@@ -201,10 +201,18 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
             )}
             {!productSpinner && (
                 <>
-                    <View style={{ flexDirection: 'row' }}>
+                    <Animatable.View
+                        animation="fadeInUp"
+                        duration={400}
+                        useNativeDriver={true}
+                        style={{ flexDirection: 'row' }}
+                    >
                         <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
-                    </View>
-                    <View>
+                    </Animatable.View>
+                    <Animatable.View
+                        animation="fadeInUp"
+                        duration={500}
+                        useNativeDriver={true}>
                         <FlatList
                             style={styles.horizontalContainer}
                             horizontal
@@ -214,7 +222,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                             renderItem={horizontalRenderItem}
                             keyExtractor={(item, index) => index.toString()}
                         />
-                    </View>
+                    </Animatable.View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={renderedProducts}

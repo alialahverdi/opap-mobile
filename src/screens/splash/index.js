@@ -21,15 +21,15 @@ const Splash = ({ navigation }) => {
     }, [])
 
     const getUserInfo = async () => {
-        const value = await AsyncStorage.getItem("userInfo");
-        const userInfo = JSON.parse(value);
-        checkLogin(userInfo);
+        const value = await AsyncStorage.getItem("userInfo")
+        const userInfo = JSON.parse(value)
+        checkLogin(userInfo)
     }
 
     const checkLogin = (userInfo) => {
         const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
         setTimeout(() => {
-            if (userInfo != null && userInfo.LoginDate === today) {
+            if (userInfo !== null && userInfo.LoginDate === today) {
                 navigation.dispatch(StackActions.replace("AppStack"));
             } else {
                 navigation.dispatch(StackActions.replace("AuthStack"));
