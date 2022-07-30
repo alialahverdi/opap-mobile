@@ -1,11 +1,21 @@
 const SearchbarHeader = ({ text, onChangeText }) => {
+
+
+    const changeToPersion = (value) => {
+        const textData1 = value.replace("ي", "ی")
+        const textData2 = textData1.replace("ئ", "ی")
+        const textData3 = textData2.replace("ك", "ک")
+        const textData4 = textData3.replace("ة", "ه")
+        onChangeText(textData4)
+    }
+
     return (
         <View style={styles.textInputContainer}>
             <TextInput
                 style={styles.textInput}
                 placeholder="جست جو"
                 value={text}
-                onChangeText={onChangeText}
+                onChangeText={changeToPersion}
             />
             <Ionicons
                 name="search"

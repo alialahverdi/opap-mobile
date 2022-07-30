@@ -132,6 +132,7 @@ const Customer = ({ navigation }) => {
                     customer={item}
                     onExpand={() => openLayoutCustomer(index)}
                     onOrder={() => onOrder(item)}
+                    onOpenFactor={() => onOpenFactor(item)}
                 />
             </Animatable.View>
 
@@ -175,6 +176,10 @@ const Customer = ({ navigation }) => {
         return storeOrder(customer)
     }
 
+    const onOpenFactor = (customer) => {
+        navigation.navigate("OpenFactorScreen", { customer })
+    }
+
     const storeOrder = (customer) => {
         const orderObj = {
             OrderID: generatorID(),
@@ -195,6 +200,7 @@ const Customer = ({ navigation }) => {
         const oldSearchedCustomers = [...allCustomers]
         const newSearchedCustomers = oldSearchedCustomers.filter(item => {
             // return item.CustomerName.toLowerCase().match(text)
+
             return contains(item, text)
         });
         setRenderedCustomers(newSearchedCustomers)
@@ -223,7 +229,7 @@ const Customer = ({ navigation }) => {
     }
 
     const handleLoadMore = () => {
-        setPage(prev => prev + 15)
+        // setPage(prev => prev + 15)
     }
 
     const toggleSwitch = () => setIsShowDailyVisit(previousState => !previousState);

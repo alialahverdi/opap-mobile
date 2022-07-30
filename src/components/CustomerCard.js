@@ -1,6 +1,6 @@
 import Ripple from "react-native-material-ripple";
 
-const CustomerCard = ({ customer, onExpand, onOrder }) => {
+const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor }) => {
 
     return (
         <View style={styles.container}>
@@ -22,17 +22,19 @@ const CustomerCard = ({ customer, onExpand, onOrder }) => {
             <View style={{ height: customer.layoutHeight }}>
                 <View style={styles.line} />
                 <View style={styles.content}>
-                    <View style={styles.item}>
-                        <Ionicons name="podium" size={22} color="gray" />
-                        <Text style={styles.textContent}>فاکتور باز</Text>
-                    </View>
-                    <View style={styles.item}>
-                        <Ionicons name="person" size={22} color="gray" />
-                        <Text style={styles.textContent}>اطلاعات مشتری</Text>
-                    </View>
                     <Ripple
                         style={styles.item}
-                        activeOpacity={.6}
+                        onPress={onOpenFactor}
+                    >
+                        <Ionicons name="podium" size={22} color="gray" />
+                        <Text style={styles.textContent}>فاکتور باز</Text>
+                    </Ripple>
+                    <Ripple style={styles.item}>
+                        <Ionicons name="person" size={22} color="gray" />
+                        <Text style={styles.textContent}>اطلاعات مشتری</Text>
+                    </Ripple>
+                    <Ripple
+                        style={styles.item}
                         onPress={onOrder}
                     >
                         <Ionicons name="ios-cart" size={22} color="gray" />
