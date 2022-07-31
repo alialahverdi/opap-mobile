@@ -3,6 +3,7 @@ import { StackActions } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Animatable from 'react-native-animatable'
 import Layout from '../../components/Layout'
+import { Image } from 'react-native'
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
@@ -61,6 +62,10 @@ const Splash = ({ navigation }) => {
                 duration={2000}
                 useNativeDriver={true}
                 style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <Image
+                    source={require('../../assets/img/logo.png')}
+                    style={{ width: 180, height: 180 }}
+                />
                 <Text style={styles.appName}>Opap</Text>
             </Animatable.View>
             <Text style={styles.version}>Version : 0.1.0</Text>
@@ -78,7 +83,7 @@ const styles = StyleSheet.create({
     },
     appName: {
         ...font.whiteBold,
-        fontSize: 30
+        fontSize: 25
     },
     version: {
         color: '#fff',
