@@ -10,6 +10,7 @@ import { generatorID } from '../../../utils/IDUtils'
 import AlertModal from '../../../components/Modal/AlertModal'
 import * as Animatable from 'react-native-animatable'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import useSnackbar from '../../../hooks/useSnackbar'
 
 
 
@@ -22,6 +23,7 @@ const Customer = ({ navigation }) => {
 
     // ------- Constants ------- //
     const initialRender = useRef(true)
+    const { showSnakbar } = useSnackbar()
 
 
     // ------- States ------- //
@@ -50,7 +52,6 @@ const Customer = ({ navigation }) => {
             setSearchedCustomerText("")
         }
     }, [isShowDailyVisit])
-
 
     const getAndCheckVisitDate = async () => {
         const visitDate = await AsyncStorage.getItem("visitDate")
@@ -83,6 +84,11 @@ const Customer = ({ navigation }) => {
     const getApiCustomers = async () => {
         const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
         await AsyncStorage.setItem('visitDate', today)
+
+        api.get('/customer/getopenfactor').then(res => {
+            storeArray(res.content, "OpenFactor")
+        }).catch(() => { })
+
         api.get('/customer/get').then(res => {
             storeArray(res.content, "Customer").then(() => {
                 const newCustomers = res.content.map(item => {
@@ -177,7 +183,29 @@ const Customer = ({ navigation }) => {
     }
 
     const onOpenFactor = (customer) => {
-        navigation.navigate("OpenFactorScreen", { customer })
+        const openFactorRealm = realm.objects("OpenFactor").filtered(`CustomerID == ${customer.CustomerID}`)
+        const openFactorEncoded = openFactorRealm.toJSON()
+        if (openFactorRealm.length === 0) {
+            return showSnakbar({
+                variant: "error",
+                message: "این مشتری فاکتور باز ندارد."
+            })
+        }
+
+        const addSelectable = (arr) => {
+            return arr.map(item => {
+                return {
+                    ...item,
+                    selected: false
+                }
+            })
+        }
+        const openFactor = {
+            factors: addSelectable(openFactorEncoded),
+            CustomerName: customer.CustomerName,
+            CustomerID: customer.CustomerID
+        }
+        navigation.navigate("OpenFactorScreen", { openFactor })
     }
 
     const storeOrder = (customer) => {
@@ -217,12 +245,18 @@ const Customer = ({ navigation }) => {
         return false
     }
 
-    const handleRefresh = () => {
+    const handleRefresh = async () => {
         setRefreshing(true)
+        // await api.get('/customer/getopenfactor').then(res => {
+        //     deleteAllDataFromSchema("OpenFactor").then(() => {
+        //         storeArray(res.content, "OpenFactor")
+        //     })
+        // }).catch(() => { })
+
         api.get('/customer/get').then(res => {
             deleteAllDataFromSchema("Customer").then(() => {
                 storeArray(res.content, "Customer").then(() => {
-                    addExpandable(res.content)
+                    setStateCustomers(res.content)
                 })
             })
         }).catch(() => { })
@@ -268,7 +302,6 @@ const Customer = ({ navigation }) => {
                         // onEndReached={handleLoadMore}
                         refreshing={refreshing}
                         onRefresh={handleRefresh}
-
                     />
                 </>
             )}
