@@ -14,7 +14,7 @@ const OpenOrders = ({ navigation }) => {
     const getApiOpenOrders = () => {
         api.get('/home/order').then(res => {
             setOrder(res.content)
-           // alert(JASON.stringify(order))
+            // alert(JASON.stringify(order))
         }).catch(() => { })
     }
     useEffect(() => {
@@ -23,9 +23,9 @@ const OpenOrders = ({ navigation }) => {
     return (
         <Layout>
             <Header
-                    title="لیست سفارشات باز"
-                    goBack={() => navigation.goBack()}
-                />
+                title="لیست سفارشات باز"
+                goBack={() => navigation.goBack()}
+            />
             <FlatList
                 style={{ paddingHorizontal: 10 }}
                 data={order}
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         padding: 5,
-        elevation: 5,
+        // elevation: 5,
         marginTop: 5,
         // borderColor: '#111',
         // borderWidth: 2

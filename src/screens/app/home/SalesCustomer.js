@@ -5,14 +5,14 @@ import { formatNumber } from '../../../utils/numbersUtils'
 import Header from '../../../components/Header'
 import { StackActions } from '@react-navigation/native'
 // create a component
-const SalesCustomer = ({ route,navigation }) => {
+const SalesCustomer = ({ route, navigation }) => {
 
     // ------- States ------- //
     const [isShowList, setIsShowList] = useState(false)
     const [order, setOrder] = useState([])
-    const {typeid}=route.params;
+    const { typeid } = route.params;
     const getApiSales = () => {
-        api.get('/home/salescustomer',{params:{rpttype:typeid}}).then(res => {
+        api.get('/home/salescustomer', { params: { rpttype: typeid } }).then(res => {
             setOrder(res.content)
             //alert(JASON.stringify(order))
         }).catch(() => { })
@@ -23,9 +23,9 @@ const SalesCustomer = ({ route,navigation }) => {
     return (
         <Layout>
             <Header
-                    title="فروش به تفکیک مشتری"
-                    goBack={() => navigation.goBack()}
-                />
+                title="فروش به تفکیک مشتری"
+                goBack={() => navigation.goBack()}
+            />
             <FlatList
                 style={{ paddingHorizontal: 10 }}
                 data={order}
@@ -42,7 +42,7 @@ const SalesCustomer = ({ route,navigation }) => {
 
                         </View>
                         <View style={styles.customerstyle}>
-                        <Text style={styles.nameKey}> ریال  </Text>
+                            <Text style={styles.nameKey}> ریال  </Text>
                             <Text numberOfLines={1} style={styles.amountText} >
                                 {formatNumber(item.Amount)}
                             </Text>
@@ -50,7 +50,7 @@ const SalesCustomer = ({ route,navigation }) => {
                             <Text numberOfLines={1} style={styles.amountTextright} >
                                 {item.Cnt}
                             </Text>
-                            
+
 
                         </View>
                     </View>
@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         padding: 5,
-        elevation: 5,
+        // elevation: 5,
         marginTop: 5,
-      
+
         // borderColor: '#111',
         // borderWidth: 2
     },
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     amountTextright: {
         ...font.blackBold,
         color: "#0073e6",
-        paddingHorizontal:2
+        paddingHorizontal: 2
         //justifyContent: "center",
     },
     salesPriceText: {
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     nameKey: {
         ...font.gray,
         fontSize: 11,
-        paddingVertical:2
+        paddingVertical: 2
     },
 })
 

@@ -6,15 +6,15 @@ import api from '../../../services/axiosInstance'
 import { formatNumber } from '../../../utils/numbersUtils'
 
 // create a component
-const OpenFactors = ({route,navigation}) => {
+const OpenFactors = ({ route, navigation }) => {
 
     // ------- States ------- //
-    const {customer} = route.params
+    const { customer } = route.params
     const [isShowList, setIsShowList] = useState(false)
     const [order, setOrder] = useState([])
-    const {typeid}=route.params;
+    const { typeid } = route.params;
     const getApiOpenOrders = () => {
-        api.get('/customer/openfactor',{params:{customerid: customer.CustomerID,rpttype:typeid}}).then(res => {
+        api.get('/customer/openfactor', { params: { customerid: customer.CustomerID, rpttype: typeid } }).then(res => {
             setOrder(res.content)
             //alert(JASON.stringify(order))
         }).catch(() => { })
@@ -26,10 +26,10 @@ const OpenFactors = ({route,navigation}) => {
     return (
         <Layout>
             <Header
-                    title="لیست فاکتورهای باز"
-                    // goBack={() => navigation.dispatch(StackActions.replace("InfoScreen",{customer}))}
-                    goBack={() => navigation.goBack()}
-                />
+                title="لیست فاکتورهای باز"
+                // goBack={() => navigation.dispatch(StackActions.replace("InfoScreen",{customer}))}
+                goBack={() => navigation.goBack()}
+            />
             <FlatList
                 style={{ paddingHorizontal: 10 }}
                 data={order}
@@ -46,9 +46,9 @@ const OpenFactors = ({route,navigation}) => {
 
                         </View>
                         <View style={styles.customerstyle}>
-                       
+
                             <Text numberOfLines={1} style={styles.orderText} >
-                             {item.PayDate}
+                                {item.PayDate}
                             </Text>
                             <Text numberOfLines={1} style={styles.lableText} >تاریخ :</Text>
                             <Text numberOfLines={1} style={styles.orderText} >
@@ -57,11 +57,11 @@ const OpenFactors = ({route,navigation}) => {
                             <Text numberOfLines={1} style={styles.lableText} >مدت :</Text>
                         </View>
                         <View style={styles.customerstyle}>
-                        <Text numberOfLines={1} style={styles.lableAmountText} >ریال</Text>
+                            <Text numberOfLines={1} style={styles.lableAmountText} >ریال</Text>
                             <Text numberOfLines={1} style={styles.amountText} >
                                 {formatNumber(item.RemAmount)}
                             </Text>
-                            
+
                             <Text numberOfLines={1} style={styles.orderText} >
                                 {item.SalesDate}
                             </Text>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         padding: 5,
-        elevation: 5,
+        // elevation: 5,
         marginTop: 5,
         // borderColor: '#111',
         // borderWidth: 2
@@ -127,19 +127,19 @@ const styles = StyleSheet.create({
     lableText: {
         ...font.gray,
         paddingHorizontal: 3,
-        fontSize:11,
+        fontSize: 11,
         alignSelf: "baseline",
     },
     lableAmountText: {
         ...font.gray,
         paddingHorizontal: 3,
-        fontSize:11,
+        fontSize: 11,
         alignSelf: "baseline",
     },
     amountText: {
         ...font.blackBold,
         color: "#0073e6",
-        flex: 1,alignSelf: "baseline",
+        flex: 1, alignSelf: "baseline",
         //justifyContent: "center",
     },
     salesPriceText: {

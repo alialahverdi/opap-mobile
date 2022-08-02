@@ -8,6 +8,7 @@ import { View } from 'react-native-animatable'
 import { formatNumber } from '../../../utils/numbersUtils'
 import api from '../../../services/axiosInstance'
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import Ripple from 'react-native-material-ripple'
 
 
 // create a component
@@ -87,7 +88,7 @@ const Home = ({ navigation }) => {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.openOrder} onPress={() => navigation.navigate('OpenOrders')}>
+                    <TouchableOpacity style={styles.openOrder} activeOpacity={.4} onPress={() => navigation.navigate('OpenOrders')}>
                         <View style={styles.header}>
                             <Text style={styles.title}>سفارشات باز</Text>
                         </View>
@@ -180,7 +181,7 @@ const Home = ({ navigation }) => {
                         </View>
                     </View>
 
-                    <TouchableOpacity style={styles.sellPerformance} onPress={() => expandMenu()}>
+                    <TouchableOpacity style={styles.sellPerformance} activeOpacity={.6} onPress={() => expandMenu()}>
                         <Text style={styles.title}>عملکرد ماهانه</Text>
                         <View style={styles.chartAndBack}>
                             <View style={{ alignItems: 'center', }}>
@@ -280,7 +281,7 @@ const Home = ({ navigation }) => {
                     </TouchableOpacity>
 
                     <View style={[styles.sellPerformance, { marginBottom: 8 }]}>
-                        <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 1 })}>
+                        <Ripple onPress={() => navigation.navigate('OpenFactors', { typeid: 1 })}>
                             <View>
                                 <Text style={styles.title}>فاکتور های باز</Text>
                             </View>
@@ -295,8 +296,8 @@ const Home = ({ navigation }) => {
                                 </View>
                             </View>
                             <View style={styles.line} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 2 })}>
+                        </Ripple>
+                        <Ripple onPress={() => navigation.navigate('OpenFactors', { typeid: 2 })}>
                             <View>
                                 <Text style={styles.title}>فاکتور های باز سر رسید شده</Text>
                             </View>
@@ -311,8 +312,8 @@ const Home = ({ navigation }) => {
                                 </View>
                             </View>
                             <View style={styles.line} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 3 })}>
+                        </Ripple>
+                        <Ripple onPress={() => navigation.navigate('OpenFactors', { typeid: 3 })}>
                             <View>
                                 <Text style={styles.title}>فاکتور های باز سر رسید نشده</Text>
                             </View>
@@ -327,8 +328,8 @@ const Home = ({ navigation }) => {
                                 </View>
                             </View>
                             <View style={styles.line} />
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 4 })}>
+                        </Ripple>
+                        <Ripple onPress={() => navigation.navigate('OpenFactors', { typeid: 4 })}>
                             <View>
                                 <Text style={styles.title}>فاکتور های باز نقدی 1 روزه</Text>
                             </View>
@@ -342,7 +343,7 @@ const Home = ({ navigation }) => {
                                     <Text style={styles.valuePerformance}> {home.OneSalesOpenCnt}  </Text>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                        </Ripple>
                     </View>
                 </ScrollView>
             )}

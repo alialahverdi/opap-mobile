@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         // paddingVertical: 5,
         padding: 1,
-        elevation: 3,
+        // elevation: 3,
 
     },
     header: {
