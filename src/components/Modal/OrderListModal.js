@@ -106,6 +106,20 @@ const OrderListModal = ({
         return total
     }
 
+    const payday = () => {
+        const prices = orders.map((i) => i.SalesPrice * i.count)
+        const reducer = (accumulator, curr) => accumulator + curr;
+        const total = prices.reduce(reducer)
+
+        const day = orders.map((i) => i.SalesPrice * i.count * i.PayDay)
+        const dayreducer = (accumulator, curr) => accumulator + curr;
+        const totalDay = day.reduce(dayreducer)
+
+        const devider = totalDay / total
+
+        return Math.floor(devider)
+    }
+
 
     return (
         <Modal
@@ -139,6 +153,12 @@ const OrderListModal = ({
                             <View style={styles.totalContainer}>
                                 <Text style={styles.toman}>تومان</Text>
                                 <Text style={styles.totalText}>{formatNumber(factorSum())}</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <View style={styles.totalContainer}>
+                                <Text style={styles.toman}>روز</Text>
+                                <Text style={styles.totalText}>{payday()}</Text>
                             </View>
                         </View>
                     </View>

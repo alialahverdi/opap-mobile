@@ -13,14 +13,18 @@ import ProductScreen from '../screens/app/product';
 import OrderTabsScreen from '../screens/app/orderTabs';
 import TestScreen from '../screens/app/Test';
 import { color } from 'react-native-reanimated';
-
+import HomeStack from './HomeStack';
 
 // Create Tab fro screens
 const Tab = createBottomTabNavigator()
 
 const getTabBarVisibility = (route) => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? 'CustomerStack'
-    if (routeName === "OrderScreen") {
+    if (routeName === "OrderScreen" || routeName === "InfoScreen") {
+        return false
+    }
+    if (routeName === "OpenFactors" || routeName === "OpenOrders" || routeName === "SalesSupplier"
+        || routeName === "SalesProduct" || routeName === "SalesDaily" || routeName === "SalesCustomer") {
         return false
     }
     return true
@@ -42,7 +46,7 @@ const label = (props, label) => {
 const AppStack = () => {
     return (
         <Tab.Navigator
-            initialRouteName="HomeScreen"
+            initialRouteName="HomeStack"
             tabBarOptions={{
                 // activeTintColor: "red"
             }}
@@ -60,7 +64,7 @@ const AppStack = () => {
                 component={ProductScreen}
                 options={{
                     tabBarLabel: props => label(props, "محصولات"),
-                    tabBarIcon: props => <Icon name="bandage-outline" size={props.size} color={props.color} />
+                    tabBarIcon: props => <Icon name="medkit-outline" size={props.size} color={props.color} />
                 }}
             />
             <Tab.Screen
@@ -73,12 +77,13 @@ const AppStack = () => {
                 })}
             />
             <Tab.Screen
-                name="HomeScreen"
-                component={HomeScreen}
-                options={{
-                    tabBarLabel: props => label(props, "خانه"),
-                    tabBarIcon: props => <Icon name="home" size={props.size} color={props.color} />
-                }}
+                name="HomeStack"
+                component={HomeStack}
+                options={({ route }) => ({
+                    tabBarLabel: "خانه",
+                    tabBarIcon: props => <Icon name="home" size={props.size} color={props.color} />,
+                    tabBarVisible: getTabBarVisibility(route)
+                })}
             />
         </Tab.Navigator>
     )

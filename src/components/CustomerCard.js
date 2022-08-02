@@ -1,6 +1,6 @@
 import Ripple from "react-native-material-ripple";
 
-const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor }) => {
+const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor, onInfo }) => {
 
     return (
         <View style={styles.container}>
@@ -9,14 +9,18 @@ const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor }) => {
                 activeOpacity={.6}
                 onPress={onExpand}
             >
-                <View style={styles.customerPay}>
-                    <Text style={[font.black, { fontSize: 12 }]}>فاکتور باز : {customer.CountOpen}</Text>
-                    <Text style={[font.black, { fontSize: 12 }]}>مانده مشتری : {customer.RemAmount}</Text>
-                </View>
                 <View style={styles.customerInfo}>
                     <Text style={styles.customerName}>{customer.CustomerName}</Text>
-                    <Text style={styles.customerID}>{customer.CustomerID}</Text>
+                    <Text>  </Text>
+                    <Text style={styles.customerName}>{customer.CustomerID}</Text>
+                </View>
+
+                <View style={styles.customerInfo}>
                     <Text style={styles.customerAddr}>{customer.Address}</Text>
+                </View>
+                <View style={styles.customerPay}>
+                    <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>فاکتور باز : {customer.CountOpen}</Text>
+                    <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>مانده مشتری : {customer.RemAmount}</Text>
                 </View>
             </TouchableOpacity>
             <View style={{ height: customer.layoutHeight }}>
@@ -26,18 +30,21 @@ const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor }) => {
                         style={styles.item}
                         onPress={onOpenFactor}
                     >
-                        <Ionicons name="podium" size={22} color="gray" />
+                        <Ionicons name="document-text" size={22} color="#ff6666" />
                         <Text style={styles.textContent}>فاکتور باز</Text>
                     </Ripple>
-                    <Ripple style={styles.item}>
-                        <Ionicons name="person" size={22} color="gray" />
-                        <Text style={styles.textContent}>اطلاعات مشتری</Text>
+                    <Ripple
+                        style={styles.item}
+                        onPress={onInfo}
+                    >
+                        <Ionicons name="stats-chart" size={22} color="#8000ff" />
+                        <Text style={styles.textContent}>آنالیز مشتری</Text>
                     </Ripple>
                     <Ripple
                         style={styles.item}
                         onPress={onOrder}
                     >
-                        <Ionicons name="ios-cart" size={22} color="gray" />
+                        <Ionicons name="ios-cart" size={22} color="#00b300" />
                         <Text style={styles.textContent}>ثبت سفارش</Text>
                     </Ripple>
                 </View>
@@ -48,23 +55,28 @@ const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor }) => {
 
 const styles = StyleSheet.create({
     container: {
-        marginVertical: 4,
+        marginVertical: 2,
         backgroundColor: "#fff",
         borderRadius: 5,
-        paddingVertical: 10,
-        paddingLeft: 20
+        // paddingVertical: 5,
+        padding: 1,
+        elevation: 3,
+
     },
     header: {
-        flexDirection: "row",
+        // flexDirection: "row",
+        alignItems: "flex-end",
     },
     customerInfo: {
-        flex: .7,
-        alignItems: "flex-end",
-        paddingHorizontal: 15
+        // flex: .7,
+        // alignItems: "flex-end",
+        paddingHorizontal: 10,
+        flexDirection: 'row',
+        padding: 1,
     },
     customerName: {
         ...font.black,
-        color: "#18277a",
+        color: "#111",
         textAlign: "right",
     },
     customerID: {
@@ -77,8 +89,7 @@ const styles = StyleSheet.create({
     customerAddr: {
         ...font.gray,
         textAlign: "right",
-        fontSize: 10,
-        marginTop: 12
+        fontSize: 10
     },
     firstletter: {
         width: 60,
@@ -88,9 +99,9 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     customerPay: {
-        flex: .3,
-        justifyContent: "space-between",
-        alignItems: "flex-end"
+        flexDirection: 'row', paddingHorizontal: 10, color: '#3399ff'
+        , padding: 2,
+        marginVertical: 2
     },
     line: {
         height: 1,

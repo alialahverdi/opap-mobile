@@ -124,6 +124,10 @@ const Customer = ({ navigation }) => {
         ])
     }
 
+    const onInfo = (customer) => {
+        navigation.navigate("InfoScreen", { customer })
+    }
+
     const showCustomers = ({ item, index }) => {
         const delayindex = index + 1
 
@@ -139,6 +143,7 @@ const Customer = ({ navigation }) => {
                     onExpand={() => openLayoutCustomer(index)}
                     onOrder={() => onOrder(item)}
                     onOpenFactor={() => onOpenFactor(item)}
+                    onInfo={() => onInfo(item)}
                 />
             </Animatable.View>
 

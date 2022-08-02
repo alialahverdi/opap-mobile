@@ -41,6 +41,10 @@ const OrderCard = ({ type, product, onUpdate, onDelete }) => {
                     <Text style={styles.infoText}>تعداد :</Text>
                 </View>
                 <View style={styles.infoProduct}>
+                    <Text style={styles.infoText}>{product.PayDay} </Text>
+                    <Text style={styles.infoText}>فرجه :</Text>
+                </View>
+                <View style={styles.infoProduct}>
                     <Text style={styles.toman}>تومان</Text>
                     <Text style={styles.infoText}>{formatNumber(product.SalesPrice)} </Text>
                     <Text style={styles.infoText}>قیمت فروش :</Text>

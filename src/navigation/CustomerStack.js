@@ -3,8 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack'
 
 // Screens
 import CustomerScreen from '../screens/app/customer'
+import Info from '../screens/app/customer/Info';
+import OpenFactors from '../screens/app/customer/OpenFactors';
 import OrderScreen from '../screens/app/customer/Order'
-import OpenFactorScreen from '../screens/app/customer/OpenFactor'
 
 
 // Create Tab fro screens
@@ -16,7 +17,8 @@ const CustomerStack = () => {
         <Stack.Navigator headerMode="none">
             <Stack.Screen name="CustomerScreen" component={CustomerScreen} />
             <Stack.Screen name="OrderScreen" component={OrderScreen} />
-            <Stack.Screen name="OpenFactorScreen" component={OpenFactorScreen} />
+            <Stack.Screen name="InfoScreen" component={Info} />
+            <Stack.Screen name="OpenFactorScreen" component={OpenFactors} />
         </Stack.Navigator>
     )
 }
