@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack'
 // Screens
 import CustomerScreen from '../screens/app/customer'
 import Info from '../screens/app/customer/Info';
-import OpenFactors from '../screens/app/customer/OpenFactors';
+import OpenFactor from '../screens/app/customer/OpenFactor';
 import OrderScreen from '../screens/app/customer/Order'
 
 
@@ -18,7 +18,7 @@ const CustomerStack = () => {
             <Stack.Screen name="CustomerScreen" component={CustomerScreen} />
             <Stack.Screen name="OrderScreen" component={OrderScreen} />
             <Stack.Screen name="InfoScreen" component={Info} />
-            <Stack.Screen name="OpenFactorScreen" component={OpenFactors} />
+            <Stack.Screen name="OpenFactorScreen" component={OpenFactor} />
         </Stack.Navigator>
     )
 }

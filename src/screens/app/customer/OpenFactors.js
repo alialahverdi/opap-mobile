@@ -14,10 +14,10 @@ const OpenFactors = ({ route, navigation }) => {
     const [order, setOrder] = useState([])
     const { typeid } = route.params;
     const getApiOpenOrders = () => {
-        api.get('/customer/openfactor', { params: { customerid: customer.CustomerID, rpttype: typeid } }).then(res => {
-            setOrder(res.content)
-            //alert(JASON.stringify(order))
-        }).catch(() => { })
+        // api.get('/customer/openfactor', { params: { customerid: customer.CustomerID, rpttype: typeid } }).then(res => {
+        //     setOrder(res.content)
+        //     //alert(JASON.stringify(order))
+        // }).catch(() => { })
     }
     useEffect(() => {
         //alert(customer.CustomerID)

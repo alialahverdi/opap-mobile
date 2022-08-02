@@ -187,8 +187,8 @@ const Customer = ({ navigation }) => {
         return storeOrder(customer)
     }
 
-    const onOpenFactor = (customer) => {
-        const openFactorRealm = realm.objects("OpenFactor").filtered(`CustomerID == ${customer.CustomerID}`)
+    const onOpenFactor = async (customer) => {
+        const openFactorRealm = await realm.objects("OpenFactor").filtered(`CustomerID == ${customer.CustomerID}`)
         const openFactorEncoded = openFactorRealm.toJSON()
         if (openFactorRealm.length === 0) {
             return showSnakbar({
