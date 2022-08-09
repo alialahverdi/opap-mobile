@@ -252,7 +252,7 @@ const Home = ({ navigation }) => {
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', flex: .5, justifyContent: 'flex-end' }}>
                                 <Text style={styles.valuePerformance}>{formatNumber(home.T1)} </Text>
-                                <Text style={styles.nameKey}> هدف روز : </Text>
+                                <Text style={styles.nameKey}> هدف ماه : </Text>
                                 <Ionicons name="pulse" size={16} color="#ff6666" />
                             </View>
 

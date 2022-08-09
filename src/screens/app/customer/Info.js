@@ -109,7 +109,7 @@ const Info = ({ route, navigation }) => {
 
 
                 <View style={[styles.sellPerformance, { marginBottom: 8 }]}>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactorScreen', {customer:customerObj, typeid: 1})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 1})}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز</Text>
                         </View>
@@ -126,7 +126,7 @@ const Info = ({ route, navigation }) => {
                         <View style={styles.line} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactorScreen', {customer:customerObj, typeid: 2})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 2})}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز سر رسید شده</Text>
                         </View>
@@ -142,7 +142,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactorScreen', {customer:customerObj, typeid: 3})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 3})}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز سر رسید نشده</Text>
                         </View>
@@ -158,7 +158,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactorScreen', {customer:customerObj, typeid: 4})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 4})}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز نقدی 1 روزه</Text>
                         </View>
@@ -225,7 +225,7 @@ const Info = ({ route, navigation }) => {
                     
                 </View>
                 <View style={[styles.sellPerformance, { marginBottom: 8 }]}>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 2 })}>
+                    <TouchableOpacity>
                         <View>
                             <Text style={styles.title}>چک های نزد بانک</Text>
                         </View>
@@ -242,7 +242,7 @@ const Info = ({ route, navigation }) => {
                         <View style={styles.line} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 2 })}>
+                    <TouchableOpacity>
                         <View>
                             <Text style={styles.title}>چک های نزد صندوق</Text>
                         </View>
@@ -258,7 +258,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 3 })}>
+                    <TouchableOpacity>
                         <View>
                             <Text style={styles.title}>چک های برگشتی</Text>
                         </View>
@@ -274,7 +274,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 3 })}>
+                    <TouchableOpacity>
                         <View>
                             <Text style={styles.title}>چک های حقوقی</Text>
                         </View>
@@ -290,7 +290,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('OpenFactors', { typeid: 3 })}>
+                    <TouchableOpacity>
                         <View>
                             <Text style={styles.title}>چک های خرج شده (در جریان)</Text>
                         </View>
