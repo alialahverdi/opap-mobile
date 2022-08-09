@@ -10,6 +10,7 @@ const Product = ({ navigation }) => {
     const [productDetail, setProductDetail] = useState({})
     const [orderModal, setOrderModal] = useState(false)
 
+    // ------- Logic or Functions ------- //
     const showDetail = (product) => {
         setProductDetail(product)
         setOrderModal(true)

@@ -1,6 +1,7 @@
 import Layout from '../../../components/Layout'
 import Header from '../../../components/Header'
 import Ripple from 'react-native-material-ripple'
+import { formatNumber } from '../../../utils/numbersUtils'
 
 
 // create a component
@@ -12,6 +13,7 @@ const OpenFactor = ({ navigation, route }) => {
     // ------- States ------- //
     const [factors, setFactors] = useState(openFactor.factors)
 
+    // ------- Logic or Functions ------- //
     const selectFactor = (factor, index) => {
         const cloneFactors = [...factors]
         cloneFactors[index].selected = cloneFactors[index].selected === false ? true : false
@@ -27,32 +29,32 @@ const OpenFactor = ({ navigation, route }) => {
                 <View style={styles.leftFactor}>
                     <View style={styles.info}>
                         <View style={styles.infoContaierText}>
-                            <Text>{item.SalesDate} </Text>
-                            <Text>تاریخ  :</Text>
+                            <Text style={styles.value}>{item.SalesDate} </Text>
+                            <Text style={styles.key}>تاریخ :</Text>
                         </View>
                         <View style={styles.infoContaierText}>
-                            <Text>{item.SalesNo} </Text>
-                            <Text>شماره  :</Text>
+                            <Text style={styles.value}>{item.SalesNo} </Text>
+                            <Text style={styles.key}>شماره :</Text>
                         </View>
                     </View>
                     <View style={[styles.info, { marginVertical: 10 }]}>
                         <View style={styles.infoContaierText}>
-                            <Text>{item.RemAmount}</Text>
-                            <Text>مانده فاکتور :</Text>
+                            <Text style={styles.value}>{formatNumber(item.RemAmount)} </Text>
+                            <Text style={styles.key}>مانده فاکتور :</Text>
                         </View>
                         <View style={styles.infoContaierText}>
-                            <Text>{item.NetAmount} </Text>
-                            <Text>خالص فاکتور :</Text>
+                            <Text style={styles.value}>{formatNumber(item.NetAmount)} </Text>
+                            <Text style={styles.key}>خالص فاکتور :</Text>
                         </View>
                     </View>
                     <View style={styles.info}>
                         <View style={styles.infoContaierText}>
-                            <Text>{item.PayDate}</Text>
-                            <Text>تاریخ باز پرداخت:</Text>
+                            <Text style={styles.value}>{item.PayDate}</Text>
+                            <Text style={styles.key}>تاریخ باز پرداخت :</Text>
                         </View>
                         <View style={styles.infoContaierText}>
-                            <Text>{item.PayDay} </Text>
-                            <Text>مدت باز پرداخت:</Text>
+                            <Text style={styles.value}>{item.PayDay} </Text>
+                            <Text style={styles.key}>مدت باز پرداخت :</Text>
                         </View>
                     </View>
                 </View>
@@ -67,6 +69,12 @@ const OpenFactor = ({ navigation, route }) => {
         )
     }
 
+    const factorSum = () => {
+        const prices = factors.map((i) => i.RemAmount)
+        const reducer = (accumulator, curr) => accumulator + curr;
+        const total = prices.reduce(reducer)
+        return total
+    }
 
     return (
         <Layout>
@@ -79,6 +87,21 @@ const OpenFactor = ({ navigation, route }) => {
                     <Text style={styles.customerName}>
                         {openFactor.CustomerID} - {openFactor.CustomerName}
                     </Text>
+                    <View style={styles.infoOpenFactorContainer}>
+                        <View style={styles.infoOpenFactor}>
+                            <Text style={styles.toman}>تومان</Text>
+                            <Text style={styles.infoText}>{formatNumber(factorSum())} </Text>
+                            <Text style={styles.infoText}>جمع مانده :</Text>
+                        </View>
+                        <View style={styles.rasContainer}>
+                            <View style={styles.infoOpenFactor}>
+                                <Text style={styles.infoText}>راس (تاریخ) :</Text>
+                            </View>
+                            <View style={styles.infoOpenFactor}>
+                                <Text style={styles.infoText}>راس (روز) :</Text>
+                            </View>
+                        </View>
+                    </View>
                 </View>
                 <View style={styles.body}>
                     <FlatList
@@ -100,7 +123,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10
     },
     haeder: {
-        // backgroundColor: 'yellow',
+        backgroundColor: '#fff',
+        padding: 10,
+        marginBottom: 10
     },
     factorContainer: {
         flexDirection: 'row',
@@ -138,6 +163,42 @@ const styles = StyleSheet.create({
     },
     body: {
         flexGrow: 1
+    },
+    infoOpenFactorContainer: {
+        alignItems: "flex-end",
+        marginTop: 5
+    },
+    infoOpenFactor: {
+        flexDirection: "row",
+        justifyContent: 'space-between'
+    },
+    infoText: {
+        ...font.black,
+        color: "#2367ff",
+        fontSize: Platform.OS == "android" ? 14 : 16
+    },
+    toman: {
+        ...font.gray,
+        color: "#2367ff",
+        fontSize: 8,
+        marginRight: 5,
+        marginTop: 5
+    },
+    rasContainer: {
+        marginTop: 5,
+        width: '100%',
+        flexDirection: "row",
+        justifyContent: "space-between",
+    },
+    value: {
+        ...font.black,
+        color: "#2367ff",
+        fontSize: Platform.OS == "android" ? 14 : 16
+    },
+    key: {
+        ...font.black,
+        color: "gray",
+        fontSize: Platform.OS == "android" ? 12 : 14
     },
     footer: {
         // backgroundColor: 'blue',
