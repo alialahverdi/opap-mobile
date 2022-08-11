@@ -4,8 +4,33 @@ import Ripple from 'react-native-material-ripple'
 const ProductCard = ({ product, screenType, onPress }) => {
 
     return (
-        <View style={styles.container}>
-            <View style={styles.left}>
+        <Ripple onPress={onPress} style={styles.container}>
+            <View style={styles.header}>
+                <Text numberOfLines={1} style={styles.productName}>{product.ProductID} {product.ProductName}</Text>
+                <MaterialCommunityIcons
+                    name="gift-outline"
+                    size={18}
+                    color={product.PromotionDesc === "" ? "gray" : "red"}
+                />
+            </View>
+            <View style={styles.tageContainer}>
+                <View style={styles.supplierContainer}>
+                    <Text style={styles.supplierText}>{product.StockQty} بسته</Text>
+                </View>
+                <View style={styles.supplierContainer}>
+                    <Text style={styles.supplierText}>{product.ExprDate} انقضا</Text>
+                </View>
+                <View style={styles.supplierContainer}>
+                    <Text style={styles.supplierText}>{product.PayDay} روز</Text>
+                </View>
+                <View style={styles.supplierContainer}>
+                    <Text style={styles.supplierText}>{formatNumber(product.SalesPrice)} ریال</Text>
+                </View>
+                <View style={styles.supplierContainer}>
+                    <Text style={styles.supplierText}>{product.SupplierName}</Text>
+                </View>
+            </View>
+            {/* <View style={styles.left}>
                 <Ripple style={styles.orderButton} onPress={onPress} >
                     <Ionicons
                         name={screenType === "ProductScreen" ? "eye" : "ios-cart"}
@@ -15,9 +40,9 @@ const ProductCard = ({ product, screenType, onPress }) => {
                 </Ripple>
             </View>
             <View style={[
-                styles.center,
-                screenType == "OrderedProducts" ? { paddingLeft: 0 } : { paddingLeft: 15 },
-                screenType == "OrderedProducts" ? { flex: .6 } : { flex: .8 }
+                styles.right,
+                // screenType == "OrderedProducts" ? { paddingLeft: 0 } : { paddingLeft: 15 },
+                // screenType == "OrderedProducts" ? { flex: .6 } : { flex: .8 }
             ]}>
                 <Text
                     numberOfLines={1}
@@ -29,11 +54,8 @@ const ProductCard = ({ product, screenType, onPress }) => {
                 <View style={styles.supplierContainer}>
                     <Text style={styles.supplierText}>{product.SupplierName}</Text>
                 </View>
-            </View>
-            <View style={styles.right}>
-                <Text style={styles.productIdText}>{product.ProductID}</Text>
-            </View>
-        </View>
+            </View> */}
+        </Ripple>
     )
 }
 
@@ -43,15 +65,39 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
         borderRadius: 5,
         paddingTop: Platform.OS === "ios" ? 10 : 5,
-        paddingBottom: 5,
-        flexDirection: "row",
+        padding: 10,
+        // paddingHorizontal: 10,
+        // paddingVertical: 10,
+        // flexDirection: "row",
         justifyContent: "flex-end"
     },
+    header: {
+        flexDirection: 'row',
+        padding: 1,
+        justifyContent: "flex-end",
+        alignItems: 'flex-start',
+        // backgroundColor: 'red'
+    },
+    productName: {
+        ...font.black,
+        color: "#111",
+        marginRight: 10
+        // textAlign: "right",
+    },
+    tageContainer: {
+        flexDirection: "row",
+        justifyContent: "flex-end",
+    },
     left: {
-        flex: .2,
+        flex: .1,
         justifyContent: "center",
         alignItems: "center",
-        // backgroundColor: 'red'
+        backgroundColor: 'red'
+    },
+    right: {
+        flex: .9,
+        // backgroundColor: "yellow"
+        // alignItems: "flex-end",
     },
     orderButton: {
         width: 35,
@@ -61,9 +107,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    center: {
-        alignItems: "flex-end",
-    },
+
     productNameText: {
         ...font.black,
         fontSize: Platform.OS == "android" ? 12 : 14,
@@ -74,11 +118,11 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginTop: Platform.OS === "ios" ? 10 : 5
     },
-    right: {
-        flex: .2,
-        justifyContent: "center",
-        alignItems: "center"
-    },
+    // right: {
+    //     flex: .2,
+    //     justifyContent: "center",
+    //     alignItems: "center"
+    // },
     productIdText: {
         ...font.black,
         fontSize: Platform.OS == "android" ? 12 : 14,
@@ -90,7 +134,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         borderRadius: 15,
         alignItems: 'center',
-        backgroundColor: 'rgba(108, 182, 65, 0.1)'
+        backgroundColor: 'rgba(108, 182, 65, 0.1)',
+        marginRight: 5
     },
     supplierText: {
         fontFamily: 'IRANSansMobile(FaNum)',

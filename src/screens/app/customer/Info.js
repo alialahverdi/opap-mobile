@@ -23,7 +23,9 @@ const Info = ({ route, navigation }) => {
     // ------- Logic or Functions ------- //
     useEffect(() => {
         getApiInfo();
+
     }, [])
+
 
     return (
         <Layout containerStyle={styles.container}>
@@ -31,7 +33,7 @@ const Info = ({ route, navigation }) => {
                 title="آنالیز مشتری"
                 // goBack={() => navigation.dispatch(StackActions.replace("CustomerScreen"))}
                 goBack={() => navigation.goBack()}
-           />
+            />
             <ScrollView>
 
                 <View style={styles.dateStyle}>
@@ -55,18 +57,18 @@ const Info = ({ route, navigation }) => {
                                 dividerSize={5}
                                 sections={[
                                     {
-                                        percentage:info.PerSales !== undefined ? info.PerSales : 0, 
+                                        percentage: info.PerSales !== undefined ? info.PerSales : 0,
                                         color: '#f00',
                                     },
                                     {
-                                        percentage:  100-(info.PerSales !== undefined ? info.PerSales : 0),
+                                        percentage: 100 - (info.PerSales !== undefined ? info.PerSales : 0),
                                         color: '#39e600',
                                     },
                                 ]}
                                 backgroundColor="#ddd"
                             />
                             <View style={styles.gauge}>
-                                <Text style={{ fontSize: 20 }}>{100-info.PerSales}%</Text>
+                                <Text style={{ fontSize: 20 }}>{100 - info.PerSales}%</Text>
                             </View>
                         </View>
                         <View>
@@ -109,7 +111,7 @@ const Info = ({ route, navigation }) => {
 
 
                 <View style={[styles.sellPerformance, { marginBottom: 8 }]}>
-                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 1})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', { customer: customerObj, typeid: 1 })}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز</Text>
                         </View>
@@ -126,7 +128,7 @@ const Info = ({ route, navigation }) => {
                         <View style={styles.line} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 2})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', { customer: customerObj, typeid: 2 })}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز سر رسید شده</Text>
                         </View>
@@ -142,7 +144,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 3})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', { customer: customerObj, typeid: 3 })}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز سر رسید نشده</Text>
                         </View>
@@ -158,7 +160,7 @@ const Info = ({ route, navigation }) => {
                         </View>
                         <View style={styles.line} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', {customer:customerObj, typeid: 4})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('InfoOpenFactorsScreen', { customer: customerObj, typeid: 4 })}>
                         <View>
                             <Text style={styles.title}>فاکتور های باز نقدی 1 روزه</Text>
                         </View>
@@ -177,52 +179,52 @@ const Info = ({ route, navigation }) => {
                 <View style={styles.sellPerformance}>
                     <Text style={styles.title}>رویکرد نوع پرداخت</Text>
 
-                    <View style={[styles.chartAndBack,{flexDirection:'row'}]}>
+                    <View style={[styles.chartAndBack, { flexDirection: 'row' }]}>
                         <View style={{ alignItems: 'center', }}>
                             <Pie
-                               radius={80}
-                               sections={[
-                                 {
-                                   percentage:info.CheqPer !== undefined ? info.CheqPer : 0,
-                                   color: '#C70039',
-                                 },
-                                 {
-                                   percentage:info.CashPer !== undefined ? info.CashPer : 0,
-                                   color: '#44CD40',
-                                 },
-                                 {
-                                   percentage:info.FishPer !== undefined ? info.FishPer : 0, 
-                                   color: '#404FCD',
-                                 },
-                                 {
-                                   percentage:info.PosPer !== undefined ? info.PosPer : 0,
-                                   color: '#EBD22F',
-                                 },
-                               ]}
-                               strokeCap={'butt'}
+                                radius={80}
+                                sections={[
+                                    {
+                                        percentage: info.CheqPer !== undefined ? info.CheqPer : 0,
+                                        color: '#C70039',
+                                    },
+                                    {
+                                        percentage: info.CashPer !== undefined ? info.CashPer : 0,
+                                        color: '#44CD40',
+                                    },
+                                    {
+                                        percentage: info.FishPer !== undefined ? info.FishPer : 0,
+                                        color: '#404FCD',
+                                    },
+                                    {
+                                        percentage: info.PosPer !== undefined ? info.PosPer : 0,
+                                        color: '#EBD22F',
+                                    },
+                                ]}
+                                strokeCap={'butt'}
                             /></View>
-                            <View style={{ flex: 0.5, justifyContent: 'center'}}>
-                        <View style={{ width: '100%', marginTop: 10 }}>
-                            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-end'}}>
-                                <Text style={{ ...font.blackBold, color: '#C70039', fontSize: 14}}>چک {info.CheqPer} % </Text>
-                                <Text style={[styles.circle,{color:'#C70039'}]}>⬤</Text>
-                            </View>
-                            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-end'}}>
-                                <Text style={{ ...font.blackBold, color: '#44CD40', fontSize: 14}}>نقد {info.CashPer} % </Text>
-                                <Text style={[styles.circle,{color:'#44CD40'}]}>⬤</Text>
-                            </View>
-                            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-end'}}>
-                                <Text style={{ ...font.blackBold, color: '#404FCD', fontSize: 14}}>فیش {info.FishPer} % </Text>
-                                <Text style={[styles.circle,{color:'#404FCD'}]}>⬤</Text>
-                            </View>
-                            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-end'}}>
-                                <Text style={{ ...font.blackBold, color: '#EBD22F', fontSize: 14}}>واریزی {info.PosPer} % </Text>
-                                <Text style={[styles.circle,{color:'#EBD22F'}]}>⬤</Text>
+                        <View style={{ flex: 0.5, justifyContent: 'center' }}>
+                            <View style={{ width: '100%', marginTop: 10 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
+                                    <Text style={{ ...font.blackBold, color: '#C70039', fontSize: 14 }}>چک {info.CheqPer} % </Text>
+                                    <Text style={[styles.circle, { color: '#C70039' }]}>⬤</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
+                                    <Text style={{ ...font.blackBold, color: '#44CD40', fontSize: 14 }}>نقد {info.CashPer} % </Text>
+                                    <Text style={[styles.circle, { color: '#44CD40' }]}>⬤</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
+                                    <Text style={{ ...font.blackBold, color: '#404FCD', fontSize: 14 }}>فیش {info.FishPer} % </Text>
+                                    <Text style={[styles.circle, { color: '#404FCD' }]}>⬤</Text>
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-end' }}>
+                                    <Text style={{ ...font.blackBold, color: '#EBD22F', fontSize: 14 }}>واریزی {info.PosPer} % </Text>
+                                    <Text style={[styles.circle, { color: '#EBD22F' }]}>⬤</Text>
+                                </View>
                             </View>
                         </View>
                     </View>
-                    </View>
-                    
+
                 </View>
                 <View style={[styles.sellPerformance, { marginBottom: 8 }]}>
                     <TouchableOpacity>
@@ -316,13 +318,13 @@ const Info = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         // paddingHorizontal: 20
-    },circle :{
-        height : 30 ,
-        width :30,
+    }, circle: {
+        height: 30,
+        width: 30,
         borderRadius: 1000,
-        fontSize:20,
-        
-       },
+        fontSize: 20,
+
+    },
     workInfo: {
         flexDirection: 'row',
         justifyContent: 'center',

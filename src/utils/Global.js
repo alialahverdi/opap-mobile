@@ -20,6 +20,7 @@ global.ActivityIndicator = ReactNative.ActivityIndicator;
 global.FlatList = ReactNative.FlatList;
 global.ScrollView = ReactNative.ScrollView;
 global.Modal = ReactNative.Modal;
+global.BackHandler = ReactNative.BackHandler;
 
 // ----------------* Icons *----------------
 import Ionicons from 'react-native-vector-icons/Ionicons';

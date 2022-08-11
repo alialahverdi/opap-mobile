@@ -53,6 +53,7 @@ const Customer = ({ navigation }) => {
         }
     }, [isShowDailyVisit])
 
+
     const getAndCheckVisitDate = async () => {
         const visitDate = await AsyncStorage.getItem("visitDate")
         const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
@@ -72,7 +73,7 @@ const Customer = ({ navigation }) => {
             }
         })
         setAllCustomers(newCustomers)
-        setStateCustomers(customers)
+        setStateCustomers(newCustomers)
         // if (customers.length > 0) {
         //     return addExpandable(customers)
         // }
@@ -104,7 +105,6 @@ const Customer = ({ navigation }) => {
     }
 
     const setStateCustomers = (sentCustomers) => {
-
         let filteredCustomers
         if (isShowDailyVisit) {
             filteredCustomers = sentCustomers.filter((i) => i.TodayVisit)
@@ -152,7 +152,7 @@ const Customer = ({ navigation }) => {
 
     const openLayoutCustomer = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-        const customersCloned = searchedCustomerText !== "" ? [...renderedCustomers] : [...allCustomers]
+        const customersCloned = isShowDailyVisit == true ? [...renderedCustomers] : [...allCustomers]
         if (prevIndex.includes(index)) {
             customersCloned[index].layoutHeight = 0;
             setRenderedCustomers(customersCloned)
@@ -304,7 +304,6 @@ const Customer = ({ navigation }) => {
                         data={renderedCustomers}
                         renderItem={showCustomers}
                         keyExtractor={(item, index) => index.toString()}
-                        // onEndReached={handleLoadMore}
                         refreshing={refreshing}
                         onRefresh={handleRefresh}
                     />

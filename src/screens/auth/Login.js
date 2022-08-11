@@ -61,7 +61,10 @@ const Login = ({ navigation }) => {
                 storeInStorage(res)
             })
             .catch(error => {
-                showSnakbar({ variant: "error", message: error.message })
+                showSnakbar({
+                    variant: "error",
+                    message: 'اطلاعات وارد شده اشتباه می باشد.'
+                })
             })
             .finally(() => {
                 setLoginSpinner(false)
@@ -92,13 +95,14 @@ const Login = ({ navigation }) => {
                         <View style={styles.imgContainer}>
                             <Image
                                 source={require('../../assets/img/logo.png')}
-                                style={{ width: 140, height: 140 }}
+                                style={{ width: 180, height: 180 }}
                             />
                         </View>
                         <View style={styles.inputContainer}>
                             <TextInput
                                 placeholder="نام کاربری"
                                 placeholderTextColor="gray"
+                                keyboardType="numeric"
                                 value={username}
                                 style={styles.inputs}
                                 onChangeText={setUsername}
@@ -166,12 +170,14 @@ const styles = StyleSheet.create({
         flex: 1
     },
     formContainer: {
-        marginTop: "40%",
+        marginTop: "35%",
         justifyContent: "center",
-        paddingHorizontal: 20,
+        paddingHorizontal: 40,
     },
     imgContainer: {
-        alignItems: "center"
+        alignItems: "center",
+        // backgroundColor: 'red',
+        marginBottom: 20
     },
     inputContainer: {
         flexDirection: 'row',

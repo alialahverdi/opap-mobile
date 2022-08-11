@@ -230,7 +230,6 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                         keyExtractor={(item, index) => index.toString()}
                         refreshing={refreshing}
                         onRefresh={handleRefresh}
-                    // onEndReached={handleLoadMore}
                     />
                 </>
             )}

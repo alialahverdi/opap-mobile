@@ -11,8 +11,6 @@ import HomeScreen from '../screens/app/home';
 import CustomerStack from '../navigation/CustomerStack';
 import ProductScreen from '../screens/app/product';
 import OrderTabsScreen from '../screens/app/orderTabs';
-import TestScreen from '../screens/app/Test';
-import { color } from 'react-native-reanimated';
 import HomeStack from './HomeStack';
 
 // Create Tab fro screens
@@ -44,6 +42,18 @@ const label = (props, label) => {
 
 
 const AppStack = () => {
+
+    // useEffect(() => {
+    //     BackHandler.addEventListener("hardwareBackPress", backAction);
+
+    //     return () =>
+    //         BackHandler.removeEventListener("hardwareBackPress", backAction);
+    // }, [])
+
+    // const backAction = () => {
+    //     BackHandler.exitApp()
+    // }
+
     return (
         <Tab.Navigator
             initialRouteName="HomeStack"

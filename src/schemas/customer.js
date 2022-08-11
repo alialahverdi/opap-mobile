@@ -20,7 +20,8 @@ const CustomerSchema = {
         HCheqCount: "int",
         HCheqAmount: "int",
         CountOpen: "int",
-        StatusName: "string"
+        StatusName: "string",
+        TodayVisit: "int"
     },
     primaryKey: "CustomerID",
 };

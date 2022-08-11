@@ -1,4 +1,5 @@
 import Ripple from "react-native-material-ripple";
+import { formatNumber } from "../utils/numbersUtils";
 
 const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor, onInfo }) => {
 
@@ -13,6 +14,12 @@ const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor, onInfo }) => 
                     <Text style={styles.customerName}>{customer.CustomerName}</Text>
                     <Text>  </Text>
                     <Text style={styles.customerName}>{customer.CustomerID}</Text>
+                    <Text>  </Text>
+                    <MaterialCommunityIcons
+                        name={customer.StatusID === 2 ? "account-cancel" : "account-check"}
+                        size={20}
+                        color={customer.StatusID === 2 ? "red" : "green"}
+                    />
                 </View>
 
                 <View style={styles.customerInfo}>
@@ -20,7 +27,7 @@ const CustomerCard = ({ customer, onExpand, onOrder, onOpenFactor, onInfo }) => 
                 </View>
                 <View style={styles.customerPay}>
                     <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>فاکتور باز : {customer.CountOpen}</Text>
-                    <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>مانده مشتری : {customer.RemAmount}</Text>
+                    <Text style={[font.black, { fontSize: 12, flex: .5, color: '#1a8cff' }]}>مانده مشتری :  {formatNumber(customer.RemAmount)}</Text>
                 </View>
             </TouchableOpacity>
             <View style={{ height: customer.layoutHeight }}>
@@ -58,6 +65,7 @@ const styles = StyleSheet.create({
         marginVertical: 2,
         backgroundColor: "#fff",
         borderRadius: 5,
+        marginBottom: 5,
         // paddingVertical: 5,
         padding: 1,
         // elevation: 3,
@@ -70,6 +78,7 @@ const styles = StyleSheet.create({
     customerInfo: {
         // flex: .7,
         // alignItems: "flex-end",
+        // backgroundColor: 'red',
         paddingHorizontal: 10,
         flexDirection: 'row',
         padding: 1,

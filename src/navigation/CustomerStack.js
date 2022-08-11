@@ -21,7 +21,6 @@ const CustomerStack = () => {
             <Stack.Screen name="InfoScreen" component={Info} />
             <Stack.Screen name="OpenFactorScreen" component={OpenFactor} />
             <Stack.Screen name="InfoOpenFactorsScreen" component={OpenFactors} />
-
         </Stack.Navigator>
     )
 }

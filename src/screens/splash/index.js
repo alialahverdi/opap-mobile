@@ -16,7 +16,6 @@ const Splash = ({ navigation }) => {
     const [spinner, setSpinner] = useState(true);
 
     // ------- Logic or Functions ------- //
-
     useEffect(() => {
         getUserInfo()
     }, [])
@@ -77,7 +76,7 @@ const Splash = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: themeColor.primary,
+        // backgroundColor: themeColor.primary,
         justifyContent: 'space-between',
         alignItems: 'center'
     },
