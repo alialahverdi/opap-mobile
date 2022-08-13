@@ -131,16 +131,16 @@ const styles = StyleSheet.create({
     supplierContainer: {
         marginTop: Platform.OS === "ios" ? 15 : 10,
         paddingVertical: 5,
-        paddingHorizontal: 12,
+        paddingHorizontal: 8,
         borderRadius: 15,
         alignItems: 'center',
         backgroundColor: 'rgba(108, 182, 65, 0.1)',
-        marginRight: 5
+        marginLeft: 5
     },
     supplierText: {
         fontFamily: 'IRANSansMobile(FaNum)',
         fontSize: Platform.OS === "ios" ? 12 : 9,
-        color: '#6CB641',
+        color: '#009933',
     }
 })
 

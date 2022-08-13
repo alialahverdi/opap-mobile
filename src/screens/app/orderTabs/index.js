@@ -10,7 +10,7 @@ const Tab = createMaterialTopTabNavigator()
 const OrdertTabs = () => {
     return (
         <Tab.Navigator
-            initialRouteName="SentOrdersScreen"
+            initialRouteName="UnSentOrdersScreen"
             screenOptions={{
                 tabBarStyle: { backgroundColor: themeColor.primary },
                 tabBarLabelStyle: {

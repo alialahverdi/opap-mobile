@@ -31,7 +31,15 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
             isActice: false
         },
         {
-            name: "سفارش دار",
+            name: "جایزه دار",
+            isActice: false
+        },
+        {
+            name: "تجهیزات",
+            isActice: false
+        },
+        {
+            name: "مکمل",
             isActice: false
         },
         {
@@ -39,7 +47,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
             isActice: false
         },
         {
-            name: "جایزه دار",
+            name: "کالای جدید",
             isActice: false
         }
     ])
@@ -78,9 +86,16 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
 
     const contains = (item, query) => {
         const { ProductName, ProductID } = item;
+        const textData1 = query.replace("ي", "ی")
+        const textData2 = query.replace("ی", "ي")
+        const textData3 = query.replace("ك", "ک")
+        const textData4 = query.replace("ک", "ك")
         const formattedQuery = toEnglishDigits(query.toString())
         if (
-            ProductName.includes(query) ||
+            ProductName.indexOf(textData1)>-1 ||
+            ProductName.indexOf(textData2)>-1 ||
+            ProductName.indexOf(textData3)>-1 ||
+            ProductName.indexOf(textData4)>-1 ||
             ProductID.toString().includes(formattedQuery)
         ) return true
         return false
@@ -140,7 +155,21 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         if (filter.name.includes("موجودی دار")) {
             return latestFilteredProducts.filter(item => item.StockQty > 0)
         }
-
+        if (filter.name.includes("جایزه دار")) {
+            return latestFilteredProducts.filter(item => item.PromotionDesc.length>0)
+        }
+        if (filter.name.includes("تجهیزات")) {
+            return latestFilteredProducts.filter(item => item.GroupID ==3)
+        }
+        if (filter.name.includes("مکمل")) {
+            return latestFilteredProducts.filter(item => item.GroupID ==4)
+        }
+        if (filter.name.includes("فرجه +۹۰")) {
+            return latestFilteredProducts.filter(item => item.PayDay > 89)
+        }
+        if (filter.name.includes("کالای جدید")) {
+            return latestFilteredProducts.filter(item => item.NewProd==1)
+        }
     }
 
     const onFilter = (filter, selectedIndex) => {
