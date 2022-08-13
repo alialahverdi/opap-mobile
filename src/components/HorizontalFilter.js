@@ -13,6 +13,18 @@ const HorizontalFilter = ({ onPress }) => {
             isActice: false
         },
         {
+            name: "جایزه دار",
+            isActice: false
+        },
+        {
+            name: "تجهیزات",
+            isActice: false
+        },
+        {
+            name: "مکمل",
+            isActice: false
+        },
+        {
             name: "سفارش دار",
             isActice: false
         },
@@ -21,7 +33,7 @@ const HorizontalFilter = ({ onPress }) => {
             isActice: false
         },
         {
-            name: "جایزه دار",
+            name: "کالای جدید",
             isActice: false
         }
     ])

@@ -242,9 +242,16 @@ const Customer = ({ navigation }) => {
 
     const contains = (item, query) => {
         const { CustomerName, CustomerID } = item
+        const textData1 = query.replace("ي", "ی")
+        const textData2 = query.replace("ی", "ي")
+        const textData3 = query.replace("ك", "ک")
+        const textData4 = query.replace("ک", "ك")
         const formattedQuery = toEnglishDigits(query.toString())
         if (
-            CustomerName.includes(query) ||
+            CustomerName.indexOf(textData1)>-1 ||
+            CustomerName.indexOf(textData2)>-1 ||
+            CustomerName.indexOf(textData3)>-1 ||
+            CustomerName.indexOf(textData4)>-1 ||
             CustomerID.toString().includes(formattedQuery)
         ) return true
         return false
