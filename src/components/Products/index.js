@@ -144,18 +144,41 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     }
 
     const onFilter = (filter, selectedIndex) => {
-        filterHorizontal(filter).then((filter) => {
+        filterHorizontal(filter).then(() => {
             const cloneFilterTypes = [...filterTypes]
-            const changedFilterTypes = cloneFilterTypes.map((item, index) => {
-                if (item.isActice) {
+            if (
+                filter.name.includes("همه") &&
+                filter.isActice == true
+            ) return
+
+            if (
+                filter.name.includes("همه") &&
+                filter.isActice == false
+            ) {
+                const changedFilterTypes = cloneFilterTypes.map((item, index) => {
+
                     item.isActice = false
-                }
-                if (index == selectedIndex) {
-                    item.isActice = true
-                }
-                return item
-            })
-            setFilterTypes(changedFilterTypes)
+
+                    if (index == 0) {
+                        item.isActice = true
+                    }
+                    return item
+                })
+                return setFilterTypes(changedFilterTypes)
+            }
+
+            cloneFilterTypes[selectedIndex].isActice == true
+                ? cloneFilterTypes[selectedIndex].isActice = false
+                : cloneFilterTypes[selectedIndex].isActice = true;
+
+
+            if (!cloneFilterTypes.some(i => i.isActice)) {
+                cloneFilterTypes[0].isActice = true
+            } else {
+                cloneFilterTypes[0].isActice = false
+            }
+            setFilterTypes(cloneFilterTypes)
+
         })
     }
 
