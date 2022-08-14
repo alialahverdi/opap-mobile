@@ -23,10 +23,6 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     const [refreshing, setRefreshing] = useState(false)
     const [filterTypes, setFilterTypes] = useState([
         {
-            name: "همه",
-            isActice: true
-        },
-        {
             name: "موجودی دار",
             isActice: false
         },
@@ -92,10 +88,10 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         const textData4 = query.replace("ک", "ك")
         const formattedQuery = toEnglishDigits(query.toString())
         if (
-            ProductName.indexOf(textData1)>-1 ||
-            ProductName.indexOf(textData2)>-1 ||
-            ProductName.indexOf(textData3)>-1 ||
-            ProductName.indexOf(textData4)>-1 ||
+            ProductName.indexOf(textData1) > -1 ||
+            ProductName.indexOf(textData2) > -1 ||
+            ProductName.indexOf(textData3) > -1 ||
+            ProductName.indexOf(textData4) > -1 ||
             ProductID.toString().includes(formattedQuery)
         ) return true
         return false
@@ -148,64 +144,35 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         const latestFilteredProducts = searchedProductText !== ""
             ? [...searchedProducts] : [...allProducts]
 
-        if (filter.name.includes("همه")) {
-            return latestFilteredProducts
-        }
 
         if (filter.name.includes("موجودی دار")) {
             return latestFilteredProducts.filter(item => item.StockQty > 0)
         }
         if (filter.name.includes("جایزه دار")) {
-            return latestFilteredProducts.filter(item => item.PromotionDesc.length>0)
+            return latestFilteredProducts.filter(item => item.PromotionDesc.length > 0)
         }
         if (filter.name.includes("تجهیزات")) {
-            return latestFilteredProducts.filter(item => item.GroupID ==3)
+            return latestFilteredProducts.filter(item => item.GroupID == 3)
         }
         if (filter.name.includes("مکمل")) {
-            return latestFilteredProducts.filter(item => item.GroupID ==4)
+            return latestFilteredProducts.filter(item => item.GroupID == 4)
         }
         if (filter.name.includes("فرجه +۹۰")) {
             return latestFilteredProducts.filter(item => item.PayDay > 89)
         }
         if (filter.name.includes("کالای جدید")) {
-            return latestFilteredProducts.filter(item => item.NewProd==1)
+            return latestFilteredProducts.filter(item => item.NewProd == 1)
         }
     }
 
     const onFilter = (filter, selectedIndex) => {
         filterHorizontal(filter).then(() => {
             const cloneFilterTypes = [...filterTypes]
-            if (
-                filter.name.includes("همه") &&
-                filter.isActice == true
-            ) return
-
-            if (
-                filter.name.includes("همه") &&
-                filter.isActice == false
-            ) {
-                const changedFilterTypes = cloneFilterTypes.map((item, index) => {
-
-                    item.isActice = false
-
-                    if (index == 0) {
-                        item.isActice = true
-                    }
-                    return item
-                })
-                return setFilterTypes(changedFilterTypes)
-            }
 
             cloneFilterTypes[selectedIndex].isActice == true
                 ? cloneFilterTypes[selectedIndex].isActice = false
                 : cloneFilterTypes[selectedIndex].isActice = true;
 
-
-            if (!cloneFilterTypes.some(i => i.isActice)) {
-                cloneFilterTypes[0].isActice = true
-            } else {
-                cloneFilterTypes[0].isActice = false
-            }
             setFilterTypes(cloneFilterTypes)
 
         })
@@ -217,7 +184,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                 style={[
                     styles.filterCard,
                     item.isActice && styles.activeChip,
-                    index === 0 ? { marginRight: 0 } : { marginRight: 10 }
+                    index == 0 ? { marginRight: 0 } : { marginRight: 10 }
                 ]}
                 onPress={() => onFilter(item, index)}
             >
@@ -305,7 +272,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         marginRight: 10,
         borderRadius: 5,
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        borderWidth: .5,
+        borderColor: "#fff",
     },
     content: {
         ...font.gray,
