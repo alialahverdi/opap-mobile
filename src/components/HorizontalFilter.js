@@ -25,10 +25,6 @@ const HorizontalFilter = ({ onPress }) => {
             isActice: false
         },
         {
-            name: "سفارش دار",
-            isActice: false
-        },
-        {
             name: "فرجه +۹۰",
             isActice: false
         },

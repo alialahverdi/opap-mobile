@@ -37,7 +37,7 @@ const Customer = ({ navigation }) => {
     const [refreshing, setRefreshing] = useState(false)
     const [isShowDailyVisit, setIsShowDailyVisit] = useState(true);
     const [customerObj, setCustomerObj] = useState({})
-
+    const [isRendered, setIsRendered] = useState(false)
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
@@ -56,7 +56,9 @@ const Customer = ({ navigation }) => {
 
     const getAndCheckVisitDate = async () => {
         const visitDate = await AsyncStorage.getItem("visitDate")
+
         const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
+
         if (visitDate !== null && visitDate === today) {
             return getRealmCustomers()
         }
@@ -65,6 +67,7 @@ const Customer = ({ navigation }) => {
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer')
+        // console.log(realmCustomers.length)
         const customers = JSON.parse(JSON.stringify(realmCustomers))
         const newCustomers = customers.map(item => {
             return {
@@ -108,8 +111,10 @@ const Customer = ({ navigation }) => {
         let filteredCustomers
         if (isShowDailyVisit) {
             filteredCustomers = sentCustomers.filter((i) => i.TodayVisit)
+            setIsRendered(true)
         } else {
             filteredCustomers = sentCustomers
+            setIsRendered(false)
         }
         setRenderedCustomers(filteredCustomers)
         setCustomerSpinner(false)
@@ -152,7 +157,9 @@ const Customer = ({ navigation }) => {
 
     const openLayoutCustomer = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-        const customersCloned = isShowDailyVisit == true ? [...renderedCustomers] : [...allCustomers]
+       // const customersCloned = isShowDailyVisit == true ? [...renderedCustomers] : [...allCustomers]
+        
+        const customersCloned = isRendered == true ? [...renderedCustomers] : [...allCustomers]
         if (prevIndex.includes(index)) {
             customersCloned[index].layoutHeight = 0;
             setRenderedCustomers(customersCloned)
@@ -173,7 +180,7 @@ const Customer = ({ navigation }) => {
     }
 
     const getPreviousOrders = (customer) => {
-        const realmOrders = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)
+        const realmOrders = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID} && isSent==false`)
         const ordersEncoded = realmOrders.toJSON()
         return ordersEncoded
     }
@@ -231,17 +238,20 @@ const Customer = ({ navigation }) => {
 
     const searchCustomer = (text) => {
         const oldSearchedCustomers = [...allCustomers]
+        if(text==""){setIsRendered(false)}
         const newSearchedCustomers = oldSearchedCustomers.filter(item => {
             // return item.CustomerName.toLowerCase().match(text)
-
+            
             return contains(item, text)
         });
         setRenderedCustomers(newSearchedCustomers)
+        setIsRendered(true);
         setSearchedCustomerText(text)
     }
 
     const contains = (item, query) => {
         const { CustomerName, CustomerID } = item
+        
         const textData1 = query.replace("ي", "ی")
         const textData2 = query.replace("ی", "ي")
         const textData3 = query.replace("ك", "ک")
