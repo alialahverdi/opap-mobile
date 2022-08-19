@@ -12,12 +12,16 @@ import * as Animatable from 'react-native-animatable'
 
 const Products = ({ screenType, onPress, setIsShowList }) => {
 
+    // ------- Constants ------- //
+    const initialRender = useRef(true)
+
     // ------- States ------- //
     const [productSpinner, setProductSpinner] = useState(true)
     const [allProducts, setAllProducts] = useState([])
     const [renderedProducts, setRenderedProducts] = useState([])
     const [searchedProducts, setSearchedProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
+
     const [searchedProductText, setSearchedProductText] = useState("")
     const [page, setPage] = useState(0)
     const [refreshing, setRefreshing] = useState(false)
@@ -98,22 +102,12 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     }
 
     const showProducts = ({ item, index }) => {
-        const delayindex = index + 1
-
         return (
-            <Animatable.View
-                animation="fadeInUp"
-                duration={400}
-                delay={delayindex * 100}
-                useNativeDriver={true}
-            >
-                <ProductCard
-                    product={item}
-                    screenType={screenType}
-                    onPress={() => onPress(item)}
-                />
-            </Animatable.View>
-
+            <ProductCard
+                product={item}
+                screenType={screenType}
+                onPress={() => onPress(item)}
+            />
         )
     }
 
@@ -144,25 +138,47 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         const latestFilteredProducts = searchedProductText !== ""
             ? [...searchedProducts] : [...allProducts]
 
+        let result
 
         if (filter.name.includes("موجودی دار")) {
-            return latestFilteredProducts.filter(item => item.StockQty > 0)
+            console.log('filteredProducts stack', filteredProducts.length)
+            console.log('filteredProducts filter', latestFilteredProducts.filter(item => item.StockQty > 0).length)
+            const array = [
+                ...filteredProducts,
+                ...latestFilteredProducts.filter(item => item.StockQty > 0)
+            ]
+            console.log('array', array.length)
+            result = array
         }
         if (filter.name.includes("جایزه دار")) {
-            return latestFilteredProducts.filter(item => item.PromotionDesc.length > 0)
+            console.log('filteredProducts gift', filteredProducts.length)
+            const array = [
+                ...filteredProducts,
+                ...latestFilteredProducts.filter(item => item.PromotionDesc.length > 0)
+            ]
+            result = array
         }
-        if (filter.name.includes("تجهیزات")) {
-            return latestFilteredProducts.filter(item => item.GroupID == 3)
-        }
-        if (filter.name.includes("مکمل")) {
-            return latestFilteredProducts.filter(item => item.GroupID == 4)
-        }
-        if (filter.name.includes("فرجه +۹۰")) {
-            return latestFilteredProducts.filter(item => item.PayDay > 89)
-        }
-        if (filter.name.includes("کالای جدید")) {
-            return latestFilteredProducts.filter(item => item.NewProd == 1)
-        }
+
+        return result
+
+
+
+        // if (filter.name.includes("تجهیزات")) {
+        //     return latestFilteredProducts.filter(item => item.GroupID == 3)
+        // }
+        // if (filter.name.includes("مکمل")) {
+        //     return latestFilteredProducts.filter(item => item.GroupID == 4)
+        // }
+        // if (filter.name.includes("فرجه +۹۰")) {
+        //     return latestFilteredProducts.filter(item => item.PayDay > 89)
+        // }
+        // if (filter.name.includes("کالای جدید")) {
+        //     return latestFilteredProducts.filter(item => item.NewProd == 1)
+        // }
+    }
+
+    function getUniqueListBy(arr, key) {
+        return [...new Map(arr.map(item => [item[key], item])).values()]
     }
 
     const onFilter = (filter, selectedIndex) => {
@@ -171,7 +187,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
 
             cloneFilterTypes[selectedIndex].isActice == true
                 ? cloneFilterTypes[selectedIndex].isActice = false
-                : cloneFilterTypes[selectedIndex].isActice = true;
+                : cloneFilterTypes[selectedIndex].isActice = true
 
             setFilterTypes(cloneFilterTypes)
 
@@ -220,18 +236,10 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
             )}
             {!productSpinner && (
                 <>
-                    <Animatable.View
-                        animation="fadeInUp"
-                        duration={400}
-                        useNativeDriver={true}
-                        style={{ flexDirection: 'row' }}
-                    >
+                    <View style={{ flexDirection: 'row' }}>
                         <SearchbarHeader text={searchedProductText} onChangeText={searchProduct} />
-                    </Animatable.View>
-                    <Animatable.View
-                        animation="fadeInUp"
-                        duration={500}
-                        useNativeDriver={true}>
+                    </View>
+                    <View>
                         <FlatList
                             style={styles.horizontalContainer}
                             horizontal
@@ -241,7 +249,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                             renderItem={horizontalRenderItem}
                             keyExtractor={(item, index) => index.toString()}
                         />
-                    </Animatable.View>
+                    </View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={renderedProducts}
