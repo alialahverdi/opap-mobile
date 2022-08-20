@@ -86,25 +86,14 @@ const UnSentOrders = ({ navigation }) => {
     }
 
     const showUnSentOrders = ({ item, index }) => {
-        const delayindex = index + 1
-
         return (
-            <Animatable.View
-                animation="fadeInUp"
-                duration={400}
-                delay={delayindex * 100}
-                useNativeDriver={true}
-
-            >
-                <OrderTabsCard
-                    unSent
-                    orderItem={item}
-                    onDelete={() => deleteOrder(item)}
-                    onUpdate={() => onUpdate(item)}
-                    sendOrder={sendOrder}
-                />
-            </Animatable.View>
-
+            <OrderTabsCard
+                unSent
+                orderItem={item}
+                onDelete={() => deleteOrder(item)}
+                onUpdate={() => onUpdate(item)}
+                sendOrder={sendOrder}
+            />
         )
     }
 

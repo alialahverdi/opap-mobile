@@ -67,11 +67,10 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
         }
         const data = {
             ...product,
-            // StockQty: product.StockQty - newCount,
             count: newCount
         }
 
-        const currentOrder = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID}`)[0]
+        const currentOrder = realm.objects("Order").filtered(`OrderID == ${customer.OrderID}`)[0]
         const currentRowOrder = currentOrder.OrderDetail.find(item => item.ProductID === product.ProductID)
 
         if (currentRowOrder !== undefined) {

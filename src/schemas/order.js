@@ -1,7 +1,7 @@
 const OrderSchema = {
     name: "Order",
     properties: {
-        OrderID: "string",
+        OrderID: "int",
         CustomerID: "int",
         CustomerName: "string",
         isSent: { type: "bool", default: false },

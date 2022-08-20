@@ -134,31 +134,21 @@ const Customer = ({ navigation }) => {
     }
 
     const showCustomers = ({ item, index }) => {
-        const delayindex = index + 1
-
         return (
-            <Animatable.View
-                animation="fadeInUp"
-                duration={400}
-                delay={delayindex * 100}
-                useNativeDriver={true}
-            >
-                <CustomerCard
-                    customer={item}
-                    onExpand={() => openLayoutCustomer(index)}
-                    onOrder={() => onOrder(item)}
-                    onOpenFactor={() => onOpenFactor(item)}
-                    onInfo={() => onInfo(item)}
-                />
-            </Animatable.View>
-
+            <CustomerCard
+                customer={item}
+                onExpand={() => openLayoutCustomer(index)}
+                onOrder={() => onOrder(item)}
+                onOpenFactor={() => onOpenFactor(item)}
+                onInfo={() => onInfo(item)}
+            />
         )
     }
 
     const openLayoutCustomer = (index) => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-       // const customersCloned = isShowDailyVisit == true ? [...renderedCustomers] : [...allCustomers]
-        
+        // const customersCloned = isShowDailyVisit == true ? [...renderedCustomers] : [...allCustomers]
+
         const customersCloned = isRendered == true ? [...renderedCustomers] : [...allCustomers]
         if (prevIndex.includes(index)) {
             customersCloned[index].layoutHeight = 0;
@@ -181,7 +171,7 @@ const Customer = ({ navigation }) => {
 
     const getPreviousOrders = (customer) => {
         const realmOrders = realm.objects("Order").filtered(`CustomerID == ${customer.CustomerID} && isSent==false`)
-        const ordersEncoded = realmOrders.toJSON()
+        const ordersEncoded = JSON.parse(JSON.stringify(realmOrders))
         return ordersEncoded
     }
 
@@ -222,13 +212,14 @@ const Customer = ({ navigation }) => {
 
     const storeOrder = (customer) => {
         const orderObj = {
-            OrderID: generatorID(),
+            OrderID: Date.now(), // for example returns 1576996323453 
             CustomerID: customer.CustomerID,
             CustomerName: customer.CustomerName,
             Created_at: new Date().toString()
         }
         storeObj(orderObj, "Order").then(res => {
-            navigateToOrderScreen(res.toJSON())
+            const newOrder = JSON.parse(JSON.stringify(res))
+            navigateToOrderScreen(newOrder)
         })
     }
 
@@ -238,10 +229,10 @@ const Customer = ({ navigation }) => {
 
     const searchCustomer = (text) => {
         const oldSearchedCustomers = [...allCustomers]
-        if(text==""){setIsRendered(false)}
+        if (text == "") { setIsRendered(false) }
         const newSearchedCustomers = oldSearchedCustomers.filter(item => {
             // return item.CustomerName.toLowerCase().match(text)
-            
+
             return contains(item, text)
         });
         setRenderedCustomers(newSearchedCustomers)
@@ -251,17 +242,17 @@ const Customer = ({ navigation }) => {
 
     const contains = (item, query) => {
         const { CustomerName, CustomerID } = item
-        
+
         const textData1 = query.replace("ي", "ی")
         const textData2 = query.replace("ی", "ي")
         const textData3 = query.replace("ك", "ک")
         const textData4 = query.replace("ک", "ك")
         const formattedQuery = toEnglishDigits(query.toString())
         if (
-            CustomerName.indexOf(textData1)>-1 ||
-            CustomerName.indexOf(textData2)>-1 ||
-            CustomerName.indexOf(textData3)>-1 ||
-            CustomerName.indexOf(textData4)>-1 ||
+            CustomerName.indexOf(textData1) > -1 ||
+            CustomerName.indexOf(textData2) > -1 ||
+            CustomerName.indexOf(textData3) > -1 ||
+            CustomerName.indexOf(textData4) > -1 ||
             CustomerID.toString().includes(formattedQuery)
         ) return true
         return false
@@ -299,10 +290,7 @@ const Customer = ({ navigation }) => {
             )}
             {!customerSpinner && (
                 <>
-                    <Animatable.View
-                        animation="fadeInUp"
-                        duration={400}
-                        useNativeDriver={true}
+                    <View
                         style={{ flexDirection: 'row', alignItems: 'center' }}
                     >
                         <View style={styles.dalyVisit}>
@@ -315,7 +303,7 @@ const Customer = ({ navigation }) => {
                             <Text style={styles.dalyVisitTitle}>ویزیت روزانه</Text>
                         </View>
                         <SearchbarHeader text={searchedCustomerText} onChangeText={searchCustomer} />
-                    </Animatable.View>
+                    </View>
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={renderedCustomers}

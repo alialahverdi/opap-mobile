@@ -17,7 +17,21 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
         }
     }
 
-    const vertex = () => {
+    const payday = () => {
+        if (orderItem.OrderDetail.length > 0) {
+
+            const prices = orderItem.OrderDetail.map((i) => i.SalesPrice * i.count)
+            const reducer = (accumulator, curr) => accumulator + curr;
+            const total = prices.reduce(reducer)
+
+            const day = orderItem.OrderDetail.map((i) => i.SalesPrice * i.count * i.PayDay)
+            const dayreducer = (accumulator, curr) => accumulator + curr;
+            const totalDay = day.reduce(dayreducer)
+
+            const devider = totalDay / total
+
+            return Math.floor(devider)
+        }
 
     }
 
@@ -75,7 +89,7 @@ const OrderTabsCard = ({ orderItem, sent, onUpdate, onDelete, sendOrder }) => {
                 </Text>
                 <View style={[styles.infoProduct, { marginTop: 10 }]}>
                     <Text style={styles.toman}>روز</Text>
-                    <Text style={styles.infoText}>{formatNumber(vertex()) ?? 0} </Text>
+                    <Text style={styles.infoText}>{formatNumber(payday()) ?? 0} </Text>
                     <Text style={styles.infoText}>رأس :</Text>
                 </View>
                 <View style={styles.infoProduct}>

@@ -72,27 +72,17 @@ const SentOrders = ({ navigation }) => {
     }
 
     const showSentOrders = ({ item, index }) => {
-        const delayindex = index + 1
-
         return (
-            <Animatable.View
-                animation="fadeInUp"
-                duration={400}
-                delay={delayindex * 100}
-                useNativeDriver={true}
-
-            >
-                <OrderTabsCard
-                    sent
-                    orderItem={item}
-                    onDelete={() => deleteOrder(item)}
-                    onUpdate={() => {
-                        setOrderDetail(item.OrderDetail)
-                        setIsShowOrderListModal(true)
-                    }}
-                    sendOrder={againeSendOrder}
-                />
-            </Animatable.View>
+            <OrderTabsCard
+                sent
+                orderItem={item}
+                onDelete={() => deleteOrder(item)}
+                onUpdate={() => {
+                    setOrderDetail(item.OrderDetail)
+                    setIsShowOrderListModal(true)
+                }}
+                sendOrder={againeSendOrder}
+            />
 
         )
     }

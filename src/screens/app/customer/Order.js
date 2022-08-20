@@ -27,7 +27,7 @@ const Order = ({ route, navigation }) => {
     useEffect(() => {
         getRealmOrders()
     }, [])
-
+    144
     useEffect(() => {
         if (snackbarMessage != null) {
             setTimeout(() => {
@@ -37,8 +37,7 @@ const Order = ({ route, navigation }) => {
     }, [snackbarMessage])
 
     const getRealmOrders = () => {
-        const orders = realm.objects("Order")
-        const realmUnSentOrders = orders.filtered(`CustomerID == ${customerObj.CustomerID}`)[0].OrderDetail
+        const realmUnSentOrders = realm.objects("Order").filtered(`OrderID == ${customerObj.OrderID}`)[0].OrderDetail
         setUnSentOrders(realmUnSentOrders)
     }
 

@@ -171,6 +171,7 @@ const OpenFactor = ({ navigation, route }) => {
                 </View>
                 <View style={styles.body}>
                     <FlatList
+                        style={{ paddingHorizontal: 10 }}
                         data={factors}
                         renderItem={renderFactor}
                         keyExtractor={(item, index) => index.toString()}
@@ -186,12 +187,13 @@ const styles = StyleSheet.create({
     container: {
         // backgroundColor: 'red',
         flex: 1,
-        paddingHorizontal: 10
+        // paddingHorizontal: 10
     },
     haeder: {
         backgroundColor: '#fff',
         padding: 10,
-        marginBottom: 10
+        marginBottom: 10,
+        marginHorizontal: 10
     },
     factorContainer: {
         flexDirection: 'row',
@@ -228,7 +230,10 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end"
     },
     body: {
-        flexGrow: 1
+        flexGrow: 1,
+        // backgroundColor: 'red',
+        // paddingHorizontal: 10,
+        paddingBottom: 20
     },
     infoOpenFactorContainer: {
         alignItems: "flex-end",
