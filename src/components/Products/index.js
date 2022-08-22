@@ -21,7 +21,8 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     const [renderedProducts, setRenderedProducts] = useState([])
     const [searchedProducts, setSearchedProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
-
+    const [previousFilteredProducts, setPreviousFilteredProducts] = useState([])
+    const [curentFilteredProducts, setCurentFilteredProducts] = useState([])
     const [searchedProductText, setSearchedProductText] = useState("")
     const [page, setPage] = useState(0)
     const [refreshing, setRefreshing] = useState(false)
@@ -57,6 +58,14 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         getRealmProducts()
     }, [])
 
+    useEffect(() => {
+        if (initialRender.current) {
+            initialRender.current = false
+        } else {
+            filterHorizontal()
+        }
+    }, [filterTypes])
+
     const getRealmProducts = () => {
         const realmProducts = realm.objects("Product")
         const products = JSON.parse(JSON.stringify(realmProducts))
@@ -77,8 +86,10 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
     }
 
     const setStateProducts = (sentProducts) => {
-        setRenderedProducts(sentProducts)
         setAllProducts(sentProducts)
+        setRenderedProducts(sentProducts)
+        setPreviousFilteredProducts(sentProducts)
+        setCurentFilteredProducts(sentProducts)
         setIsShowList(true)
         setProductSpinner(false)
         setRefreshing(false)
@@ -127,71 +138,53 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         setSearchedProductText(text)
     }
 
-    const filterHorizontal = async (filter) => {
-        const newSearchedProducts = await getFilteredProducts(filter)
+    const filterHorizontal = async () => {
+        const newSearchedProducts = await getFilteredProducts()
         setFilteredProducts(newSearchedProducts)
         setRenderedProducts(newSearchedProducts)
     }
 
-    const getFilteredProducts = async (filter) => {
+    const getFilteredProducts = async () => {
 
-        const latestFilteredProducts = searchedProductText !== ""
+        let latestFilteredProducts = searchedProductText !== ""
             ? [...searchedProducts] : [...allProducts]
 
-        let result
-
-        if (filter.name.includes("موجودی دار")) {
-            console.log('filteredProducts stack', filteredProducts.length)
-            console.log('filteredProducts filter', latestFilteredProducts.filter(item => item.StockQty > 0).length)
-            const array = [
-                ...filteredProducts,
-                ...latestFilteredProducts.filter(item => item.StockQty > 0)
-            ]
-            console.log('array', array.length)
-            result = array
-        }
-        if (filter.name.includes("جایزه دار")) {
-            console.log('filteredProducts gift', filteredProducts.length)
-            const array = [
-                ...filteredProducts,
-                ...latestFilteredProducts.filter(item => item.PromotionDesc.length > 0)
-            ]
-            result = array
+        if (filterTypes.every(i => !i.isActice)) {
+            return allProducts
         }
 
-        return result
 
+        if (filterTypes[0].isActice) {
+            latestFilteredProducts = latestFilteredProducts.filter(item => item.StockQty > 0)
+        }
+        if (filterTypes[1].isActice) {
+            latestFilteredProducts = latestFilteredProducts.filter(item => item.PromotionDesc.length > 0)
+        }
+        if (filterTypes[2].isActice) {
+            latestFilteredProducts = latestFilteredProducts.filter(item => item.GroupID == 3)
+        }
+        if (filterTypes[3].isActice) {
+            latestFilteredProducts = latestFilteredProducts.filter(item => item.GroupID == 4)
+        }
+        if (filterTypes[4].isActice) {
+            latestFilteredProducts = latestFilteredProducts.filter(item => item.PayDay > 89)
+        }
+        if (filterTypes[5].isActice) {
+            latestFilteredProducts = latestFilteredProducts.filter(item => item.NewProd == 1)
+        }
 
-
-        // if (filter.name.includes("تجهیزات")) {
-        //     return latestFilteredProducts.filter(item => item.GroupID == 3)
-        // }
-        // if (filter.name.includes("مکمل")) {
-        //     return latestFilteredProducts.filter(item => item.GroupID == 4)
-        // }
-        // if (filter.name.includes("فرجه +۹۰")) {
-        //     return latestFilteredProducts.filter(item => item.PayDay > 89)
-        // }
-        // if (filter.name.includes("کالای جدید")) {
-        //     return latestFilteredProducts.filter(item => item.NewProd == 1)
-        // }
+        return latestFilteredProducts
     }
 
-    function getUniqueListBy(arr, key) {
-        return [...new Map(arr.map(item => [item[key], item])).values()]
-    }
+    const onFilter = (selectedIndex) => {
 
-    const onFilter = (filter, selectedIndex) => {
-        filterHorizontal(filter).then(() => {
-            const cloneFilterTypes = [...filterTypes]
+        const cloneFilterTypes = [...filterTypes]
 
-            cloneFilterTypes[selectedIndex].isActice == true
-                ? cloneFilterTypes[selectedIndex].isActice = false
-                : cloneFilterTypes[selectedIndex].isActice = true
+        cloneFilterTypes[selectedIndex].isActice == true
+            ? cloneFilterTypes[selectedIndex].isActice = false
+            : cloneFilterTypes[selectedIndex].isActice = true
 
-            setFilterTypes(cloneFilterTypes)
-
-        })
+        setFilterTypes(cloneFilterTypes)
     }
 
     const horizontalRenderItem = ({ item, index }) => {
@@ -202,7 +195,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
                     item.isActice && styles.activeChip,
                     index == 0 ? { marginRight: 0 } : { marginRight: 10 }
                 ]}
-                onPress={() => onFilter(item, index)}
+                onPress={() => onFilter(index)}
             >
                 <Text style={[
                     styles.content,
