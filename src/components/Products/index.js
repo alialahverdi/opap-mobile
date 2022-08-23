@@ -126,10 +126,10 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
 
         let latestsearchedProducts;
 
-        if (!filterTypes.some(item => item.name == "همه" && item.isActice)) {
-            latestsearchedProducts = [...filteredProducts]
+        if (filterTypes.every(i => !i.isActice)) {
+            latestsearchedProducts = [...allProducts]
         } else {
-            latestsearchedProducts = allProducts
+            latestsearchedProducts = [...filteredProducts]
         }
 
         const newSearchedProducts = latestsearchedProducts.filter(item => contains(item, text))
@@ -150,7 +150,7 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
             ? [...searchedProducts] : [...allProducts]
 
         if (filterTypes.every(i => !i.isActice)) {
-            return allProducts
+            return latestFilteredProducts
         }
 
 
