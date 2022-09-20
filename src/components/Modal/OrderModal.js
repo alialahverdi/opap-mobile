@@ -184,6 +184,11 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
                         </View>
                         <View style={styles.line} />
                         <View style={styles.detailContainer}>
+                            <Text style={styles.value}>{product.PackQty}</Text>
+                            <Text style={styles.key}>تعداد در کارتن</Text>
+                        </View>
+                        <View style={styles.line} />
+                        <View style={styles.detailContainer}>
                             <Text style={styles.value}>{product.SupplierName}</Text>
                             <Text style={styles.key}>گروه کالایی</Text>
                         </View>

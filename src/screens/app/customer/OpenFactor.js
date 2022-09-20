@@ -153,7 +153,7 @@ const OpenFactor = ({ navigation, route }) => {
                     </Text>
                     <View style={styles.infoOpenFactorContainer}>
                         <View style={styles.infoOpenFactor}>
-                            <Text style={styles.toman}>تومان</Text>
+                            <Text style={styles.toman}>ریال</Text>
                             <Text style={styles.infoNumber}>{formatNumber(sumFactor)} </Text>
                             <Text style={styles.infoLabel}>جمع مانده :</Text>
                         </View>
@@ -169,14 +169,14 @@ const OpenFactor = ({ navigation, route }) => {
                         </View>
                     </View>
                 </View>
-                <View style={styles.body}>
+                {/* <View style={styles.body}> */}
                     <FlatList
                         style={{ paddingHorizontal: 10 }}
                         data={factors}
                         renderItem={renderFactor}
                         keyExtractor={(item, index) => index.toString()}
                     />
-                </View>
+               {/* </View> */}
             </View>
         </Layout>
     )

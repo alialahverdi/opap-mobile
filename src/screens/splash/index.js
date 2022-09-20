@@ -67,7 +67,7 @@ const Splash = ({ navigation }) => {
                 />
                 <Text style={styles.appName}>Opap</Text>
             </Animatable.View>
-            <Text style={styles.version}>Version : 0.1.0</Text>
+            <Text style={styles.version}>Version : 0.1.1</Text>
         </Layout>
     )
 }

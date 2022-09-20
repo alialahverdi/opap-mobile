@@ -269,10 +269,17 @@ const Customer = ({ navigation }) => {
         api.get('/customer/get').then(res => {
             deleteAllDataFromSchema("Customer").then(() => {
                 storeArray(res.content, "Customer").then(() => {
-                    setStateCustomers(res.content)
-                })
-            })
+                    const newCustomers = res.content.map(item => {
+                        return {
+                            ...item,
+                            layoutHeight: 0
+                        }
+                    })
+                    setAllCustomers(newCustomers)
+                    setStateCustomers(newCustomers)
+            })  })
         }).catch(() => { })
+
     }
 
     const handleLoadMore = () => {
