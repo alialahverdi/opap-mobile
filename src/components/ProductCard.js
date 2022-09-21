@@ -2,7 +2,17 @@ import { formatNumber } from '../utils/numbersUtils'
 import Ripple from 'react-native-material-ripple'
 
 const ProductCard = ({ product, screenType, onPress }) => {
-
+    const GetColor=(extrdate)=>{
+        let today = new Date();
+        let form_date=new Date(extrdate)
+        let color='#009933'
+let diff=Math.floor((form_date - today) / (1000 * 60 * 60 * 24));
+if(diff<1)
+color='#CB4335'
+else if(diff<365)
+color='#F1948A'
+        return color
+    }
     return (
         <Ripple onPress={onPress} style={styles.container}>
             <View style={styles.header}>
@@ -18,7 +28,7 @@ const ProductCard = ({ product, screenType, onPress }) => {
                     <Text style={styles.supplierText}>{product.StockQty} بسته</Text>
                 </View>
                 <View style={styles.supplierContainer}>
-                    <Text style={styles.supplierText}>{product.ExprDate} انقضا</Text>
+                    <Text style={[styles.supplierText,{color:GetColor(product.ExprDateMiladi)}]}>{product.ExprDate} انقضا</Text>
                 </View>
                 <View style={styles.supplierContainer}>
                     <Text style={styles.supplierText}>{product.PayDay} روز</Text>

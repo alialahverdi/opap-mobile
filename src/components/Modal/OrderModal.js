@@ -99,7 +99,15 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
         setCount("")
         onclose()
     }
-
+const GetDiffDay=(extrdate)=>{
+    let today = new Date();
+    let form_date=new Date(extrdate)
+    let diff=Math.floor((form_date - today) / (1000 * 60 * 60 * 24))
+    if(isNaN(diff))
+    return isNaN(diff)
+    else
+    return 'مانده روز :'+diff
+}
     return (
         <Modal
             animationType="slide"
@@ -149,6 +157,7 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
                         <View style={styles.line} />
                         <View style={styles.detailContainer}>
                             <Text style={styles.value}>{product.ExprDate}</Text>
+                            <Text style={styles.value}>{GetDiffDay(product.ExprDateMiladi)}</Text>
                             <Text style={styles.key}>تاریخ انقضا</Text>
                         </View>
                         <View style={styles.line} />
@@ -159,24 +168,25 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
                         <View style={styles.line} />
                         <View style={styles.detailContainer}>
                             <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.toman}>تومان</Text>
+                                <Text style={styles.toman}>ریال</Text>
                                 <Text style={styles.value}>{formatNumber(product.SalesPrice)}</Text>
                             </View>
                             <Text style={styles.key}>قیمت فروش</Text>
                         </View>
                         <View style={styles.line} />
                         <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.PayDay}</Text>
-                            <Text style={styles.key}>فرجه</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
                             <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.toman}>تومان</Text>
+                                <Text style={styles.toman}>ریال</Text>
                                 <Text style={styles.value}>{formatNumber(product.CustomerPrice)}</Text>
                             </View>
                             <Text style={styles.key}>قیمت مصرف کننده</Text>
                         </View>
+                        <View style={styles.line} />
+                        <View style={styles.detailContainer}>
+                            <Text style={styles.value}>{product.PayDay}</Text>
+                            <Text style={styles.key}>فرجه</Text>
+                        </View>
+                       
                         <View style={styles.line} />
                         <View style={styles.detailContainer}>
                             <Text style={styles.value}>{product.UnitQty}</Text>
