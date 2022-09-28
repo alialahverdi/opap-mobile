@@ -17,6 +17,7 @@ const ProductSchema = {
         PromotionDesc: "string",
         Taxable: "int",
         GroupID: "int",
+        GroupName: "string",
         NewProd: "int"
     },
     primaryKey: "ProductID"

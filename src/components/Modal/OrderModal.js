@@ -8,14 +8,14 @@ import { storeArray, updateArray, updateObj } from '../../model/query'
 import { toEnglishDigits } from '../../utils/numbersUtils'
 import Header from '../Header'
 import Snackbar from "../../components/Snakbar"
-
+import { Switch } from 'react-native'
 
 const OrderModal = ({ type, title, visible, product, customer, onRequestClose, onclose }) => {
 
     // ------- States ------- //
     const [count, setCount] = useState("")
     const [snackbarMessage, setSnackbarMessage] = useState(null)
-
+    // const [isTaxable, setTaxable] = useState(true);
 
     // ------- Logic or Functions ------- //
 
@@ -199,8 +199,18 @@ const GetDiffDay=(extrdate)=>{
                         </View>
                         <View style={styles.line} />
                         <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.SupplierName}</Text>
+                            <Text style={styles.value}>{product.GroupName}</Text>
                             <Text style={styles.key}>گروه کالایی</Text>
+                        </View>
+                        <View style={styles.line} />
+                        <View style={styles.detailContainer}>
+                        <Switch
+                                trackColor={{ false: "#ddd", true: "#81b0ff" }}
+                                 thumbColor={(product.Taxable==1?true:false) ? "#2367ff" : "#f4f3f4"}                             
+                                value={product.Taxable==1?true:false}
+                               
+                            />
+                            <Text style={styles.key}>مالیات پذیر</Text>
                         </View>
                         <View style={styles.line} />
                         <View>
