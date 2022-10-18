@@ -13,6 +13,9 @@ import ProductScreen from '../screens/app/product';
 import OrderTabsScreen from '../screens/app/orderTabs';
 import HomeStack from './HomeStack';
 
+const CreateNewPlaceholder = () => <View style={{ flex: 1, backgroundColor: 'blue' }} />
+
+
 // Create Tab fro screens
 const Tab = createBottomTabNavigator()
 
@@ -61,6 +64,20 @@ const AppStack = () => {
                 // activeTintColor: "red"
             }}
         >
+            {/* <Tab.Screen
+                name="Create"
+                component={CreateNewPlaceholder}
+                listeners={({ navigation, route }) => ({
+                    tabPress: e => {
+                        e.preventDefault();
+                        navigation.navigate("ExitModal");
+                    }
+                })}
+                options={{
+                    tabBarLabel: props => label(props, "خروج"),
+                    tabBarIcon: props => <Icon name="exit" size={props.size} color={props.color} />
+                }}
+            /> */}
             <Tab.Screen
                 name="OrderTabsScreen"
                 component={OrderTabsScreen}

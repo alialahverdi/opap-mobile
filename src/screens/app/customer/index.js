@@ -6,9 +6,7 @@ import { storeArray, storeObj, deleteAllDataFromSchema } from '../../../model/qu
 import CustomerCard from '../../../components/CustomerCard'
 import SearchbarHeader from '../../../components/SearchbarHeader'
 import { toEnglishDigits } from '../../../utils/numbersUtils'
-import { generatorID } from '../../../utils/IDUtils'
 import AlertModal from '../../../components/Modal/AlertModal'
-import * as Animatable from 'react-native-animatable'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import useSnackbar from '../../../hooks/useSnackbar'
 
@@ -67,7 +65,6 @@ const Customer = ({ navigation }) => {
 
     const getRealmCustomers = () => {
         const realmCustomers = realm.objects('Customer')
-        // console.log(realmCustomers.length)
         const customers = JSON.parse(JSON.stringify(realmCustomers))
         const newCustomers = customers.map(item => {
             return {
@@ -77,23 +74,17 @@ const Customer = ({ navigation }) => {
         })
         setAllCustomers(newCustomers)
         setStateCustomers(newCustomers)
-        // if (customers.length > 0) {
-        //     return addExpandable(customers)
-        // }
-        // if (customers.length == 0) {
-        //     return getApiCustomers()
-        // }
     }
 
     const getApiCustomers = async () => {
         const today = new Date().toLocaleDateString('fa-IR-u-nu-latn')
         await AsyncStorage.setItem('visitDate', today)
 
-        api.get('/customer/getopenfactor').then(res => {
+        await api.get('/customer/getopenfactor').then(res => {
             storeArray(res.content, "OpenFactor")
         }).catch(() => { })
 
-        api.get('/customer/get').then(res => {
+        await api.get('/customer/get').then(res => {
             storeArray(res.content, "Customer").then(() => {
                 const newCustomers = res.content.map(item => {
                     return {
@@ -107,7 +98,7 @@ const Customer = ({ navigation }) => {
         }).catch(() => { })
     }
 
-    const setStateCustomers = (sentCustomers) => {
+    const setStateCustomers = async (sentCustomers) => {
         let filteredCustomers
         if (isShowDailyVisit) {
             filteredCustomers = sentCustomers.filter((i) => i.TodayVisit)
@@ -260,11 +251,13 @@ const Customer = ({ navigation }) => {
 
     const handleRefresh = async () => {
         setRefreshing(true)
-        // await api.get('/customer/getopenfactor').then(res => {
-        //     deleteAllDataFromSchema("OpenFactor").then(() => {
-        //         storeArray(res.content, "OpenFactor")
-        //     })
-        // }).catch(() => { })
+
+        await api.get('/customer/getopenfactor').then(res => {
+            deleteAllDataFromSchema("OpenFactor").then(() => {
+                storeArray(res.content, "OpenFactor")
+            })
+        }).catch(() => { })
+
 
         api.get('/customer/get').then(res => {
             deleteAllDataFromSchema("Customer").then(() => {
@@ -276,10 +269,15 @@ const Customer = ({ navigation }) => {
                         }
                     })
                     setAllCustomers(newCustomers)
-                    setStateCustomers(newCustomers)
-            })  })
+                    setStateCustomers(newCustomers).then(() => {
+                        showSnakbar({
+                            variant: "succes",
+                            message: "اطلاعت مشتریان آپدیت شد."
+                        })
+                    })
+                })
+            })
         }).catch(() => { })
-
     }
 
     const handleLoadMore = () => {
@@ -324,9 +322,12 @@ const Customer = ({ navigation }) => {
 
             <AlertModal
                 isShowModal={isShowModal}
+                title="سفارش تکراری"
+                description="شما یک سفارش تکراری دارید آیا مایل به ساخت سفارش جدید هستید."
+                ok="سفارش جدید"
                 hideModal={() => setIsShowModal(false)}
                 cancel={() => setIsShowModal(false)}
-                newOrder={() => {
+                onOk={() => {
                     storeOrder(customerObj)
                     setIsShowModal(false)
                 }}

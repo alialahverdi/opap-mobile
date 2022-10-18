@@ -8,7 +8,7 @@ import Button from '../Button'
 
 const AlertModal = forwardRef((props, ref) => {
 
-    const { isShowModal, hideModal, cancel, newOrder } = props
+    const { isShowModal, title, description, ok, hideModal, cancel, onOk } = props
 
     return (
         <Modal
@@ -26,10 +26,10 @@ const AlertModal = forwardRef((props, ref) => {
         >
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.title}>سفارش تکراری</Text>
+                    <Text style={styles.title}>{title}</Text>
                 </View>
                 <View style={styles.body}>
-                    <Text style={styles.description}>شما یک سفارش تکراری دارید آیا مایل به ساخت سفارش جدید هستید؟</Text>
+                    <Text style={styles.description}>{description}</Text>
                     <View style={styles.actions}>
                         <Button
                             isLoading={false}
@@ -42,10 +42,10 @@ const AlertModal = forwardRef((props, ref) => {
                         <Button
                             isLoading={false}
                             containerStyle={styles.cancel}
-                            title="سفارش جدید"
+                            title={ok}
                             color="#6495ED"
                             width={100}
-                            onPress={newOrder}
+                            onPress={onOk}
                         />
                     </View>
                 </View>

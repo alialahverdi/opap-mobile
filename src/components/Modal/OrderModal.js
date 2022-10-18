@@ -99,23 +99,25 @@ const OrderModal = ({ type, title, visible, product, customer, onRequestClose, o
         setCount("")
         onclose()
     }
-const GetDiffDay=(extrdate)=>{
-    let today = new Date();
-    let form_date=new Date(extrdate)
-    let diff=Math.floor((form_date - today) / (1000 * 60 * 60 * 24))
-    if(isNaN(diff))
-    return isNaN(diff)
-    else
-    return 'مانده روز :'+diff
-}
+
+    const GetDiffDay = (extrdate) => {
+        let today = new Date();
+        let form_date = new Date(extrdate)
+        let diff = Math.floor((form_date - today) / (1000 * 60 * 60 * 24))
+        if (isNaN(diff))
+            return isNaN(diff)
+        else
+            return 'مانده روز :' + diff
+    }
+
     return (
-        <Modal
-            animationType="slide"
-            visible={visible}
-            onRequestClose={onRequestClose}
-        >
-            <SafeAreaView style={styles.container}>
-                <View>
+        <>
+            <Modal
+                animationType="slide"
+                visible={visible}
+                onRequestClose={onRequestClose}
+            >
+                <SafeAreaView style={styles.container}>
                     <Header
                         title={title}
                         goBack={() => {
@@ -123,112 +125,113 @@ const GetDiffDay=(extrdate)=>{
                             setCount("")
                         }}
                     />
-                    <View style={styles.content}>
-                        {type !== "show" && (
-                            <View style={styles.addToBasketContainer}>
-                                <View style={styles.outlineContainer}>
-                                    <IconButton outline iconName="remove" onPress={decrease} />
+                    <ScrollView style={{ flex: 1 }}>
+                        <View style={styles.content}>
+                            {type !== "show" && (
+                                <View style={styles.addToBasketContainer}>
+                                    <View style={styles.outlineContainer}>
+                                        <IconButton outline iconName="remove" onPress={decrease} />
+                                    </View>
+                                    <View style={styles.inputContainer}>
+                                        <Input
+                                            placeholder="تعداد"
+                                            keyboardType="numeric"
+                                            value={count}
+                                            onChangeText={setCount}
+                                        />
+                                    </View>
+                                    <View style={styles.basicContainer}>
+                                        <IconButton basic iconName="add" onPress={increase} />
+                                    </View>
                                 </View>
-                                <View style={styles.inputContainer}>
-                                    <Input
-                                        placeholder="تعداد"
-                                        keyboardType="numeric"
-                                        value={count}
-                                        onChangeText={setCount}
-                                    />
+                            )}
+                            <Text
+                                style={[
+                                    styles.productName,
+                                    type !== "show" && { marginTop: 30 }
+                                ]}
+                            >
+                                {product.ProductID} - {product.ProductName}
+                            </Text>
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.SupplierName}</Text>
+                                <Text style={styles.key}>تامین کننده</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.ExprDate}</Text>
+                                <Text style={styles.value}>{GetDiffDay(product.ExprDateMiladi)}</Text>
+                                <Text style={styles.key}>تاریخ انقضا</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.StockQty}</Text>
+                                <Text style={styles.key}>موجودی</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={styles.toman}>ریال</Text>
+                                    <Text style={styles.value}>{formatNumber(product.SalesPrice)}</Text>
                                 </View>
-                                <View style={styles.basicContainer}>
-                                    <IconButton basic iconName="add" onPress={increase} />
+                                <Text style={styles.key}>قیمت فروش</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={styles.toman}>ریال</Text>
+                                    <Text style={styles.value}>{formatNumber(product.CustomerPrice)}</Text>
                                 </View>
+                                <Text style={styles.key}>قیمت مصرف کننده</Text>
                             </View>
-                        )}
-                        <Text
-                            style={[
-                                styles.productName,
-                                type !== "show" && { marginTop: 30 }
-                            ]}
-                        >
-                            {product.ProductID} - {product.ProductName}
-                        </Text>
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.SupplierName}</Text>
-                            <Text style={styles.key}>تامین کننده</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.ExprDate}</Text>
-                            <Text style={styles.value}>{GetDiffDay(product.ExprDateMiladi)}</Text>
-                            <Text style={styles.key}>تاریخ انقضا</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.StockQty}</Text>
-                            <Text style={styles.key}>موجودی</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.toman}>ریال</Text>
-                                <Text style={styles.value}>{formatNumber(product.SalesPrice)}</Text>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.PayDay}</Text>
+                                <Text style={styles.key}>فرجه</Text>
                             </View>
-                            <Text style={styles.key}>قیمت فروش</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <View style={{ flexDirection: "row" }}>
-                                <Text style={styles.toman}>ریال</Text>
-                                <Text style={styles.value}>{formatNumber(product.CustomerPrice)}</Text>
-                            </View>
-                            <Text style={styles.key}>قیمت مصرف کننده</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.PayDay}</Text>
-                            <Text style={styles.key}>فرجه</Text>
-                        </View>
-                       
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.UnitQty}</Text>
-                            <Text style={styles.key}>تعداد در بسته</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.PackQty}</Text>
-                            <Text style={styles.key}>تعداد در کارتن</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View style={styles.detailContainer}>
-                            <Text style={styles.value}>{product.SupplierName}</Text>
-                            <Text style={styles.key}>گروه کالایی</Text>
-                        </View>
-                        <View style={styles.line} />
-                        <View>
-                            <Text style={styles.stairText}>{product.PromotionDesc}</Text>
-                        </View>
-                    </View>
-                </View>
 
-                {type !== "show" && (
-                    <View style={styles.footer}>
-                        <FullButton
-                            title={type == "create" ? "ثبت" : "ویرایش"}
-                            disabled={count != "" ? false : true}
-                            onPress={onOrder}
-                        />
-                    </View>
-                )}
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.UnitQty}</Text>
+                                <Text style={styles.key}>تعداد در بسته</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.PackQty}</Text>
+                                <Text style={styles.key}>تعداد در کارتن</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View style={styles.detailContainer}>
+                                <Text style={styles.value}>{product.SupplierName}</Text>
+                                <Text style={styles.key}>گروه کالایی</Text>
+                            </View>
+                            <View style={styles.line} />
+                            <View>
+                                <Text style={styles.stairText}>{product.PromotionDesc}</Text>
+                            </View>
+                        </View>
+                    </ScrollView>
+                    {type !== "show" && (
+                        <View style={styles.footer}>
+                            <FullButton
+                                title={type == "create" ? "ثبت" : "ویرایش"}
+                                disabled={count != "" ? false : true}
+                                onPress={onOrder}
+                            />
+                        </View>
+                    )}
+                    {snackbarMessage && <Snackbar content={snackbarMessage} />}
+                </SafeAreaView>
+            </Modal>
 
-                {snackbarMessage && <Snackbar content={snackbarMessage} />}
-            </SafeAreaView>
-        </Modal>
+        </>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "space-between"
+        // justifyContent: "space-between"
     },
     content: {
         // flex: 8.5,
@@ -291,7 +294,7 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         flex: 6,
-        height: 40
+        height: 45
     },
     basicContainer: {
         flex: 2,

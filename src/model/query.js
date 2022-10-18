@@ -54,4 +54,14 @@ const deleteAllDataFromSchema = async (schema) => {
     }
 }
 
-export { storeArray, storeObj, updateArray, updateObj, deleteAllDataFromSchema };
+const deleteAllSchema = async (schema) => {
+    try {
+        realm.write(() => {
+            realm.deleteAll()
+        })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { storeArray, storeObj, updateArray, updateObj, deleteAllDataFromSchema, deleteAllSchema };
