@@ -128,7 +128,40 @@ const OrderListModal = ({
             onRequestClose={onRequestClose}
         >
             <SafeAreaView style={styles.container}>
-                <View>
+                <Header
+                    title={title}
+                    goBack={onclose}
+                />
+                <FlatList
+                    style={{ paddingHorizontal: 10 }}
+                    data={orders}
+                    renderItem={showOrderDetails}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+                {orders.length > 0 && type === "create" && (
+                    <View style={styles.footer}>
+                        <View>
+                            <FullButton
+                                isLoading={completeOrderSpinner}
+                                title="تکمیل سفارش"
+                                onPress={completeOrder}
+                            />
+                        </View>
+                        <View>
+                            <View style={styles.totalContainer}>
+                                <Text style={styles.toman}>تومان</Text>
+                                <Text style={styles.totalText}>{formatNumber(factorSum())}</Text>
+                            </View>
+                        </View>
+                        <View>
+                            <View style={styles.totalContainer}>
+                                <Text style={styles.toman}>روز</Text>
+                                <Text style={styles.totalText}>{payday()}</Text>
+                            </View>
+                        </View>
+                    </View>
+                )}
+                {/* <View>
                     <Header
                         title={title}
                         goBack={onclose}
@@ -162,7 +195,7 @@ const OrderListModal = ({
                             </View>
                         </View>
                     </View>
-                )}
+                )} */}
 
                 {snackbarMessage && <Snackbar content={snackbarMessage} />}
             </SafeAreaView>
@@ -173,7 +206,7 @@ const OrderListModal = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
         backgroundColor: '#f0f1f3'
     },
     footer: {
