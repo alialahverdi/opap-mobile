@@ -53,7 +53,7 @@ const Login = ({ navigation }) => {
             username: toEnglishDigits(username),
             password: toEnglishDigits(password),
             deviceid: uniqueId,
-            version: "1.0.1"
+            version: "1.0.2"
         }
 
         api.post('/check', params)

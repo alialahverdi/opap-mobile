@@ -11,7 +11,7 @@ import OpenFactorSchema from "../../schemas/openFactor"
 // Create or Open database wtih schema
 const realm = new Realm({
     schema: [CustomerSchema, ProductSchema, OrderSchema, OrderDetailSchema, OpenFactorSchema],
-    schemaVersion: 1
+    schemaVersion: 2
 });
 
 // Export the realm instance
