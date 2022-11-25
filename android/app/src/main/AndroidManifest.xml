@@ -2,6 +2,10 @@
   package="com.opap">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
       android:supportsRtl="false"
@@ -24,5 +28,15 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
       </activity>
+      <meta-data
+        android:name="com.supersami.foregroundservice.notification_channel_name"
+        android:value="Sticky Title"
+      />
+      <meta-data
+        android:name="com.supersami.foregroundservice.notification_channel_description"
+        android:value="Sticky Description."
+      />
+      <service android:name="com.supersami.foregroundservice.ForegroundService"></service> 
+      <service android:name="com.supersami.foregroundservice.ForegroundServiceTask"></service>
     </application>
 </manifest>

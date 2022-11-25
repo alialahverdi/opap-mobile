@@ -93,7 +93,6 @@ const Products = ({ screenType, onPress, setIsShowList }) => {
         setIsShowList(true)
         setProductSpinner(false)
         setRefreshing(false)
-        console.log("3")
     }
 
     const contains = (item, query) => {

@@ -173,6 +173,11 @@ android {
         }
     }
 
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
+    }
+
     if (isNewArchitectureEnabled()) {
         // We configure the NDK build only if you decide to opt-in for the New Architecture.
         externalNativeBuild {
@@ -260,6 +265,8 @@ android {
         }
     }
 }
+
+
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

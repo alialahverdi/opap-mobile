@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 
 // Screens
-import HomeScreen from '../screens/app/home';
+import TestScreen from '../screens/app/Test';
 import CustomerStack from '../navigation/CustomerStack';
 import ProductScreen from '../screens/app/product';
 import OrderTabsScreen from '../screens/app/orderTabs';
@@ -64,20 +64,14 @@ const AppStack = () => {
                 // activeTintColor: "red"
             }}
         >
-            {/* <Tab.Screen
-                name="Create"
-                component={CreateNewPlaceholder}
-                listeners={({ navigation, route }) => ({
-                    tabPress: e => {
-                        e.preventDefault();
-                        navigation.navigate("ExitModal");
-                    }
-                })}
+            <Tab.Screen
+                name="TestScreen"
+                component={TestScreen}
                 options={{
-                    tabBarLabel: props => label(props, "خروج"),
+                    tabBarLabel: props => label(props, "تست"),
                     tabBarIcon: props => <Icon name="exit" size={props.size} color={props.color} />
                 }}
-            /> */}
+            />
             <Tab.Screen
                 name="OrderTabsScreen"
                 component={OrderTabsScreen}
