@@ -4,6 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as Animatable from 'react-native-animatable'
 import Layout from '../../components/Layout'
 import { Image } from 'react-native'
+import DeviceInfo from 'react-native-device-info'
+import useSnackbar from "../../hooks/useSnackbar"
+import Button from '../../components/Button'
+import Ripple from 'react-native-material-ripple'
 
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const DEVICE_HEIGHT = Dimensions.get('window').height;
@@ -12,13 +16,31 @@ const DEVICE_HEIGHT = Dimensions.get('window').height;
 // Create a component
 const Splash = ({ navigation }) => {
 
+    const { showSnakbar } = useSnackbar()
+
     // ------- States ------- //
-    const [spinner, setSpinner] = useState(true);
+    const [spinner, setSpinner] = useState(false);
+    const [showTryAgain, setShowTryAgain] = useState(false);
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
-        getUserInfo()
+        checkLocationIsOn()
     }, [])
+
+    const checkLocationIsOn = () => {
+        DeviceInfo.isLocationEnabled().then((enabled) => {
+            if (enabled) {
+                getUserInfo()
+            } else {
+                setShowTryAgain(true)
+                Alert.alert('لوکیشن شما خاموش است لطفا آن را روشن کنید.')
+                // showSnakbar({
+                //     variant: "error",
+                //     message: 'لوکیشن شما خاموش است لطفا آن را روشن کنید.'
+                // })
+            }
+        });
+    }
 
     const getUserInfo = async () => {
         const value = await AsyncStorage.getItem("userInfo")
@@ -52,22 +74,50 @@ const Splash = ({ navigation }) => {
         },
     };
 
+    const tryAgain = () => {
+        setSpinner(true)
+        DeviceInfo.isLocationEnabled().then((enabled) => {
+            if (enabled) {
+                getUserInfo()
+            } else {
+                setSpinner(false)
+                showSnakbar({
+                    variant: "error",
+                    message: 'لوکیشن شما خاموش است لطفا آن را روشن کنید.'
+                })
+            }
+        });
+    }
+
 
     return (
         <Layout containerStyle={styles.container}>
-            <View />
-            <Animatable.View
-                animation={zoomOut}
-                duration={2000}
-                useNativeDriver={true}
-                style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Image
-                    source={require('../../assets/img/logo.png')}
-                    style={{ width: 180, height: 180 }}
-                />
-                <Text style={styles.appName}>Opap</Text>
-            </Animatable.View>
-            <Text style={styles.version}>Version : 1.0.2</Text>
+            <View style={styles.up} />
+            <View style={styles.down}>
+                <Animatable.View
+                    animation={zoomOut}
+                    duration={2000}
+                    useNativeDriver={true}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <Image
+                        source={require('../../assets/img/logo.png')}
+                        style={{ width: 180, height: 180 }}
+                    />
+                </Animatable.View>
+                {showTryAgain && (
+                    <Ripple
+                        style={styles.tryAgain}
+                        onPress={tryAgain}
+                    >
+                        {
+                            spinner
+                                ? <ActivityIndicator size="small" color="#DADADA" />
+                                : <Text style={styles.version}>تلاش مجدد</Text>
+                        }
+                    </Ripple>
+                )}
+                <Text style={styles.version}>Version : 2.0.0</Text>
+            </View>
         </Layout>
     )
 }
@@ -80,14 +130,32 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
+    up: {
+        flex: .3
+    },
+    down: {
+        flex: .7,
+        justifyContent: 'space-between',
+        alignItems: 'center'
+        // backgroundColor: 'red'
+    },
     appName: {
-        ...font.whiteBold,
+        // ...font.whiteBold,
         fontSize: 25
     },
+    tryAgain: {
+        width: 100,
+        height: 35,
+        borderWidth: 1,
+        borderColor: '#DADADA',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5
+    },
     version: {
-        color: '#fff',
         fontSize: 11,
-        marginBottom: "1%"
+        marginBottom: "1%",
+        ...font.gray
     }
 })
 

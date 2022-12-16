@@ -1,119 +1,307 @@
-import React, { useEffect } from 'react';
-import { PermissionsAndroid } from 'react-native';
-import ReactNativeForegroundService from '@supersami/rn-foreground-service';
-import RNLocation from 'react-native-location';
+import React, { useEffect, useState } from "react";
+import {
+    Linking,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    View
+} from "react-native";
+import RNLocation from "react-native-location";
+import { useIsFocused } from '@react-navigation/native'
+import realm from '../../model/v1/realmInstance'
+import moment from "moment";
 
-const TestScreen = () => {
+const repoUrl = "https://github.com/timfpark/react-native-location";
+
+// export default class App extends React.PureComponent {
+//     constructor() {
+//         super();
+//         this.state = {
+//             location: null
+//         };
+//     }
+
+//     componentDidMount() {
+//         RNLocation.configure({
+//             distanceFilter: 5.0
+//         });
+
+//         RNLocation.requestPermission({
+//             ios: "whenInUse",
+//             android: {
+//                 detail: "fine",
+//                 rationale: {
+//                     title: "Location permission",
+//                     message: "We use your location to demo the library",
+//                     buttonPositive: "OK",
+//                     buttonNegative: "Cancel"
+//                 }
+//             }
+//         }).then(granted => {
+//             if (granted) {
+//                 // this._startUpdatingLocation();
+//                 RNLocation.subscribeToLocationUpdates(
+//                     locations => {
+//                         console.log(locations[0])
+//                         this.setState({ location: locations[0] });
+//                     }
+//                 );
+//             }
+//         });
+//     }
+
+//     _startUpdatingLocation = () => {
+//         RNLocation.subscribeToLocationUpdates(
+//             locations => {
+//                 console.log(locations[0])
+//                 this.setState({ location: locations[0] });
+//             }
+//         );
+//     };
+
+//     _stopUpdatingLocation = () => {
+//         this.locationSubscription && this.locationSubscription();
+//         this.setState({ location: null });
+//     };
+
+//     render() {
+//         const { location } = this.state;
+//         return (
+//             <ScrollView style={styles.container}>
+//                 <SafeAreaView style={styles.innerContainer}>
+//                     <View style={{ alignItems: "center", marginTop: 30 }}>
+//                         <Text style={styles.title}>react-native-location</Text>
+//                     </View>
+
+//                     <View style={styles.row}>
+//                         <TouchableHighlight
+//                             onPress={this._startUpdatingLocation}
+//                             style={[styles.button, { backgroundColor: "#126312" }]}
+//                         >
+//                             <Text style={styles.buttonText}>Start</Text>
+//                         </TouchableHighlight>
+
+//                         <TouchableHighlight
+//                             onPress={this._stopUpdatingLocation}
+//                             style={[styles.button, { backgroundColor: "#881717" }]}
+//                         >
+//                             <Text style={styles.buttonText}>Stop</Text>
+//                         </TouchableHighlight>
+//                     </View>
+
+//                     {location && (
+//                         <React.Fragment>
+//                             <View style={styles.row}>
+//                                 <View style={[styles.detailBox, styles.third]}>
+//                                     <Text style={styles.valueTitle}>Course</Text>
+//                                     <Text style={[styles.detail, styles.largeDetail]}>
+//                                         {location.course}
+//                                     </Text>
+//                                 </View>
+
+//                                 <View style={[styles.detailBox, styles.third]}>
+//                                     <Text style={styles.valueTitle}>Speed</Text>
+//                                     <Text style={[styles.detail, styles.largeDetail]}>
+//                                         {location.speed}
+//                                     </Text>
+//                                 </View>
+
+//                                 <View style={[styles.detailBox, styles.third]}>
+//                                     <Text style={styles.valueTitle}>Altitude</Text>
+//                                     <Text style={[styles.detail, styles.largeDetail]}>
+//                                         {location.altitude}
+//                                     </Text>
+//                                 </View>
+//                             </View>
+
+//                             <View style={{ alignItems: "flex-start" }}>
+//                                 <View style={styles.row}>
+//                                     <View style={[styles.detailBox, styles.half]}>
+//                                         <Text style={styles.valueTitle}>Latitude</Text>
+//                                         <Text style={styles.detail}>{location.latitude}</Text>
+//                                     </View>
+
+//                                     <View style={[styles.detailBox, styles.half]}>
+//                                         <Text style={styles.valueTitle}>Longitude</Text>
+//                                         <Text style={styles.detail}>{location.longitude}</Text>
+//                                     </View>
+//                                 </View>
+
+//                                 <View style={styles.row}>
+//                                     <View style={[styles.detailBox, styles.half]}>
+//                                         <Text style={styles.valueTitle}>Accuracy</Text>
+//                                         <Text style={styles.detail}>{location.accuracy}</Text>
+//                                     </View>
+
+//                                     <View style={[styles.detailBox, styles.half]}>
+//                                         <Text style={styles.valueTitle}>Altitude Accuracy</Text>
+//                                         <Text style={styles.detail}>
+//                                             {location.altitudeAccuracy}
+//                                         </Text>
+//                                     </View>
+//                                 </View>
+
+//                                 <View style={styles.row}>
+//                                     <View style={[styles.detailBox, styles.half]}>
+//                                         <Text style={styles.valueTitle}>Timestamp</Text>
+//                                         <Text style={styles.detail}>{location.timestamp}</Text>
+//                                     </View>
+
+//                                     <View style={[styles.detailBox, styles.half]}>
+//                                         <Text style={styles.valueTitle}>Date / Time</Text>
+//                                         <Text style={styles.detail}>
+//                                             {/* {moment(location.timestamp).format("MM-DD-YYYY h:mm:ss")} */}
+//                                         </Text>
+//                                     </View>
+//                                 </View>
+
+//                                 <View style={styles.row}>
+//                                     <View style={[styles.detailBox, styles.full]}>
+//                                         <Text style={styles.json}>{JSON.stringify(location)}</Text>
+//                                     </View>
+//                                 </View>
+//                             </View>
+//                         </React.Fragment>
+//                     )}
+//                 </SafeAreaView>
+//             </ScrollView>
+//         );
+//     }
+// }
+
+
+const Test = () => {
+
+    const isFocused = useIsFocused()
+
+    const [location, setLocation] = useState(null)
+    const [allLocations, setAllLocations] = useState([])
 
     useEffect(() => {
-        // checkPermission()
-    }, [])
+        if (isFocused) {
+            getLocationsRealm()
+        }
+    }, [isFocused])
 
-    const checkPermission = async () => {
-        RNLocation.configure({
-            distanceFilter: 100, // Meters
-            desiredAccuracy: {
-                ios: 'best',
-                android: 'balancedPowerAccuracy',
-            },
-            // Android only
-            androidProvider: 'auto',
-            interval: 5000, // Milliseconds
-            fastestInterval: 10000, // Milliseconds
-            maxWaitTime: 5000, // Milliseconds
-            // iOS Only
-            activityType: 'other',
-            allowsBackgroundLocationUpdates: false,
-            headingFilter: 1, // Degrees
-            headingOrientation: 'portrait',
-            pausesLocationUpdatesAutomatically: false,
-            showsBackgroundLocationIndicator: false,
-        });
-        let locationSubscription = null;
-        let locationTimeout = null;
-
-        ReactNativeForegroundService.add_task(() => {
-            RNLocation.requestPermission({
-                ios: 'whenInUse',
-                android: {
-                    detail: 'fine',
-                },
-            }).then((granted) => {
-                console.log('Location Permissions: => ', granted);
-                // if has permissions try to obtain location with RN location
-                if (granted) {
-                    console.log('befor ', granted);
-                    locationSubscription && locationSubscription();
-                    locationSubscription = RNLocation.subscribeToLocationUpdates(
-                        ([locations]) => {
-                            locationSubscription();
-                            locationTimeout && clearTimeout(locationTimeout);
-                            console.log(locations);
-                        },
-                    );
-                } else {
-                    locationSubscription && locationSubscription();
-                    locationTimeout && clearTimeout(locationTimeout);
-                    // console.log('no permissions to obtain location');
-                }
-            });
-        }, {
-            delay: 1000,
-            onLoop: true,
-            taskId: 'taskid',
-            onError: (e) => console.log('Error logging:', e),
-        });
-    }
-
-    const stopTask = () => {
-        ReactNativeForegroundService.stop();
-    }
-
-    const getCurrentLocation = () => {
-        RNLocation.configure({
-            distanceFilter: 100, // Meters
-            desiredAccuracy: {
-                ios: 'best',
-                android: 'balancedPowerAccuracy',
-            },
-            // Android only
-            androidProvider: 'auto',
-            interval: 5000, // Milliseconds
-            fastestInterval: 10000, // Milliseconds
-            maxWaitTime: 5000, // Milliseconds
-            // iOS Only
-            activityType: 'other',
-            allowsBackgroundLocationUpdates: false,
-            headingFilter: 1, // Degrees
-            headingOrientation: 'portrait',
-            pausesLocationUpdatesAutomatically: false,
-            showsBackgroundLocationIndicator: false,
-        });
-
-        RNLocation.requestPermission({
-            ios: 'whenInUse',
-            android: {
-                detail: 'fine',
-            },
-        }).then((granted) => {
-            console.log('granted', granted)
-            RNLocation.getLatestLocation({ timeout: 60000 })
-                .then(latestLocation => {
-                    // Use the location here
-                    console.log('latestLocation', latestLocation)
-                })
-        })
-
-
+    const getLocationsRealm = () => {
+        const realmLocatinos = realm.objects('Location')
+        const locations = JSON.parse(JSON.stringify(realmLocatinos))
+        setAllLocations(locations)
     }
 
     return (
-        <View>
-            <Text>TestScreen</Text>
-            <Text onPress={() => stopTask()}>stop</Text>
-            <Text onPress={() => getCurrentLocation()}>getCurrentLocation</Text>
-        </View>
+        <ScrollView style={styles.container}>
+            <SafeAreaView style={styles.innerContainer}>
+                <View style={{ alignItems: "center", marginTop: 30 }}>
+                    <Text style={styles.title}>react-native-location</Text>
+                </View>
+                {allLocations.map(item => {
+                    return (
+                        <React.Fragment key={item.ID}>
+                            <View
+                                style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}
+                            >
+                                <View>
+                                    <Text style={{ fontSize: 10 }}>Latitude</Text>
+                                    <Text style={{ fontSize: 10 }}>{item.Lat}</Text>
+                                </View>
+                                <View>
+                                    <Text style={{ fontSize: 10 }}>Longitude</Text>
+                                    <Text style={{ fontSize: 10 }}>{item.Long}</Text>
+                                </View>
+                                <View>
+                                    <Text style={{ fontSize: 10 }}>Time</Text>
+                                    {/* <Text style={{ fontSize: 10 }}>{moment(item.TimeStamp).format("YYYY-MM-DD")}</Text> */}
+                                    <Text style={{ fontSize: 10 }}>{moment(item.TimeStamp).format("h:mm:ss")}</Text>
+                                </View>
+                            </View>
+                            <View style={styles.line} />
+                        </React.Fragment>
+                    )
+                })}
+            </SafeAreaView>
+        </ScrollView>
     )
 }
 
-export default TestScreen
+const styles = StyleSheet.create({
+    line: {
+        height: 1,
+        width: '100%',
+        backgroundColor: '#E0DEDE',
+        // marginVertical: 3
+    },
+    container: {
+        flex: 1,
+        backgroundColor: "#CCCCCC"
+    },
+    innerContainer: {
+        marginVertical: 30
+    },
+    title: {
+        textAlign: "center",
+        fontSize: 30,
+        fontWeight: "bold"
+    },
+    repoLink: {
+        textAlign: "center",
+        fontSize: 12,
+        fontWeight: "bold",
+        color: "#0000CC",
+        textDecorationLine: "underline"
+    },
+    row: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+        justifyContent: "space-between",
+        marginTop: 5,
+        marginBottom: 5
+    },
+    detailBox: {
+        padding: 15,
+        justifyContent: "center"
+    },
+    button: {
+        flex: 1,
+        marginHorizontal: 10,
+        marginTop: 15,
+        borderRadius: 10,
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 10
+    },
+    buttonText: {
+        fontSize: 30,
+        color: "#FFFFFF"
+    },
+    valueTitle: {
+        fontFamily: "Futura",
+        fontSize: 12
+    },
+    detail: {
+        fontSize: 15,
+        fontWeight: "bold"
+    },
+    largeDetail: {
+        fontSize: 20
+    },
+    json: {
+        fontSize: 12,
+        fontFamily: "Courier",
+        textAlign: "center",
+        fontWeight: "bold"
+    },
+    full: {
+        width: "100%"
+    },
+    half: {
+        width: "50%"
+    },
+    third: {
+        width: "33%"
+    }
+});
+
+export default Test

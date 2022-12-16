@@ -5,6 +5,8 @@ import { useIsFocused } from '@react-navigation/native'
 import api from '../../../services/axiosInstance'
 import * as Animatable from 'react-native-animatable'
 import Layout from '../../../components/Layout'
+import RNLocation from 'react-native-location'
+import { checkLocationIsOn, getLatestLocation } from '../../../services/locationTracker'
 
 // create a component
 const UnSentOrders = ({ navigation }) => {
@@ -28,7 +30,6 @@ const UnSentOrders = ({ navigation }) => {
         const orders = realm.objects("Order")
         const realmUnSentOrders = orders.filtered(`isSent == false`)
         setUnSentOrders(realmUnSentOrders)
-
     }
 
     const onUpdate = (orderItem) => {
@@ -67,13 +68,39 @@ const UnSentOrders = ({ navigation }) => {
     }
 
     const sendOrder = async (customer) => {
+
+        const enabled = await checkLocationIsOn()
+        if (!enabled) {
+            return Alert.alert('لوکیشن شما خاموش است لطفا آن را روشن کنید.')
+        }
+        // const location = await getLatestLocation()
+        // console.log('location', location)
+
+        console.log('befor')
+        RNLocation.requestPermission({
+            ios: 'whenInUse',
+            android: {
+                detail: 'fine',
+            },
+        }).then((granted) => {
+            console.log('granted', granted)
+            RNLocation.getLatestLocation({ timeout: 60000 })
+                .then(latestLocation => {
+                    // Use the location here
+                    console.log('latestLocation', latestLocation)
+                })
+        })
+        console.log('after')
+
+        return
+
         const data = {
             custID: customer.CustomerID,
             seq: new Date().getTime(),
             orderItem: createOrderItems(customer.OrderDetail)
         }
 
-        await api.post('/order/add', data).then(res => {
+        api.post('/order/add', data).then(res => {
             updateOrder(customer).then(() => {
                 showSnakbar({
                     variant: "success",

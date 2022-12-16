@@ -64,4 +64,19 @@ const deleteAllSchema = async (schema) => {
     }
 }
 
-export { storeArray, storeObj, updateArray, updateObj, deleteAllDataFromSchema, deleteAllSchema };
+const getPrimaryKeyId = (schema) => {
+    if (realm.objects(schema).max("ID")) {
+        return realm.objects(schema).max("ID") + 1;
+    }
+    return 1;
+}
+
+export {
+    storeArray,
+    storeObj,
+    updateArray,
+    updateObj,
+    deleteAllDataFromSchema,
+    deleteAllSchema,
+    getPrimaryKeyId
+};

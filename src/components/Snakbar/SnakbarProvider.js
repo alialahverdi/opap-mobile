@@ -15,7 +15,7 @@ const SnakbarProvider = (props) => {
         setContent(data)
         setTimeout(() => {
             setContent(null)
-        }, 3000)
+        }, 4000)
     }
 
     return (
