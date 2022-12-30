@@ -8,6 +8,7 @@ import DeviceInfo from 'react-native-device-info'
 import useSnackbar from "../../hooks/useSnackbar"
 import Ripple from 'react-native-material-ripple'
 import ReactNativeForegroundService from '@supersami/rn-foreground-service';
+import { checkTime } from '../../utils/checkTime'
 
 
 
@@ -41,6 +42,9 @@ const Splash = ({ navigation }) => {
     }
 
     const startTrackerTask = async () => {
+        const validTime = checkTime()
+        if (!validTime) return null
+
         const value = await AsyncStorage.getItem("trakerTask")
         const traker = JSON.parse(value)
         if (traker === null) {
