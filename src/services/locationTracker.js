@@ -83,6 +83,7 @@ const locationTracker = async () => {
     const validTime = checkTime()
 
     if (!validTime) {
+        await AsyncStorage.removeItem("trakerTask")
         ReactNativeForegroundService.stop();
         return
     }
