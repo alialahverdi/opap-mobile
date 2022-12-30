@@ -6,11 +6,10 @@ import Layout from '../../components/Layout'
 import { Image } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import useSnackbar from "../../hooks/useSnackbar"
-import Button from '../../components/Button'
 import Ripple from 'react-native-material-ripple'
+import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
-const DEVICE_HEIGHT = Dimensions.get('window').height;
+
 
 
 // Create a component
@@ -27,19 +26,31 @@ const Splash = ({ navigation }) => {
         checkLocationIsOn()
     }, [])
 
+
+
     const checkLocationIsOn = () => {
         DeviceInfo.isLocationEnabled().then((enabled) => {
             if (enabled) {
+                startTrackerTask()
                 getUserInfo()
             } else {
                 setShowTryAgain(true)
                 Alert.alert('لوکیشن شما خاموش است لطفا آن را روشن کنید.')
-                // showSnakbar({
-                //     variant: "error",
-                //     message: 'لوکیشن شما خاموش است لطفا آن را روشن کنید.'
-                // })
             }
         });
+    }
+
+    const startTrackerTask = async () => {
+        const value = await AsyncStorage.getItem("trakerTask")
+        const traker = JSON.parse(value)
+        if (traker === null) {
+            ReactNativeForegroundService.start({
+                id: 144,
+                title: '',
+                message: 'سرویس فعال است.',
+            });
+            await AsyncStorage.setItem("trakerTask", "true")
+        }
     }
 
     const getUserInfo = async () => {
@@ -78,6 +89,7 @@ const Splash = ({ navigation }) => {
         setSpinner(true)
         DeviceInfo.isLocationEnabled().then((enabled) => {
             if (enabled) {
+                startTrackerTask()
                 getUserInfo()
             } else {
                 setSpinner(false)
@@ -116,7 +128,7 @@ const Splash = ({ navigation }) => {
                         }
                     </Ripple>
                 )}
-                <Text style={styles.version}>Version : 2.0.0</Text>
+                <Text style={styles.version}>Version : 3.0.0</Text>
             </View>
         </Layout>
     )

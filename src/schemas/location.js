@@ -1,13 +1,13 @@
 const LocationSchema = {
     name: "Location",
     properties: {
-        ID: "int",
-        Lat: "string",
-        Long: "string",
-        Date: "string",
-        TimeStamp: "int"
+        Latitude: "string",
+        Longitude: "string",
+        TrackDate: "string",
+        TrackTime: "string",
+        TrackTimeStamp: "int"
     },
-    primaryKey: "ID"
+    primaryKey: "TrackTimeStamp"
 }
 
 export default LocationSchema;

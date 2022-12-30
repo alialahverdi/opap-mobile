@@ -64,14 +64,14 @@ const AppStack = () => {
                 // activeTintColor: "red"
             }}
         >
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="TestScreen"
                 component={TestScreen}
                 options={{
                     tabBarLabel: props => label(props, "تست"),
                     tabBarIcon: props => <Icon name="exit" size={props.size} color={props.color} />
                 }}
-            />
+            /> */}
             <Tab.Screen
                 name="OrderTabsScreen"
                 component={OrderTabsScreen}

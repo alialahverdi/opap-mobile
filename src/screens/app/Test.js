@@ -180,48 +180,13 @@ const Test = () => {
     const [allLocations, setAllLocations] = useState([])
 
     useEffect(() => {
-        if (isFocused) {
-            getLocationsRealm()
-        }
+
+
     }, [isFocused])
 
-    const getLocationsRealm = () => {
-        const realmLocatinos = realm.objects('Location')
-        const locations = JSON.parse(JSON.stringify(realmLocatinos))
-        setAllLocations(locations)
-    }
 
     return (
         <ScrollView style={styles.container}>
-            <SafeAreaView style={styles.innerContainer}>
-                <View style={{ alignItems: "center", marginTop: 30 }}>
-                    <Text style={styles.title}>react-native-location</Text>
-                </View>
-                {allLocations.map(item => {
-                    return (
-                        <React.Fragment key={item.ID}>
-                            <View
-                                style={{ flexDirection: 'row', justifyContent: 'space-between', margin: 10 }}
-                            >
-                                <View>
-                                    <Text style={{ fontSize: 10 }}>Latitude</Text>
-                                    <Text style={{ fontSize: 10 }}>{item.Lat}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ fontSize: 10 }}>Longitude</Text>
-                                    <Text style={{ fontSize: 10 }}>{item.Long}</Text>
-                                </View>
-                                <View>
-                                    <Text style={{ fontSize: 10 }}>Time</Text>
-                                    {/* <Text style={{ fontSize: 10 }}>{moment(item.TimeStamp).format("YYYY-MM-DD")}</Text> */}
-                                    <Text style={{ fontSize: 10 }}>{moment(item.TimeStamp).format("h:mm:ss")}</Text>
-                                </View>
-                            </View>
-                            <View style={styles.line} />
-                        </React.Fragment>
-                    )
-                })}
-            </SafeAreaView>
         </ScrollView>
     )
 }
