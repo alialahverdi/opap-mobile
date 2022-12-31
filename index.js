@@ -16,7 +16,7 @@ ReactNativeForegroundService.register();
 ReactNativeForegroundService.add_task(
     () => locationTracker(),
     {
-        delay: 40000,
+        delay: 4000,
         onLoop: true,
         taskId: 'taskid',
         onError: (e) => console.log(`Error logging:`, e),

@@ -45,16 +45,24 @@ const Splash = ({ navigation }) => {
         const validTime = checkTime()
         if (!validTime) return null
 
-        const value = await AsyncStorage.getItem("trakerTask")
-        const traker = JSON.parse(value)
-        if (traker === null) {
-            ReactNativeForegroundService.start({
-                id: 144,
-                title: '',
-                message: 'سرویس فعال است.',
-            });
-            await AsyncStorage.setItem("trakerTask", "true")
-        }
+        ReactNativeForegroundService.start({
+            id: 144,
+            title: '',
+            message: 'سرویس فعال است.',
+        });
+
+        return
+
+        // const value = await AsyncStorage.getItem("trakerTask")
+        // const traker = JSON.parse(value)
+        // if (traker === null) {
+        //     ReactNativeForegroundService.start({
+        //         id: 144,
+        //         title: '',
+        //         message: 'سرویس فعال است.',
+        //     });
+        //     await AsyncStorage.setItem("trakerTask", "true")
+        // }
     }
 
     const getUserInfo = async () => {
