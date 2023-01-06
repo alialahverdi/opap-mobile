@@ -30,7 +30,6 @@ export const getLatestLocation = async () => {
     return location
 }
 
-
 const addToDB = async (latestLocation) => {
     if (latestLocation === undefined) return
 
@@ -48,15 +47,20 @@ const addToDB = async (latestLocation) => {
 
     storeObj(locationObj, "Location").then(async (res) => {
 
+        AsyncStorage.setItem("locationOnRealm", JSON.stringify(locationObj))
+
         const realmLocatinos = realm.objects("Location")
         const locations = JSON.parse(JSON.stringify(realmLocatinos))
 
         if (userInfo === null) return
 
         api.post('/tracker/add', locations).then(res => {
-            deleteAllDataFromSchema("Location")
+            console.log('locationApi', res)
+            AsyncStorage.setItem("successLocationApi", "true")
+            // deleteAllDataFromSchema("Location")
         }).catch(error => {
             console.log('error', error)
+            AsyncStorage.setItem("errorLocationApi", JSON.stringify(error))
         })
 
     })

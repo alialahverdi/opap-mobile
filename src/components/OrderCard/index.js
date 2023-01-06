@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     },
     infoProduct: {
         flexDirection: "row",
-        marginTop: 10
+        marginTop: 5
     },
     infoText: {
         ...font.black,

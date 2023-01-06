@@ -8,6 +8,8 @@ import Ripple from 'react-native-material-ripple'
 import AlertModal from '../../../components/Modal/AlertModal'
 import { StackActions } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Modal from 'react-native-modal'
+import { get } from 'react-native/Libraries/Utilities/PixelRatio'
 
 
 // create a component
@@ -17,7 +19,15 @@ const Home = ({ navigation }) => {
     const [menuHeight, setMenuHeight] = useState(0);
     const [spinner, setSpinner] = useState(false);
     const [isShowModal, setIsShowModal] = useState(false)
-    // const [simsContent, setSimsContent] = useContext(snackbarContext);
+    const [isShowTestModal, setIsShowTestModal] = useState(false)
+    const [resultTest, setResultTest] = useState("")
+
+
+    // ------- Logic or Functions ------- //
+    useEffect(() => {
+        getApiHome();
+    }, [])
+
     const getApiHome = () => {
         api.get('/home/get').then(res => {
             setHome(...res.content)
@@ -25,10 +35,26 @@ const Home = ({ navigation }) => {
         }).catch(() => { })
     }
 
-    // ------- Logic or Functions ------- //
-    useEffect(() => {
-        getApiHome();
-    }, [])
+    const getTestData = async () => {
+        const locationServise = await AsyncStorage.getItem("locationServise")
+        const permission = await AsyncStorage.getItem("permission")
+        const locationOnRealm = await AsyncStorage.getItem("locationOnRealm")
+        const location = JSON.parse(JSON.stringify(locationOnRealm))
+        const successLocationApi = await AsyncStorage.getItem("successLocationApi")
+        const errorLocationApiJson = await AsyncStorage.getItem("errorLocationApi")
+        const errorLocationApi = JSON.parse(JSON.stringify(errorLocationApiJson))
+
+        const data = {
+            locationServise,
+            permission,
+            location,
+            successLocationApi,
+            errorLocationApi
+        }
+
+        setResultTest(JSON.stringify(data))
+
+    }
 
     const expandMenu = () => {
         if (expanded) { setMenuHeight(0); }
@@ -372,6 +398,24 @@ const Home = ({ navigation }) => {
                                 </View>
                             </View>
                         </Ripple>
+
+                        <Ripple
+                            style={[styles.openOrder, { marginBottom: 8 }]}
+                            activeOpacity={.6}
+                            onPress={async () => {
+                                await getTestData()
+                                setIsShowTestModal(true)
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingHorizontal: 20 }}>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                    {/* <Ionicons name="exit-outline" size={30} /> */}
+                                </View>
+                                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', }}>
+                                    <Text style={[styles.nameKey, { fontSize: 16 }]}>تست</Text>
+                                </View>
+                            </View>
+                        </Ripple>
                     </ScrollView>
                 )}
             </Layout>
@@ -384,6 +428,24 @@ const Home = ({ navigation }) => {
                 cancel={() => setIsShowModal(false)}
                 onOk={onExit}
             />
+
+            <Modal
+                backdropOpacity={.4}
+                useNativeDriver={true}
+                animationIn="fadeInUp"
+                animationOut="fadeOutDown"
+                swipeDirection="down"
+                animationOutTiming={400}
+                animationInTiming={400}
+                isVisible={isShowTestModal}
+                onBackdropPress={() => setIsShowTestModal(false)}
+                onBackButtonPress={() => setIsShowTestModal(false)}
+            >
+                <View style={{ backgroundColor: 'white', padding: 10 }}>
+                    <Text>{resultTest}</Text>
+                </View>
+            </Modal>
+
         </>
     )
 }

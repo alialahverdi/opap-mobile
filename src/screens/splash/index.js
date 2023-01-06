@@ -51,6 +51,8 @@ const Splash = ({ navigation }) => {
             message: 'سرویس فعال است.',
         });
 
+        AsyncStorage.setItem("locationServise", "started")
+
         return
 
         // const value = await AsyncStorage.getItem("trakerTask")

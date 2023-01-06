@@ -180,13 +180,40 @@ const Test = () => {
     const [allLocations, setAllLocations] = useState([])
 
     useEffect(() => {
-
-
+        getLocation()
     }, [isFocused])
+
+    const getLocation = () => {
+        const realmLocatinos = realm.objects("Location")
+        const locations = JSON.parse(JSON.stringify(realmLocatinos))
+        setAllLocations(locations)
+    }
 
 
     return (
         <ScrollView style={styles.container}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                <Text>Latitude</Text>
+                <Text>Longitude</Text>
+                <Text>TrackDate</Text>
+                <Text>TrackTime</Text>
+            </View>
+            {allLocations.map(item => (
+                <View key={item.TrackTime} style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+                    <View>
+                        <Text>{item.Latitude}</Text>
+                    </View>
+                    <View>
+                        <Text>{item.Longitude}</Text>
+                    </View>
+                    <View>
+                        <Text>{item.TrackDate}</Text>
+                    </View>
+                    <View>
+                        <Text>{item.TrackTime}</Text>
+                    </View>
+                </View>
+            ))}
         </ScrollView>
     )
 }

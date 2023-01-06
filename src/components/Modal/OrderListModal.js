@@ -8,6 +8,7 @@ import realm from "../../model/v1/realmInstance"
 import useSnackbar from '../../hooks/useSnackbar'
 import { formatNumber } from '../../utils/numbersUtils'
 import { StackActions } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const OrderListModal = ({
     type,
@@ -84,9 +85,10 @@ const OrderListModal = ({
                     message: "سفارش با موفقیت ثبت شد."
                 })
                 navigation.dispatch(StackActions.replace("CustomerScreen"))
-
             })
+            AsyncStorage.setItem("orderSuccess", JSON.stringify(error))
         }).catch(error => {
+            AsyncStorage.setItem("orderError", JSON.stringify(data))
             setSnackbarMessage({ variant: "error", message: error.message })
         }).finally(() => {
             setCompleteOrderSpinner(false)
