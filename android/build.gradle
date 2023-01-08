@@ -32,9 +32,17 @@ buildscript {
 }
 
 allprojects {
+    project.configurations.all {
+        resolutionStrategy {
+        force 'androidx.work:work-runtime:2.7.0'
+        }
+    }
     repositories {
+        jcenter()
+        maven { url "https://jitpack.io" }
+        mavenLocal()
         google()
-        
+
         exclusiveContent {
             filter {
                includeGroup "com.facebook.react"
@@ -60,6 +68,5 @@ allprojects {
                 excludeGroup "com.facebook.react"
             }
         }
-        maven { url 'https://www.jitpack.io' }
     }
 }
