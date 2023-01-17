@@ -86,6 +86,7 @@ const Customer = ({ navigation }) => {
 
         await api.get('/customer/get').then(res => {
             storeArray(res.content, "Customer").then(() => {
+                console.log('res', res)
                 const newCustomers = res.content.map(item => {
                     return {
                         ...item,

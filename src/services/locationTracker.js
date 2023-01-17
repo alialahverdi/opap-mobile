@@ -47,19 +47,15 @@ const addToDB = async (latestLocation) => {
     }
 
     storeObj(locationObj, "Location").then(async (res) => {
-        console.log('locationObj', locationObj.TrackTime)
 
-        return
         const realmLocatinos = realm.objects("Location")
         const locations = JSON.parse(JSON.stringify(realmLocatinos))
 
         if (userInfo === null) return
 
         api.post('/tracker/add', locations).then(res => {
-            console.log('locationApi', res)
             deleteAllDataFromSchema("Location")
         }).catch(error => {
-            console.log('error', error)
             AsyncStorage.setItem("errorLocationApi", JSON.stringify(error))
         })
 

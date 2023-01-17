@@ -113,7 +113,7 @@ const Splash = ({ navigation }) => {
                         }
                     </Ripple>
                 )}
-                <Text style={styles.version}>Version : 3.0.0</Text>
+                <Text style={styles.version}>Version : 3.0.1</Text>
             </View>
         </Layout>
     )

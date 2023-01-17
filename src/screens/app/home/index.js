@@ -399,7 +399,7 @@ const Home = ({ navigation }) => {
                             </View>
                         </Ripple>
 
-                        <Ripple
+                        {/* <Ripple
                             style={[styles.openOrder, { marginBottom: 8 }]}
                             activeOpacity={.6}
                             onPress={async () => {
@@ -409,13 +409,12 @@ const Home = ({ navigation }) => {
                         >
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, paddingHorizontal: 20 }}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
-                                    {/* <Ionicons name="exit-outline" size={30} /> */}
                                 </View>
                                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', }}>
                                     <Text style={[styles.nameKey, { fontSize: 16 }]}>تست</Text>
                                 </View>
                             </View>
-                        </Ripple>
+                        </Ripple> */}
                     </ScrollView>
                 )}
             </Layout>

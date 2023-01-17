@@ -40,7 +40,7 @@ const options = {
     color: '#ff00ff',
     linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
     parameters: {
-        delay: 4000,
+        delay: 40000,
     },
 };
 
@@ -61,7 +61,7 @@ const Login = ({ navigation }) => {
         createChannel();
         setTimeout(() => {
             startBackgroundService()
-        }, 2000)
+        }, 1000)
         getUniqueId();
     }, [])
 
@@ -76,7 +76,6 @@ const Login = ({ navigation }) => {
     }
 
     const startBackgroundService = async () => {
-        console.log('startBackgroundService')
         await BackgroundService.start(veryIntensiveTask, options);
     }
 
@@ -103,7 +102,7 @@ const Login = ({ navigation }) => {
             username: toEnglishDigits(username),
             password: toEnglishDigits(password),
             deviceid: uniqueId,
-            version: "3.0.0"
+            version: "3.0.1"
         }
 
         api.post('/check', params)
