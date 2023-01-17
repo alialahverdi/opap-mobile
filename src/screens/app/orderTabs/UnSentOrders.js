@@ -5,7 +5,6 @@ import { useIsFocused } from '@react-navigation/native'
 import api from '../../../services/axiosInstance'
 import * as Animatable from 'react-native-animatable'
 import Layout from '../../../components/Layout'
-import RNLocation from 'react-native-location'
 import { checkLocationIsOn, getLatestLocation } from '../../../services/locationTracker'
 
 // create a component

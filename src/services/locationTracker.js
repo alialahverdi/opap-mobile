@@ -1,5 +1,5 @@
 import React from 'react';
-import RNLocation from 'react-native-location';
+
 import { storeObj, getPrimaryKeyId, deleteAllDataFromSchema } from '../model/query'
 import DeviceInfo from 'react-native-device-info'
 import { Alert } from 'react-native';
@@ -8,8 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import Geolocation from 'react-native-geolocation-service';
 import moment from "moment";
 import api from './axiosInstance'
-import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import { checkTime } from '../utils/checkTime';
+import { PermissionsAndroid } from "react-native";
+import BackgroundService from 'react-native-background-actions';
 
 
 export const checkLocationIsOn = async () => {
@@ -19,15 +20,15 @@ export const checkLocationIsOn = async () => {
 
 export const getLatestLocation = async () => {
 
-    let location = null;
+    // let location = null;
 
-    RNLocation.getLatestLocation()
-        .then(latestLocation => {
-            // Use the location here
-            console.log('latestLocation', latestLocation)
-            location = latestLocation
-        })
-    return location
+    // RNLocation.getLatestLocation()
+    //     .then(latestLocation => {
+    //         // Use the location here
+    //         console.log('latestLocation', latestLocation)
+    //         location = latestLocation
+    //     })
+    // return location
 }
 
 const addToDB = async (latestLocation) => {
@@ -46,9 +47,9 @@ const addToDB = async (latestLocation) => {
     }
 
     storeObj(locationObj, "Location").then(async (res) => {
+        console.log('locationObj', locationObj.TrackTime)
 
-        AsyncStorage.setItem("locationOnRealm", JSON.stringify(locationObj))
-
+        return
         const realmLocatinos = realm.objects("Location")
         const locations = JSON.parse(JSON.stringify(realmLocatinos))
 
@@ -56,8 +57,7 @@ const addToDB = async (latestLocation) => {
 
         api.post('/tracker/add', locations).then(res => {
             console.log('locationApi', res)
-            AsyncStorage.setItem("successLocationApi", "true")
-            // deleteAllDataFromSchema("Location")
+            deleteAllDataFromSchema("Location")
         }).catch(error => {
             console.log('error', error)
             AsyncStorage.setItem("errorLocationApi", JSON.stringify(error))
@@ -87,7 +87,7 @@ const locationTracker = async () => {
     const validTime = checkTime()
 
     if (!validTime) {
-        ReactNativeForegroundService.stop();
+        BackgroundService.stop();
         return
     }
 
@@ -96,23 +96,15 @@ const locationTracker = async () => {
     const permission = JSON.parse(value)
 
     if (permission === null) {
-        RNLocation.requestPermission({
-            ios: "whenInUse",
-            android: {
-                detail: "fine",
-                rationale: {
-                    title: "Location permission",
-                    message: "We use your location to demo the library",
-                    buttonPositive: "OK",
-                    buttonNegative: "Cancel"
-                }
-            }
-        }).then(async (granted) => {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             if (granted) {
                 await AsyncStorage.setItem("permission", "true")
                 getCurrentLocation()
             }
-        });
+        }
     } else {
         getCurrentLocation()
     }

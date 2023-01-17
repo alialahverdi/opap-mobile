@@ -25,7 +25,6 @@ const veryIntensiveTask = async (taskDataArguments) => {
     const { delay } = taskDataArguments;
     await new Promise(async (resolve) => {
         for (let i = 0; BackgroundService.isRunning(); i++) {
-            // console.log(i);
             locationTracker()
             await sleep(delay);
         }
@@ -52,33 +51,82 @@ const options = {
 
 const Test = () => {
 
-    const isFocused = useIsFocused()
+    // const isFocused = useIsFocused()
 
-    const [location, setLocation] = useState(null)
-    const [allLocations, setAllLocations] = useState([])
+    // const [location, setLocation] = useState(null)
+    // const [allLocations, setAllLocations] = useState([])
+
+    // useEffect(() => {
+    //     getLocation()
+    // }, [isFocused])
+
+    // const getLocation = () => {
+    //     const realmLocatinos = realm.objects("Location")
+    //     const locations = JSON.parse(JSON.stringify(realmLocatinos))
+    //     setAllLocations(locations)
+    // }
 
     useEffect(() => {
-        getLocation()
-    }, [isFocused])
+        createChannel()
+    }, [])
 
-    const getLocation = () => {
-        const realmLocatinos = realm.objects("Location")
-        const locations = JSON.parse(JSON.stringify(realmLocatinos))
-        setAllLocations(locations)
+
+    const createChannel = async () => {
+        const channelConfig = {
+            id: 'channelId',
+            name: 'Channel name',
+            description: 'Channel description',
+            enableVibration: false
+        };
+        await VIForegroundService.getInstance().createNotificationChannel(channelConfig);
+    }
+
+    const startForegroundService = async () => {
+        const notificationConfig = {
+            channelId: 'channelId',
+            id: 3456,
+            title: 'Title',
+            text: 'Some text',
+            icon: 'ic_icon',
+            button: 'Some text',
+        };
+        try {
+            await VIForegroundService.getInstance().startService(notificationConfig);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    const stopForegroundService = async () => {
+        await VIForegroundService.getInstance().stopService();
     }
 
 
+    const startBackgroundService = async () => {
+        await BackgroundService.start(veryIntensiveTask, options);
+        await BackgroundService.updateNotification({ taskDesc: 'My counter is runnig' });
+    }
+
+    const stopBackgroundService = async () => {
+        await BackgroundService.stop();
+    }
 
 
     return (
         <ScrollView style={styles.container}>
-            {allLocations.map((item, index) => (
-                <View key={index} style={{ flexDirection: 'row', justifyContent: "space-between" }}>
-                    <Text>{item.TrackTime}</Text>
-                    <Text>{item.Longitude}</Text>
-                    <Text>{item.Latitude}</Text>
-                </View>
-            ))}
+            {/* <Ripple onPress={startForegroundService}>
+                <Text>startForegroundService</Text>
+            </Ripple>
+            <Ripple onPress={stopForegroundService}>
+                <Text>stopForegroundService</Text>
+            </Ripple> */}
+
+            <Ripple onPress={startBackgroundService}>
+                <Text>startBackgroundService</Text>
+            </Ripple>
+            <Ripple onPress={stopBackgroundService}>
+                <Text>stopBackgroundService</Text>
+            </Ripple>
         </ScrollView>
     )
 }

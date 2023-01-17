@@ -8,10 +8,41 @@ import api from '../../services/axiosInstance'
 import Layout from '../../components/Layout'
 import * as Animatable from 'react-native-animatable'
 import FullButton from '../../components/Button/FullButton'
-import Header from '../../components/Header'
-import { Image, Platform, ScrollView, ScrollViewComponent } from 'react-native'
+import { Image, Platform, ScrollView } from 'react-native'
 import Ripple from 'react-native-material-ripple'
+import VIForegroundService from '@voximplant/react-native-foreground-service';
+import BackgroundService from 'react-native-background-actions';
+import locationTracker from '../../services/locationTracker'
 
+// BackgroundLocation
+
+const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
+
+const veryIntensiveTask = async (taskDataArguments) => {
+    // Example of an infinite loop task
+    const { delay } = taskDataArguments;
+    await new Promise(async (resolve) => {
+        for (let i = 0; BackgroundService.isRunning(); i++) {
+            locationTracker()
+            await sleep(delay);
+        }
+    });
+};
+
+const options = {
+    taskName: 'Example',
+    taskTitle: 'Opap',
+    taskDesc: 'Opap is runnig',
+    taskIcon: {
+        name: 'ic_launcher',
+        type: 'mipmap',
+    },
+    color: '#ff00ff',
+    linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+    parameters: {
+        delay: 4000,
+    },
+};
 
 
 // Create a component
@@ -27,8 +58,27 @@ const Login = ({ navigation }) => {
 
     // ------- Logic or Functions ------- //
     useEffect(() => {
+        createChannel();
+        setTimeout(() => {
+            startBackgroundService()
+        }, 2000)
         getUniqueId();
     }, [])
+
+    const createChannel = async () => {
+        const channelConfig = {
+            id: 'channelId',
+            name: 'Channel name',
+            description: 'Channel description',
+            enableVibration: false
+        };
+        await VIForegroundService.getInstance().createNotificationChannel(channelConfig);
+    }
+
+    const startBackgroundService = async () => {
+        console.log('startBackgroundService')
+        await BackgroundService.start(veryIntensiveTask, options);
+    }
 
     const getUniqueId = () => {
         const uniqueId = DeviceInfo.getUniqueId();
@@ -59,8 +109,10 @@ const Login = ({ navigation }) => {
         api.post('/check', params)
             .then(res => {
                 storeInStorage(res)
+                console.log('res', res)
             })
             .catch(error => {
+                console.log('error', error)
                 showSnakbar({
                     variant: "error",
                     message: 'اطلاعات وارد شده اشتباه می باشد.'

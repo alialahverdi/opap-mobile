@@ -7,7 +7,6 @@ import { Image } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import useSnackbar from "../../hooks/useSnackbar"
 import Ripple from 'react-native-material-ripple'
-import ReactNativeForegroundService from '@supersami/rn-foreground-service';
 import { checkTime } from '../../utils/checkTime'
 
 
@@ -32,39 +31,12 @@ const Splash = ({ navigation }) => {
     const checkLocationIsOn = () => {
         DeviceInfo.isLocationEnabled().then((enabled) => {
             if (enabled) {
-                startTrackerTask()
                 getUserInfo()
             } else {
                 setShowTryAgain(true)
                 Alert.alert('لوکیشن شما خاموش است لطفا آن را روشن کنید.')
             }
         });
-    }
-
-    const startTrackerTask = async () => {
-        const validTime = checkTime()
-        if (!validTime) return null
-
-        ReactNativeForegroundService.start({
-            id: 144,
-            title: '',
-            message: 'سرویس فعال است.',
-        });
-
-        AsyncStorage.setItem("locationServise", "started")
-
-        return
-
-        // const value = await AsyncStorage.getItem("trakerTask")
-        // const traker = JSON.parse(value)
-        // if (traker === null) {
-        //     ReactNativeForegroundService.start({
-        //         id: 144,
-        //         title: '',
-        //         message: 'سرویس فعال است.',
-        //     });
-        //     await AsyncStorage.setItem("trakerTask", "true")
-        // }
     }
 
     const getUserInfo = async () => {
@@ -103,7 +75,6 @@ const Splash = ({ navigation }) => {
         setSpinner(true)
         DeviceInfo.isLocationEnabled().then((enabled) => {
             if (enabled) {
-                startTrackerTask()
                 getUserInfo()
             } else {
                 setSpinner(false)
