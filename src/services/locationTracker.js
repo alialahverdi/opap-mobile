@@ -87,7 +87,6 @@ const locationTracker = async () => {
         return
     }
 
-
     const value = await AsyncStorage.getItem("permission")
     const permission = JSON.parse(value)
 

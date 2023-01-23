@@ -37,10 +37,10 @@ const options = {
         name: 'ic_launcher',
         type: 'mipmap',
     },
-    color: '#ff00ff',
+    color: '#ee7c09',
     linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
     parameters: {
-        delay: 40000,
+        delay: 4000,
     },
 };
 
@@ -102,13 +102,12 @@ const Login = ({ navigation }) => {
             username: toEnglishDigits(username),
             password: toEnglishDigits(password),
             deviceid: uniqueId,
-            version: "3.0.1"
+            version: "3.0.2"
         }
 
         api.post('/check', params)
             .then(res => {
                 storeInStorage(res)
-                console.log('res', res)
             })
             .catch(error => {
                 console.log('error', error)

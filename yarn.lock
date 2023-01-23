@@ -6470,6 +6470,11 @@ react-native-pager-view@^5.4.24:
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-5.4.24.tgz#8626e757ddc55e41eca66d2f8a8a75aec54591ee"
   integrity sha512-dRMB7i3B+mu4NCeIN6gqbR/kC/rr2wzqO0gisXDdJwJr78G24sWoTNpLEDFo3G8TFHY9nTMutVl5CUvkN2dp6g==
 
+react-native-permissions@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.6.1.tgz#73adcc1cef8cd57a9ef167b4507405f4ff5749c4"
+  integrity sha512-fzPpPQXeD34inUccqtoResSwYubfrwUguP4qrVUUv8+KSMjYSaHGoS5HaIJLZHlN9gO+TvLJZ2L5ZljTsb6qnQ==
+
 react-native-pie@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/react-native-pie/-/react-native-pie-1.1.2.tgz#9cd4d428e85cc232877e5f7cdb2bea9f724fcbac"
