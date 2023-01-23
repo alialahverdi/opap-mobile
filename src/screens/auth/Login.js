@@ -40,7 +40,7 @@ const options = {
     color: '#ee7c09',
     linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
     parameters: {
-        delay: 4000,
+        delay: 40000,
     },
 };
 
